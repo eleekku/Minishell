@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/11 13:56:05 by esalmela          #+#    #+#             */
-/*   Updated: 2024/04/11 16:52:01 by esalmela         ###   ########.fr       */
+/*   Created: 2024/04/11 15:49:04 by esalmela          #+#    #+#             */
+/*   Updated: 2024/04/11 17:35:10 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include "Libft/libft.h"
-# include <stdio.h>
-
-typedef struct s_split
+char	*get_pwd(void)
 {
-	char	**str;
-	size_t	start;
-	size_t	end;
-	size_t	len;
-	size_t	i;
-}	t_split;
+	char	*pwd;
 
-#endif
+	pwd = getcwd(NULL, 1);
+	if (!pwd)
+		return (NULL);
+	return (pwd);
+}
+
+change_directory(char *path)
+{
+	
+}
+
+int	main(void)
+{
+	char *pwd;
+	pwd = get_pwd();
+	printf("current dir is %s\n", pwd);
+	free(pwd);
+}
