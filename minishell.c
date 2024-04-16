@@ -1,11 +1,30 @@
 # include "minishelld.h"
 
 //think about "heredoc"
-
-/*int input_check(t_data *content)
+void  start_lexer(t_data *content, t_lexer *token)
 {
-  //lexer stuff
-}*/
+  token->str = (char **)malloc(sizeof(char *) * 2);
+  token->str[0] = ft_substr(content->str_rl, token->content->start, token->content->len);
+  ///how to use enum (como asociarlos al token).
+}
+
+void input_check(t_data *content, t_lexer *token)
+{
+  int i;
+  char *input;
+
+  input = content->str_rl;
+  i = -1;
+  while (input[++i])
+  {
+    if (ft_isspace(input[i]))
+    {
+      token->content->len = i;
+      token->content->start = 0;
+      start_lexer(content, token);
+    }
+  }
+}
 void exit_error(char *str)
 {
   printf("%s\n", str);
@@ -67,20 +86,21 @@ int main(int ac, char **av, char **envp)
 {
   char* input;
   t_data content;
+  t_lexer token;
 
   if (ac == 0 || ac > 1)
       exit_error("Invalid input\n");
   printf("Welcome to Minishell los pran...\n");
   create_envp(envp, &content);
-  update_envp(&content);
-  /*while ((input = readline("minishell$ ")) != NULL) 
+  //update_envp(&content);
+  while ((input = readline("minishell$ ")) != NULL) 
   {
     if (strlen(input) > 0) 
       add_history(input);
     content.str_rl = &input;
-    input_check(&content);//lexer for the parse
+    input_check(&content, &token);//lexer for the parse
     printf("%s\n", input);
     free(input);
-  }*/
+  }
   return (0);
 }
