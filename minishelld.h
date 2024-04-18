@@ -10,7 +10,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef enum s_token_type{
+typedef enum s_token{
     TOKEN_PIPEX,
     TOKEN_STR,
     TOKEN_DOLAR,
@@ -21,25 +21,20 @@ typedef enum s_token_type{
     TOKEN_D_QUOTE,
     TOKEN_ERROR,
     TOKEN_FIN
-} t_token_type;
-
-typedef struct s_token
-{
-    int start;
-    size_t len;
 } t_token;
 
 typedef struct s_lexer
 {
-    char **str;
-    t_token_type *type;
-    t_token *content;
+    int start;
+    size_t len;
+    t_token *type;
 } t_lexer;
 
 typedef struct s_data
 {
     char **env;
-    char **str_rl;
+    char *str_rl;
+    t_lexer *lexerarra;
 } t_data;
 
 # endif
