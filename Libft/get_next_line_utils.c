@@ -11,39 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-/*
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t	i;
 
-	i = 0;
-	if (!dest && !src)
-		return (dest);
-	while (i < n)
-	{
-		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
-		i++;
-	}
-	return (dest);
-}
-*/
-/*
-char	*ft_strchr(char *str, int c)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i] != (unsigned char)c)
-	{
-		if (str[i] == '\0')
-			return (NULL);
-		i++;
-	}
-	return ((char *)(str + i));
-}
-*/
 char	*ft_strjoingnl(char *s1, char *s2)
 {
 	int		len1;
@@ -67,15 +35,3 @@ char	*ft_strjoingnl(char *s1, char *s2)
 	free (s1);
 	return (str);
 }
-/*
-size_t	ft_strlen(const char *str)
-{
-	size_t	len;
-
-	len = 0;
-	if (!str)
-		return (0);
-	while (str[len] != '\0')
-		len++;
-	return (len);
-}*/
