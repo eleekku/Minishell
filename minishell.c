@@ -156,12 +156,14 @@ void  create_envp(char **env, t_data *content)
     while (env[n])
       n++;
     envp = (char **)malloc(sizeof(char *) * n + 1);
+    if (!envp)
+        perror("Error Mallloc created_envp");
     i = 0;
     while (i < n)
     {
       envp[i] = ft_strdup(env[i]);
       if (envp[i] == NULL)
-          perror("Error al asignar memoria");
+          perror("Error Mallloc env_copy");
       i++;
     }
     envp[i] == NULL;
