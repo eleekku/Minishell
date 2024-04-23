@@ -11,23 +11,23 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-void	ft_put_hex(unsigned int num, const char format, int *p)
+void	ft_put_hex(unsigned int num, const char format, int *p, int fd)
 {
 	if (num >= 16)
 	{
-		ft_put_hex(num / 16, format, p);
-		ft_put_hex(num % 16, format, p);
+		ft_put_hex(num / 16, format, p, fd);
+		ft_put_hex(num % 16, format, p, fd);
 	}
 	else
 	{
 		if (num <= 9)
-			printchar(num + '0', p);
+			printchar(num + '0', p, fd);
 		else
 		{
 			if (format == 'x')
-				printchar(num - 10 + 'a', p);
+				printchar(num - 10 + 'a', p, fd);
 			if (format == 'X')
-				printchar(num - 10 + 'A', p);
+				printchar(num - 10 + 'A', p, fd);
 		}
 	}
 }
@@ -45,11 +45,11 @@ int	ft_hex_len(unsigned int num)
 	return (i);
 }
 
-int	ft_print_hex(unsigned int num, const char format, int *p)
+int	ft_print_hex(unsigned int num, const char format, int *p, int fd)
 {
 	if (num == 0)
-		return (write(1, "0", 1));
+		return (write(fd, "0", 1));
 	else
-		ft_put_hex(num, format, p);
+		ft_put_hex(num, format, p, fd);
 	return (ft_hex_len(num));
 }

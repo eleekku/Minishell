@@ -1,5 +1,28 @@
 #include "minishell.h"
 
+void  exit(char **args)
+{
+  int i;
+
+  printf(1, "exit\n");
+  if (!args)
+    exit(0);
+  else if(ft_atoi(args[0] == 0 && ft_isdigit(args[0] == 0)))
+  {
+    printf(2, "los_pran: exit: %s: numeric argument required", args[0]);
+    args[0] = "255";
+  }
+  else if (args[1])
+    printf(2, "los_pran: exit: too many arguments", args[0]);
+  i = ft_atoi(args[0]);
+  if (i < 0 && i >= -256)
+    exit(256 + i);
+  if (i > 255)
+    exit(i % 256);
+  if (i < -256)
+    exit(256 + (i % 256));
+  exit(i);  
+}
 void  env(t_data *content)
 {
   int i;

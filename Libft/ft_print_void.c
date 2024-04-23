@@ -11,19 +11,19 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-void	ft_put_ptr(uintptr_t num, int *p)
+void	ft_put_ptr(uintptr_t num, int *p, int fd)
 {
 	if (num >= 16)
 	{
-		ft_put_ptr(num / 16, p);
-		ft_put_ptr(num % 16, p);
+		ft_put_ptr(num / 16, p, fd);
+		ft_put_ptr(num % 16, p, fd);
 	}
 	else
 	{
 		if (num <= 9)
-			printchar(num + '0', p);
+			printchar(num + '0', p, fd);
 		else
-			printchar(num - 10 + 'a', p);
+			printchar(num - 10 + 'a', p, fd);
 	}
 }
 
@@ -40,18 +40,18 @@ int	ft_ptr_len(uintptr_t num)
 	return (i);
 }
 
-int	ft_print_void(unsigned long long ptr, int *p)
+int	ft_print_void(unsigned long long ptr, int *p, int fd)
 {
 	int	chars;
 
 	chars = 0;
-	chars += printchar('0', p);
-	chars += printchar('x', p);
+	chars += printchar('0', p, fd);
+	chars += printchar('x', p, fd);
 	if (ptr == 0)
-		chars += printchar('0', p);
+		chars += printchar('0', p, fd);
 	else
 	{
-		ft_put_ptr(ptr, p);
+		ft_put_ptr(ptr, p, fd);
 		chars += ft_ptr_len(ptr);
 	}
 	return (chars);

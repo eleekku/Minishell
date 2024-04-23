@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-int	printchar(int a, int *p)
+int	printchar(int a, int *p, int fd)
 {
 	if (*p == -1)
 		return (-1);
-	if (write(1, &a, 1) == -1)
+	if (write(fd, &a, 1) == -1)
 	{
 		*p = -1;
 		return (-1);
@@ -24,29 +24,29 @@ int	printchar(int a, int *p)
 		return (1);
 }
 
-int	checkconvers(const char *format, va_list args, int *p)
+int	checkconvers(const char *format, va_list args, int *p, int fd)
 {
 	int	chars;
 
 	chars = 0;
 	if (*format == 'd' || *format == 'i')
-		chars += putints(va_arg(args, int), p);
+		chars += putints(va_arg(args, int), p, fd);
 	if (*format == 's')
-		chars += ft_putstr(va_arg(args, char *), p);
+		chars += ft_putstr(va_arg(args, char *), p, fd);
 	if (*format == 'c')
-		chars += printchar(va_arg(args, int), p);
+		chars += printchar(va_arg(args, int), p, fd);
 	if (*format == 'u')
-		chars += putuints(va_arg(args, unsigned int), p);
+		chars += putuints(va_arg(args, unsigned int), p, fd);
 	if ((*format == 'x') || (*format == 'X'))
-		chars += ft_print_hex(va_arg(args, unsigned int), *format, p);
+		chars += ft_print_hex(va_arg(args, unsigned int), *format, p, fd);
 	if (*format == 'p')
-		chars += ft_print_void(va_arg(args, unsigned long long), p);
+		chars += ft_print_void(va_arg(args, unsigned long long), p, fd);
 	if (*format == '%')
-		chars += printchar('%', p);
+		chars += printchar('%', p, fd);
 	return (chars);
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_printf(int fd, const char *format, ...)
 {
 	int		i;
 	va_list	args;
@@ -62,10 +62,10 @@ int	ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			chars += checkconvers(&format[i], args, &p);
+			chars += checkconvers(&format[i], args, &p, fd);
 		}
 		else
-			chars += printchar(format[i], &p);
+			chars += printchar(format[i], &p, fd);
 		i++;
 	}
 	va_end(args);
