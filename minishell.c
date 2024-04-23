@@ -78,7 +78,6 @@ void just_redirect(char *str)
         i++;
     str++;
   }
-  printf("%d\n", r);
   just_redirect_final(temp, i, r);
 }
 void  just_pipes(char *str)
@@ -102,11 +101,11 @@ int input_check(t_data *content)
     t_lexer *lexer;
     char *str;
 
-    str = content->str_rl;
+    str = *content->str_rl;
     just_redirect(str);
     just_pipes(str);  
-    lexer = content->lexerarra;
-    i = 0;
+    content->lexer_array = lexer;
+    //lexer_tokenize(&content);
     //init_lexer(content);
     return (1);
 }
@@ -156,23 +155,21 @@ void  create_envp(char **env, t_data *content)
     while (env[n])
       n++;
     envp = (char **)malloc(sizeof(char *) * n + 1);
-    if (!envp)
-        perror("Error Mallloc created_envp");
     i = 0;
     while (i < n)
     {
       envp[i] = ft_strdup(env[i]);
       if (envp[i] == NULL)
-          perror("Error Mallloc env_copy");
+          perror("Error al asignar memoria");
       i++;
     }
-    envp[i] == NULL;
+    env[i] = NULL;
     content->env = envp;
 }
 
 int main(int ac, char **av, char **envp) 
 {
-    char *input;
+    char* input;
     t_data content;
 
     if (ac == 0 || ac > 1)
@@ -180,7 +177,7 @@ int main(int ac, char **av, char **envp)
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
     //update_envp(&content);
-    /*while (1)
+    while ((input = readline("minishell$ ")) != NULL)
     {
       input = readline("minishell$ ");
       if (strlen(input) > 0) 
@@ -188,7 +185,8 @@ int main(int ac, char **av, char **envp)
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
       //printf("%s\n", input);
+      int i = 0;
       free(input);
-    }*/
-    return (0);
+    }
+    printf("hola");
 }
