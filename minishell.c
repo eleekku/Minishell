@@ -155,21 +155,24 @@ void  create_envp(char **env, t_data *content)
     n = 0;
     while (env[n])
       n++;
-    envp = (char **)malloc(sizeof(char *) * n);
+    envp = (char **)malloc(sizeof(char *) * n + 1);
+    if (!envp)
+        perror("Error Mallloc created_envp");
     i = 0;
     while (i < n)
     {
       envp[i] = ft_strdup(env[i]);
       if (envp[i] == NULL)
-          perror("Error al asignar memoria");
+          perror("Error Mallloc env_copy");
       i++;
     }
+    envp[i] == NULL;
     content->env = envp;
 }
 
 int main(int ac, char **av, char **envp) 
 {
-    char* input;
+    char *input;
     t_data content;
 
     if (ac == 0 || ac > 1)
@@ -177,7 +180,7 @@ int main(int ac, char **av, char **envp)
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
     //update_envp(&content);
-    while (1)
+    /*while (1)
     {
       input = readline("minishell$ ");
       if (strlen(input) > 0) 
@@ -186,6 +189,6 @@ int main(int ac, char **av, char **envp)
       int in = input_check(&content);//lexer for the parse
       //printf("%s\n", input);
       free(input);
-    }
+    }*/
     return (0);
 }
