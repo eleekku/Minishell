@@ -1,5 +1,26 @@
 #include "minishell.h"
 
+void  add_spaceenvp(char **env, t_data *content, int lines)
+{
+  int   i;
+  char  **new;
+
+  i = 0;
+  while (content->env[i])
+    i++;
+  new = malloc(sizeof(char *) * (i + lines + 1))
+  
+  
+}
+int export(char **args, t_data *content)
+{
+  int i;
+
+  i = 0;
+  while (content->env[i])
+    i++;
+  content->env[i + 1] = malloc((ft_strlen(args[1]) + 1) * sizeof(char))
+}
 void  exit(char **args)
 {
   int i;
