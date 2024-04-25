@@ -1,40 +1,62 @@
 #include "minishell.h"
 
-void  add_spaceenvp(char **env, t_data *content, int lines)
+void  add_spaceenvp(t_data *content, int linel)
 {
   int   i;
+  int   j;
   char  **new;
 
   i = 0;
+  j = 0;
   while (content->env[i])
     i++;
-  new = malloc(sizeof(char *) * (i + lines + 1))
-  
-  
+  new = ft_calloc((i + 2), sizeof(char *)); 
+    if (!new)
+    perror("Error Malloc env_copy");
+      //free
+    while (j < i)
+    {
+      new[j] = ft_strdup(content->env[j]);
+      if (!new[i])
+          perror("Error Malloc env_copy");
+          //free stuff
+      j++;
+    }
+    new[j] = ft_calloc(linel + 1, sizeof(char));
+      if (!new[i])
+          perror("Error Malloc env_copy");
+          //free stuff
+    free_args(content->env);
+    content->env = new;
 }
 int export(char **args, t_data *content)
 {
   int i;
+  char  *data;
 
   i = 0;
   while (content->env[i])
     i++;
-  content->env[i + 1] = malloc((ft_strlen(args[1]) + 1) * sizeof(char))
+  //data = ft_strnstr(args[1], "=", ft_strlen(args[1]));
+ // data++;
+  add_spaceenvp(content, ft_strlen(data));
+  content->env[i] = args[1];
+  return (0);
 }
-void  exit(char **args)
+void  built_exit(char **args)
 {
   int i;
 
-  printf(1, "exit\n");
+  ft_printf(1, "exit\n");
   if (!args)
     exit(0);
-  else if(ft_atoi(args[0] == 0 && ft_isdigit(args[0] == 0)))
+  else if(ft_atoi(args[0]) == 0 && ft_isdigit(args[0] == 0))
   {
-    printf(2, "los_pran: exit: %s: numeric argument required", args[0]);
+    ft_printf(2, "los_pran: exit: %s: numeric argument required", args[0]);
     args[0] = "255";
   }
   else if (args[1])
-    printf(2, "los_pran: exit: too many arguments", args[0]);
+    ft_printf(2, "los_pran: exit: too many arguments", args[0]);
   i = ft_atoi(args[0]);
   if (i < 0 && i >= -256)
     exit(256 + i);
@@ -81,6 +103,8 @@ int main(int argc, char **argv, char **envp)
 {
   t_data content;
   create_envp(envp, &content);
-
-  env(&content);
+  char  *argv[0] = "export";
+  char  *argv[1] = "testi=kuuluuko";
+  export
+  //env(&content);
 }

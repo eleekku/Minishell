@@ -10,17 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-void	free_split_result(char **split_result)
+#include "minishell.h"
+
+void	free_args(char **args)
 {
 	char	**temp;
 
-	if (!split_result || !*split_result)
+	if (!args || !*args)
 		return ;
-	temp = split_result;
+	temp = args;
 	while (*temp)
 	{
 		free(*temp);
 		temp++;
 	}
-	free(split_result);
+	free(args);
 }

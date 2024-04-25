@@ -52,4 +52,6 @@ typedef struct s_data
     t_lexer *lexerarra;
 } t_data;
 
+void	free_args(char **args);
+
 #endif
