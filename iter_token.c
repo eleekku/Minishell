@@ -43,14 +43,14 @@ char	*char_find_dq(t_char_iter *self)
 	}
 	return (self->end - len);
 }
-void	ft_realloc(t_token **token, size_t size)
+int	ft_realloc(t_token **token, size_t size)
 {
 	t_token		*new;
 	size_t		i;
 
 	new = ft_calloc(size, sizeof(t_token));
 	if (!new)
-		return (NULL);
+		return (1);
 	i = 0;
 	while (i < size - 1)
 	{
@@ -61,3 +61,4 @@ void	ft_realloc(t_token **token, size_t size)
 	*token = new;
 	return (0);
 }
+

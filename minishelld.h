@@ -10,20 +10,23 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
-
+# define DELIMITER "|<>\"\'$ '\t'"
 //# define total_token 100;
 
-typedef enum {
-    TOKEN_PIPEX,
+typedef enum s_token_name
+{
+    TOKEN_PIPE,
     TOKEN_STR,
     TOKEN_DOLAR,
+    TOKEN_SPACE,
     TOKEN_COMMAND,
     TOKEN_IN_REDIRECT,
     TOKEN_OUT_REDIRECT,
     TOKEN_S_QUOTE,
-    TOKEN_D_QUOTE,
+    TOKEN_DQUOTE_OPEN,
+    TOKEN_DQUOTE_CLOSED,
     TOKEN_ERROR,
-    TOKEN_FIN
+    TOKEN_EOL,
 } t_token_name;
 
 typedef struct s_lexer
@@ -51,7 +54,11 @@ typedef struct s_data
     t_token *lexer_array;
 } t_data;
 
-void lexer_tokenizer(t_data* data);
+void    lexer_tokenizer(t_data* data);
+void    take_error(t_token *token, t_char_iter *iter, int *d_flag);
+int	    ft_realloc(t_token **token, size_t size);
+char	*char_find_dq(t_char_iter *self);
+
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
