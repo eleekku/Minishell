@@ -58,6 +58,8 @@ int	change_directory(char *path, t_data *content)
 	i = 0;
 	while (content->env[i] && ft_strncmp("OLDPWD=", content->env[i], 7) != 0)
 		i++;
+	if (!content->env[i])
+		export(safe_strjoin("OLDPWD=", get_pwd()), content);
 	free(content->env[i]);
 	content->env[i] = ft_strjoin("OLDPWD=", get_pwd());
 	i = 0;
@@ -99,7 +101,9 @@ void  create_envp(char **env, t_data *content)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data content;
+
   	create_envp(envp, &content);
+	change_directory("/", &content);
 	/* char *root;
 	root = get_root("minishell");
 	printf("%s\n", root); */

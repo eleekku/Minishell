@@ -48,10 +48,13 @@ typedef struct s_lexer
 typedef struct s_data
 {
     char **env;
+    char **exp;
     char *str_rl;
     t_lexer *lexerarra;
 } t_data;
 
 void	free_args(char **args);
+char	*safe_strjoin(char const *s1, char const *s2);
+void	*safe_calloc(size_t nitems, size_t size);
 
 #endif

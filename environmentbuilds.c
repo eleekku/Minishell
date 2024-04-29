@@ -1,6 +1,21 @@
 #include "minishell.h"
 
-void  add_spaceenvp(t_data *content, int linel)
+int  unset_variable(t_data *content, char **args)
+{
+    int i;
+
+    i = 0;
+	  while (content->env[i] && ft_strncmp(args[1], content->env[i], ft_strlen(args[1])) != 0)
+		  i++;
+    if (content->env[i])
+      free(content->env[i]);
+    content->env[i] = ft_strdup("");
+    if (!content->env[i])
+        return (255);
+    return (0);
+}
+
+void  add_space(t_data *content, int linel)
 {
   int   i;
   int   j;
@@ -8,6 +23,7 @@ void  add_spaceenvp(t_data *content, int linel)
 
   i = 0;
   j = 0;
+
   while (content->env[i])
     i++;
   new = ft_calloc((i + 2), sizeof(char *)); 
@@ -17,19 +33,19 @@ void  add_spaceenvp(t_data *content, int linel)
     while (j < i)
     {
       new[j] = ft_strdup(content->env[j]);
-      if (!new[i])
+      if (!new[j])
           perror("Error Malloc env_copy");
           //free stuff
       j++;
     }
     new[j] = ft_calloc(linel + 1, sizeof(char));
-      if (!new[i])
+      if (!new[j])
           perror("Error Malloc env_copy");
           //free stuff
     free_args(content->env);
     content->env = new;
 }
-int export(char **args, t_data *content)
+int export(char *arg, t_data *content)
 {
   int i;
   char  *data;
@@ -37,10 +53,8 @@ int export(char **args, t_data *content)
   i = 0;
   while (content->env[i])
     i++;
-  //data = ft_strnstr(args[1], "=", ft_strlen(args[1]));
- // data++;
-  add_spaceenvp(content, ft_strlen(data));
-  content->env[i] = args[1];
+  add_space(content, ft_strlen(arg));
+  content->env[i] = arg;
   return (0);
 }
 void  built_exit(char **args)
@@ -103,8 +117,7 @@ int main(int argc, char **argv, char **envp)
 {
   t_data content;
   create_envp(envp, &content);
-  char  *argv[0] = "export";
-  char  *argv[1] = "testi=kuuluuko";
-  export
+  export(argv, &content);
+  env(&content);
   //env(&content);
 }

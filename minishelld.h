@@ -50,6 +50,7 @@ typedef struct s_char_iter
 typedef struct s_data
 {
     char **env;
+    char **exp;
     char *str_rl;
     t_token *lexer_array;
 } t_data;
