@@ -60,6 +60,8 @@ void just_redirect(char *str)
   int r;
   char *temp;
 
+  if (str[0] == '\0')
+    return ;
   i = 1;
   r = 1;
   temp = str;
@@ -82,6 +84,8 @@ void just_redirect(char *str)
 }
 void  just_pipes(char *str)
 {
+   if (str[0] == '\0')
+    return ;
   if (*str == '|' && *(++str) == '\0')
   {
      printf("%s\n",  "minishell: syntax error near unexpected token `|'");
@@ -98,14 +102,21 @@ void  just_pipes(char *str)
 int input_check(t_data *content)
 {
     int i;
-    t_lexer *lexer;
+    t_token *tokens;
     char *str;
 
-    str = *content->str_rl;
+    str = content->str_rl;
     just_redirect(str);
     just_pipes(str);  
-    content->lexer_array = lexer;
-    //lexer_tokenize(&content);
+    lexer_tokenizer(content);
+    printf ("Tokens:\n");
+    tokens = content->lexer_array;
+    i = 0;
+    while (tokens[i].type != TOKEN_EOL) 
+    {
+        printf("Token %d: Type %d, Start %s, Len %zu\n", i, tokens[i].type, tokens[i].pos.start, tokens[i].pos.len);
+        i++;
+    }
     //init_lexer(content);
     return (1);
 }
@@ -171,6 +182,7 @@ int main(int ac, char **av, char **envp)
 {
     char* input;
     t_data content;
+    t_char_iter iter;
 
     if (ac == 0 || ac > 1)
         exit_error("Invalid input\n");
@@ -179,13 +191,13 @@ int main(int ac, char **av, char **envp)
     //update_envp(&content);
     while ((input = readline("minishell$ ")) != NULL)
     {
-      input = readline("minishell$ ");
       if (strlen(input) > 0) 
         add_history(input);
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
       //printf("%s\n", input);
-      int i = 0;
+      if (ft_strncmp(input, "exit", 4) == 0)
+          exit(0);
       free(input);
     }
     printf("hola");

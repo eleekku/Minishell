@@ -22,6 +22,7 @@ typedef enum s_token_name
     TOKEN_COMMAND,
     TOKEN_IN_REDIRECT,
     TOKEN_OUT_REDIRECT,
+    TOKEN_REDIR_APPEND,
     TOKEN_S_QUOTE,
     TOKEN_DQUOTE_OPEN,
     TOKEN_DQUOTE_CLOSED,
@@ -45,6 +46,7 @@ typedef struct s_char_iter
 {
 	char	*start;
 	char	*end;
+    int d_flag;
 }	t_char_iter;
 
 typedef struct s_data
@@ -55,10 +57,10 @@ typedef struct s_data
 } t_data;
 
 void    lexer_tokenizer(t_data* data);
-void    take_error(t_token *token, t_char_iter *iter, int *d_flag);
+void    take_error(t_token *token, t_char_iter *iter);
 int	    ft_realloc(t_token **token, size_t size);
 char	*char_find_dq(t_char_iter *self);
-
+void	take_redir_append(t_char_iter *iter, t_token *token);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
