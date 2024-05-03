@@ -17,8 +17,8 @@ void	build_export(t_data *content)
 {
 	char	*intro;
 	int		i;
-	int		len;
 	char	**tmp;
+	char	*tempstr;
 
 	intro = "declare -x ";
 	i = 0;
@@ -34,10 +34,13 @@ void	build_export(t_data *content)
 				// error stuff
 				exit;
 			}
-		content->exp[i] = safe_strjoin("declare -x ", tmp[0]);
-		content->exp[i] = safe_strjoin(content->exp[i], "=\"");
-		content->exp[i] = safe_strjoin(content->exp[i], tmp[1]);
-		content->exp[i] = safe_strjoin(content->exp[i], "\"");
+		tempstr = safe_strjoin(intro, tmp[0]);
+		free(tmp[0]);
+		tmp[0] = safe_strjoin(tempstr, "=\"");
+		free(tempstr);
+		tempstr = safe_strjoin(tmp[0], tmp[1]);
+		content->exp[i] = safe_strjoin(tempstr, "\"");
+		free(tempstr);
 		i++;
 		free_args(tmp);
 	}
