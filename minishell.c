@@ -1,4 +1,4 @@
-# include "minishelld.h"
+# include "minishell.h"
 
 //think about "heredoc"
 /*void  init_lexer(t_data *content, t_lexer *lexer, size_t len, int start)

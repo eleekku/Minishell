@@ -1,4 +1,4 @@
-# include "minishelld.h"
+# include "minishell.h"
 
 /*void init_lexer(t_lexer* lexer, const char* input, size_t len) 
 {
