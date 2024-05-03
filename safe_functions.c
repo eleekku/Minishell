@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishelld.h"
+//#include "minishelld.h"
 
 char	*safe_strjoin(char const *s1, char const *s2)
 {
@@ -34,7 +34,7 @@ void	*safe_calloc(size_t nitems, size_t size)
 	if (!ptr)
 	{
 		// call some error function
-		exit(1);
+		exit (255);
 	}
 	return (ptr);
 }

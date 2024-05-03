@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishelld.h"
+//#include "minishelld.h"
 
 void	build_export(t_data *content)
 {
@@ -32,7 +32,7 @@ void	build_export(t_data *content)
 			if (!tmp)
 			{
 				// error stuff
-				exit;
+				exit(255);
 			}
 		tempstr = safe_strjoin(intro, tmp[0]);
 		free(tmp[0]);
@@ -44,4 +44,18 @@ void	build_export(t_data *content)
 		i++;
 		free_args(tmp);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data content;
+	int	i;
+
+	i = -1;
+	create_envp(envp, &content);
+	build_export(&content);
+	while (content.exp[++i])
+		printf("%s\n", content.exp[i]);
+
+	
 }
