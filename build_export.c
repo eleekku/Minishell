@@ -46,7 +46,7 @@ void	build_export(t_data *content)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+/* int	main(int argc, char **argv, char **envp)
 {
 	t_data content;
 	int	i;
@@ -58,4 +58,4 @@ int	main(int argc, char **argv, char **envp)
 		printf("%s\n", content.exp[i]);
 
 	
-}
+} */

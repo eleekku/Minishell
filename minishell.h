@@ -97,5 +97,6 @@ void	free_args(char **args);
 char	*safe_strjoin(char const *s1, char const *s2);
 void	*safe_calloc(size_t nitems, size_t size);
 void    create_envp(char **env, t_data *content);
+int     export(char *arg, t_data *content);
 
 # endif

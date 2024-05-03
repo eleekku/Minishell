@@ -89,7 +89,7 @@ void  env(t_data *content)
     ft_putendl_fd(content->env[i], 1);
 }
 
-void  create_envp(char **env, t_data *content)
+/* void  create_envp(char **env, t_data *content)
 {
     char **envp;
     int i;
@@ -111,7 +111,7 @@ void  create_envp(char **env, t_data *content)
     }
     envp[i] = NULL;
     content->env = envp;
-}
+} */
 
 /* int main(int argc, char **argv, char **envp)
 {
