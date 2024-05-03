@@ -71,6 +71,10 @@ void    take_error(t_token *token, t_char_iter *iter);
 int	    ft_realloc(t_token **token, size_t size);
 char	*char_find_dq(t_char_iter *self);
 void	take_redir_append(t_char_iter *iter, t_token *token);
+void    add_token(t_token *token, t_char_iter *iter);
+
+//parse
+void    creating_parse(t_data *data);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);

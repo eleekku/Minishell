@@ -1,4 +1,4 @@
-# include "minishell.h"
+# include "minishelld.h"
 
 //think about "heredoc"
 /*void  init_lexer(t_data *content, t_lexer *lexer, size_t len, int start)
@@ -109,14 +109,7 @@ int input_check(t_data *content)
     just_redirect(str);
     just_pipes(str);  
     lexer_tokenizer(content);
-    printf ("Tokens:\n");
     tokens = content->lexer_array;
-    i = 0;
-    while (tokens[i].type != TOKEN_EOL) 
-    {
-        printf("Token %d: Type %d, Start %s, Len %zu\n", i, tokens[i].type, tokens[i].pos.start, tokens[i].pos.len);
-        i++;
-    }
     //init_lexer(content);
     return (1);
 }
@@ -182,7 +175,6 @@ int main(int ac, char **av, char **envp)
 {
     char* input;
     t_data content;
-    t_char_iter iter;
 
     if (ac == 0 || ac > 1)
         exit_error("Invalid input\n");
@@ -195,6 +187,7 @@ int main(int ac, char **av, char **envp)
         add_history(input);
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
+      creating_parse(&content);
       //printf("%s\n", input);
       if (ft_strncmp(input, "exit", 4) == 0)
           exit(0);
