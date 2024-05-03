@@ -7,6 +7,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <ctype.h>
+# include <stdbool.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -63,7 +64,14 @@ typedef struct s_data
     char **exp;
     char *str_rl;
     t_token *lexer_array;
+    t_parse *parse;
 } t_data;
+
+typedef struct s_parse
+{
+    char **cmd;
+    char **rec_file;
+} t_parse;
 
 //lexer
 void    lexer_tokenizer(t_data* data);
