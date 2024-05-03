@@ -24,7 +24,7 @@ void	build_export(t_data *content)
 	i = 0;
 	while (content->env[i])
 		i++;
-	content->exp = safe_calloc(i, sizeof(char *));
+	content->exp = safe_calloc(i + 1, sizeof(char *));
 	i = 0;
 	while (content->env[i])
 	{
@@ -46,7 +46,7 @@ void	build_export(t_data *content)
 	}
 }
 
-/* int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_data content;
 	int	i;
@@ -54,8 +54,12 @@ void	build_export(t_data *content)
 	i = -1;
 	create_envp(envp, &content);
 	build_export(&content);
-	while (content.exp[++i])
+	while (content.env[++i])
+		printf("%s\n", content.env[i]);
+	i = 0;
+	while (i < content.exp[i])
+	{
 		printf("%s\n", content.exp[i]);
-
-	
-} */
+		i++;
+	}
+}
