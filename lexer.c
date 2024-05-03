@@ -61,8 +61,8 @@ void    creating_parse(t_data *data)
     parse = ft_calloc(pipes, sizeof(t_parse));
     parse = data->parse;
     printf("p: %d\n r: %d\n", pipes, redic);
-    if (pipes == 1 && redic == 0)
-        creating_command(data);
+    //if (pipes == 1 && redic == 0)
+    //    creating_command(data);
     /*if (data->lexer_array[i].type == TOKEN_PIPE)
         //create new struct;
     if (data->lexer_array[i].type == TOKEN_IN_REDIRECT )
@@ -71,13 +71,13 @@ void    creating_parse(t_data *data)
     }*/
     
 }
-char *fill_cmd(t_data *data)
+/*char *fill_cmd(t_data *data)
 {
     char *tem;
 
     tem = (char *)ft_calloc(data->lexer_array->pos.len, sizeof(char));
     //tem = ft_strlcpy()
-}
+}*/
 void    creating_command(t_data *data)
 {
     //no pipes and redic
@@ -87,17 +87,15 @@ void    creating_command(t_data *data)
     cmd = (char **)ft_calloc(2, sizeof(char *));
     if (!cmd)
         printf("Error malloc");
-    i = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL != TOKEN_EOL)
+    //i = 0;
+    /*while (data->lexer_array[i].type != TOKEN_EOL != TOKEN_EOL)
     {
         if (data->lexer_array[i].type == TOKEN_STR)
             ft_strdup()
-    }
-
-
-    data->parse[0].cmd 
+    }*/
+    //data->parse[0].cmd 
 }
-void    creating_str_files(t_data *data)
+/*void    creating_str_files(t_data *data)
 {
 
 }*/

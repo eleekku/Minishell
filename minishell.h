@@ -58,6 +58,12 @@ typedef struct s_char_iter
     int d_flag;
 }	t_char_iter;
 
+typedef struct s_parse
+{
+    char **cmd;
+    char **rec_file;
+} t_parse;
+
 typedef struct s_data
 {
     char **env;
@@ -66,12 +72,6 @@ typedef struct s_data
     t_token *lexer_array;
     t_parse *parse;
 } t_data;
-
-typedef struct s_parse
-{
-    char **cmd;
-    char **rec_file;
-} t_parse;
 
 //lexer
 void    lexer_tokenizer(t_data* data);
