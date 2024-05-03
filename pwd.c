@@ -73,7 +73,7 @@ int	change_directory(char *path, t_data *content)
 	printf("%s\n", pwd);
 	return (return_value);
 }
-
+/* 
 void  create_envp(char **env, t_data *content)
 {
     char **envp;
@@ -104,12 +104,12 @@ int	main(int argc, char **argv, char **envp)
 
   	create_envp(envp, &content);
 	change_directory("/", &content);
-	/* char *root;
+	char *root;
 	root = get_root("minishell");
-	printf("%s\n", root); */
+	printf("%s\n", root); 
 	//change_directory("");
-	/* char *pwd;
+	 char *pwd;
 	pwd = get_pwd();
 	printf("current dir is %s\n", pwd);
-	free(pwd); */
-}
+	free(pwd); 
+} */
