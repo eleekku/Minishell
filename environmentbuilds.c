@@ -113,11 +113,11 @@ void  create_envp(char **env, t_data *content)
     content->env = envp;
 }
 
-int main(int argc, char **argv, char **envp)
+/* int main(int argc, char **argv, char **envp)
 {
   t_data content;
   create_envp(envp, &content);
   export(argv, &content);
   env(&content);
   //env(&content);
-}
+} */

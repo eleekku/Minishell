@@ -84,5 +84,6 @@ char			char_iter_next(t_char_iter *self);
 void	free_args(char **args);
 char	*safe_strjoin(char const *s1, char const *s2);
 void	*safe_calloc(size_t nitems, size_t size);
+void    create_envp(char **env, t_data *content);
 
 # endif
