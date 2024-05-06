@@ -171,7 +171,7 @@ void  create_envp(char **env, t_data *content)
     content->env = envp;
 }
 
-int main(int ac, char **av, char **envp) 
+/* int main(int ac, char **av, char **envp) 
 {
     char* input;
     t_data content;
@@ -194,4 +194,4 @@ int main(int ac, char **av, char **envp)
       free(input);
     }
     printf("hola");
-}
+} */

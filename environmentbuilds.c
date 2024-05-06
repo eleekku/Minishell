@@ -12,10 +12,18 @@ int  unset_variable(t_data *content, char **args)
     content->env[i] = ft_strdup("");
     if (!content->env[i])
         return (255);
+     i = 0;
+    while (content->exp[i] && ft_strncmp(args[1], content->exp[i], ft_strlen(args[1])) != 0)
+		  i++;
+    if (content->exp[i])
+      free(content->exp[i]);
+    content->exp[i] = ft_strdup("");
+    if (!content->exp[i])
+        return (255);
     return (0);
 }
 
-void  add_space(t_data *content, int linel)
+void  add_space(char **table, int linel)
 {
   int   i;
   int   j;
@@ -23,39 +31,56 @@ void  add_space(t_data *content, int linel)
 
   i = 0;
   j = 0;
-
-  while (content->env[i])
+  while (table[i])
     i++;
-  new = ft_calloc((i + 2), sizeof(char *)); 
-    if (!new)
-    perror("Error Malloc env_copy");
-      //free
-    while (j < i)
-    {
-      new[j] = ft_strdup(content->env[j]);
-      if (!new[j])
-          perror("Error Malloc env_copy");
+  new = safe_calloc((i + 2), sizeof(char *));
+  while (j < i)
+  {
+    new[j] = ft_strdup(table[j]);
+    if (!new[j])
+        perror("Error Malloc env_copy");
           //free stuff
-      j++;
-    }
-    new[j] = ft_calloc(linel + 1, sizeof(char));
-      if (!new[j])
-          perror("Error Malloc env_copy");
-          //free stuff
-    free_args(content->env);
-    content->env = new;
+    j++;
+  }
+    new[j] = safe_calloc(linel + 1, sizeof(char));
+    free_args(table);
+    table = new;
 }
-int export(char *arg, t_data *content)
+int export(char *arg, char **table)
 {
   int i;
   char  *data;
 
   i = 0;
-  while (content->env[i])
+  while (table[i])
     i++;
-  add_space(content, ft_strlen(arg));
-  content->env[i] = arg;
+  add_space(table, ft_strlen(arg));
+  table[i] = arg;
+  
   return (0);
+}
+
+void  initialize_export(t_data *content, char *arg)
+{
+  int   len;
+  int   i;
+  char  *variable;
+
+  if (ft_strchr(arg, '='))
+  {
+    len = ft_strlen(arg) - ft_strlen(ft_strchr(arg, '='));
+    variable = ft_substr(arg, 0, len);
+    if (!variable)
+      exit(1);
+    i = 0;
+    while (content->env[i] && ft_strncmp(content->env[i], variable, len) != 0)
+      i++;
+    if (ft_strncmp(content->env[i], variable, len) == 0)
+      exit (1); //create a function to modify existing variable
+  }
+  if (ft_strchr(arg, '='))
+    export(arg, content->env);
+  export(arg, content->exp);
 }
 void  built_exit(char **args)
 {
@@ -86,7 +111,8 @@ void  env(t_data *content)
 
   i = -1;
   while(content->env[++i])
-    ft_putendl_fd(content->env[i], 1);
+    if (ft_strlen(content->env[i]) > 0)
+      ft_putendl_fd(content->env[i], 1);
 }
 
 /* void  create_envp(char **env, t_data *content)

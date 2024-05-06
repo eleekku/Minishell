@@ -59,15 +59,15 @@ int	change_directory(char *path, t_data *content)
 	while (content->env[i] && ft_strncmp("OLDPWD=", content->env[i], 7) != 0)
 		i++;
 	if (!content->env[i])
-		export(safe_strjoin("OLDPWD=", get_pwd()), content);
+		export(safe_strjoin("OLDPWD=", get_pwd()), content->env);
 	free(content->env[i]);
-	content->env[i] = ft_strjoin("OLDPWD=", get_pwd());
+	content->env[i] = safe_strjoin("OLDPWD=", get_pwd());
 	i = 0;
 	return_value = chdir(path);
 	while (content->env[i] && ft_strncmp("PWD=", content->env[i], 4) != 0)
 		i++;
 	free(content->env[i]);
-	content->env[i] = ft_strjoin("PWD=", get_pwd());
+	content->env[i] = safe_strjoin("PWD=", get_pwd());
 	printf("%d\n", return_value);
 	//char *pwd = get_pwd();
 	printf("%s\n", pwd);

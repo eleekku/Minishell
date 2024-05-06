@@ -13,53 +13,74 @@
 #include "minishell.h"
 //#include "minishelld.h"
 
+void	print_export(t_data *content)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j = 0;;
+	while (content->exp[i])
+	{
+		if (!ft_strchr(content->exp[i], '=') && ft_strlen(content->exp[i]) > 0)
+			ft_printf(1, "declare -x %s\n", content->exp[i]);
+		else if (ft_strlen(content->exp[i]) > 0)
+		{
+			while (content->exp[i][j] != '=')
+				j++;
+			tmp = ft_substr(content->exp[i], 0, j);
+				if (!tmp)
+					exit(1);
+			ft_printf(1, "declare -x %s=\"%s\"\n", tmp, ft_strchr(content->exp[i], '=') + 1);
+			free(tmp);
+		}
+		i++;
+		j = 0;
+	}
+}
+
 void	build_export(t_data *content)
 {
-	char	*intro;
 	int		i;
-	char	**tmp;
-	char	*tempstr;
 
-	intro = "declare -x ";
-	i = 0;
+	i = 0; 
 	while (content->env[i])
 		i++;
 	content->exp = safe_calloc(i + 1, sizeof(char *));
 	i = 0;
 	while (content->env[i])
 	{
-		tmp = ft_split(content->env[i], '=');
-			if (!tmp)
+		content->exp[i] = ft_strdup(content->env[i]);
+			if (!content->exp[i])
 			{
 				// error stuff
 				exit(255);
 			}
-		tempstr = safe_strjoin(intro, tmp[0]);
-		free(tmp[0]);
-		tmp[0] = safe_strjoin(tempstr, "=\"");
-		free(tempstr);
-		tempstr = safe_strjoin(tmp[0], tmp[1]);
-		content->exp[i] = safe_strjoin(tempstr, "\"");
-		free(tempstr);
 		i++;
-		free_args(tmp);
 	}
+	content->exp[i] = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	**arr;
 	t_data content;
 	int	i;
 
 	i = -1;
 	create_envp(envp, &content);
 	build_export(&content);
+	unset_variable(&content, ft_split("unset MAIL", ' '));
+	env(&content);
+	print_export(&content);
+	/*
 	while (content.env[++i])
 		printf("%s\n", content.env[i]);
-	i = 0;
+	 i = 0;
 	while (i < content.exp[i])
 	{
 		printf("%s\n", content.exp[i]);
 		i++;
-	}
+	} */
 }
