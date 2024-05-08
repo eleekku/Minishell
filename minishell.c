@@ -110,6 +110,12 @@ int input_check(t_data *content)
     just_pipes(str);  
     lexer_tokenizer(content);
     tokens = content->lexer_array;
+    /*i = 0;
+    while (tokens[i].type != TOKEN_EOL)
+    {
+      printf("Token %d: Type %d, Start %s, Len %zu\n", i, tokens[i].type, tokens[i].pos.start, tokens[i].pos.len);
+      i++;
+    }*/
     //init_lexer(content);
     return (1);
 }
