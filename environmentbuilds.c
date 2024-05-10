@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int  unset_variable(t_data *content, char **args)
+int unset_variable(t_data *content, char **args)
 {
     int i;
 
@@ -16,13 +16,32 @@ int  unset_variable(t_data *content, char **args)
     while (content->exp[i] && ft_strncmp(args[1], content->exp[i], ft_strlen(args[1])) != 0)
 		  i++;
     if (content->exp[i])
+    {
       free(content->exp[i]);
-    content->exp[i] = ft_strdup("");
+      content->exp[i] = ft_strdup("");
+    }
     if (!content->exp[i])
         return (255);
     return (0);
 }
+void  copy_to_struct(char **table, char **new)
+{
+  int i;
+  int j;
 
+  i = 0;
+  j = -1;
+  while (new[i])
+    i++;
+  printf("%d\n", i);
+  table = safe_calloc(i + 1, sizeof(char *));
+  while (++j < i)
+  {
+  table[j] = safe_strdup(new[j]);
+   printf("kopiomies %s\n", table[j]);
+  }
+  printf("j onmpi %d\n", j);
+}
 void  add_space(char **table, int linel)
 {
   int   i;
@@ -33,18 +52,21 @@ void  add_space(char **table, int linel)
   j = 0;
   while (table[i])
     i++;
+  printf("riveja on %d\n", i);
   new = safe_calloc((i + 2), sizeof(char *));
+  printf("%s\n", table[35]);
   while (j < i)
   {
+    printf("kopiodaan tama %s\n", table[j]);
     new[j] = ft_strdup(table[j]);
     if (!new[j])
         perror("Error Malloc env_copy");
           //free stuff
     j++;
   }
-    new[j] = safe_calloc(linel + 1, sizeof(char));
-    free_args(table);
-    table = new;
+  new[j] = safe_calloc(linel + 1, sizeof(char));
+  free_args(table);
+  copy_to_struct(table, new);
 }
 int export(char *arg, char **table)
 {
@@ -55,9 +77,31 @@ int export(char *arg, char **table)
   while (table[i])
     i++;
   add_space(table, ft_strlen(arg));
+  printf("i on %d\n", i);
   table[i] = arg;
-  
+  printf("meniko oikein %s ja i on %d\n", table[i], i);
+  i = -1;
+  while(table[++i])
+  printf("test %s\n", table[i]);
+  printf("test %s\n", table[36]);
   return (0);
+}
+
+void  manipulate_variable(t_data *content, char *spot, char *variable, char *arg)
+{
+  int i;
+  i = 0;
+  free(spot);
+  spot = ft_strdup(arg);
+    if (!spot)
+      exit(1); //errooooor
+  while (content->exp[i] && ft_strncmp(content->exp[i], variable, ft_strlen(variable)) != 0)
+    i++;
+  if (ft_strncmp(content->exp[i], variable, ft_strlen(variable)) == 0)
+    {
+      free(content->exp[i]);
+      content->exp[i] = ft_strdup(arg);
+    }
 }
 
 void  initialize_export(t_data *content, char *arg)
@@ -65,9 +109,9 @@ void  initialize_export(t_data *content, char *arg)
   int   len;
   int   i;
   char  *variable;
-
-  if (ft_strchr(arg, '='))
+ /*  if (ft_strchr(arg, '='))
   {
+    printf("halooo\n");
     len = ft_strlen(arg) - ft_strlen(ft_strchr(arg, '='));
     variable = ft_substr(arg, 0, len);
     if (!variable)
@@ -75,12 +119,16 @@ void  initialize_export(t_data *content, char *arg)
     i = 0;
     while (content->env[i] && ft_strncmp(content->env[i], variable, len) != 0)
       i++;
-    if (ft_strncmp(content->env[i], variable, len) == 0)
-      exit (1); //create a function to modify existing variable
-  }
+    if (content->env[i]) //ft_strncmp(content->env[i], variable, len) == 0)
+    {
+       printf("halooo kuuluuko\n");
+      manipulate_variable(content, content->env[i], variable, arg);
+      return ;
+    }
+  } */
   if (ft_strchr(arg, '='))
     export(arg, content->env);
-  export(arg, content->exp);
+  //export(arg, content->exp);
 }
 void  built_exit(char **args)
 {
@@ -111,39 +159,26 @@ void  env(t_data *content)
 
   i = -1;
   while(content->env[++i])
-    if (ft_strlen(content->env[i]) > 0)
+  {
+    if (content->env[i] && ft_strlen(content->env[i]) > 0)
       ft_putendl_fd(content->env[i], 1);
+  }
+  //printf("%s\n", content->env[i]);
+  //printf("%s\n", content->env[i + 1]);
 }
 
-/* void  create_envp(char **env, t_data *content)
-{
-    char **envp;
-    int i;
-    int n;
-
-    n = 0;
-    while (env[n])
-      n++;
-    envp = (char **)malloc(sizeof(char *) * n + 1);
-    if (!envp)
-        perror("Error Mallloc created_envp");
-    i = 0;
-    while (i < n)
-    {
-      envp[i] = ft_strdup(env[i]);
-      if (envp[i] == NULL)
-          perror("Error Mallloc env_copy");
-      i++;
-    }
-    envp[i] = NULL;
-    content->env = envp;
-} */
-
-/* int main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
   t_data content;
+
   create_envp(envp, &content);
-  export(argv, &content);
+  build_export(&content);
   env(&content);
+  initialize_export(&content, argv[1]);
+  env(&content);
+  printf("\n");
+  env(&content);
+ // print_export(&content);
+
   //env(&content);
-} */
+}

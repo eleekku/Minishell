@@ -20,11 +20,12 @@ void	print_export(t_data *content)
 	char	*tmp;
 
 	i = 0;
-	j = 0;;
+	j = 0;
 	while (content->exp[i])
 	{
 		if (!ft_strchr(content->exp[i], '=') && ft_strlen(content->exp[i]) > 0)
 			ft_printf(1, "declare -x %s\n", content->exp[i]);
+
 		else if (ft_strlen(content->exp[i]) > 0)
 		{
 			while (content->exp[i][j] != '=')
@@ -62,7 +63,7 @@ void	build_export(t_data *content)
 	content->exp[i] = NULL;
 }
 
-int	main(int argc, char **argv, char **envp)
+/* int	main(int argc, char **argv, char **envp)
 {
 	char	**arr;
 	t_data content;
@@ -74,7 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	unset_variable(&content, ft_split("unset MAIL", ' '));
 	env(&content);
 	print_export(&content);
-	/*
+	
 	while (content.env[++i])
 		printf("%s\n", content.env[i]);
 	 i = 0;
@@ -82,5 +83,5 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("%s\n", content.exp[i]);
 		i++;
-	} */
-}
+	} 
+} */
