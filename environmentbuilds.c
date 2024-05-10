@@ -24,7 +24,7 @@ int unset_variable(t_data *content, char **args)
         return (255);
     return (0);
 }
-void  copy_to_struct(char **table, char **new)
+char  **copy_to_struct(char **table, char **new)
 {
   int i;
   int j;
@@ -33,16 +33,24 @@ void  copy_to_struct(char **table, char **new)
   j = -1;
   while (new[i])
     i++;
-  printf("%d\n", i);
-  table = safe_calloc(i + 1, sizeof(char *));
+  table = calloc(i + 1, sizeof(char *));
   while (++j < i)
-  {
   table[j] = safe_strdup(new[j]);
-   printf("kopiomies %s\n", table[j]);
-  }
-  printf("j onmpi %d\n", j);
+  return (table);
 }
-void  add_space(char **table, int linel)
+void  free_array(char **args)
+{
+  int i;
+
+  i = 0;
+  while(args[i])
+  {
+    free(args[i]);
+    i++;
+  }
+  free (args);
+}
+char  **add_space(char **table, int linel)
 {
   int   i;
   int   j;
@@ -52,12 +60,9 @@ void  add_space(char **table, int linel)
   j = 0;
   while (table[i])
     i++;
-  printf("riveja on %d\n", i);
   new = safe_calloc((i + 2), sizeof(char *));
-  printf("%s\n", table[35]);
   while (j < i)
   {
-    printf("kopiodaan tama %s\n", table[j]);
     new[j] = ft_strdup(table[j]);
     if (!new[j])
         perror("Error Malloc env_copy");
@@ -65,10 +70,11 @@ void  add_space(char **table, int linel)
     j++;
   }
   new[j] = safe_calloc(linel + 1, sizeof(char));
-  free_args(table);
-  copy_to_struct(table, new);
+  free_array(table);
+  table = copy_to_struct(table, new);
+  return (table);
 }
-int export(char *arg, char **table)
+char **export(char *arg, char **table)
 {
   int i;
   char  *data;
@@ -76,15 +82,9 @@ int export(char *arg, char **table)
   i = 0;
   while (table[i])
     i++;
-  add_space(table, ft_strlen(arg));
-  printf("i on %d\n", i);
+  table = add_space(table, ft_strlen(arg));
   table[i] = arg;
-  printf("meniko oikein %s ja i on %d\n", table[i], i);
-  i = -1;
-  while(table[++i])
-  printf("test %s\n", table[i]);
-  printf("test %s\n", table[36]);
-  return (0);
+  return (table);
 }
 
 void  manipulate_variable(t_data *content, char *spot, char *variable, char *arg)
@@ -109,9 +109,8 @@ void  initialize_export(t_data *content, char *arg)
   int   len;
   int   i;
   char  *variable;
- /*  if (ft_strchr(arg, '='))
+   if (ft_strchr(arg, '='))
   {
-    printf("halooo\n");
     len = ft_strlen(arg) - ft_strlen(ft_strchr(arg, '='));
     variable = ft_substr(arg, 0, len);
     if (!variable)
@@ -121,14 +120,16 @@ void  initialize_export(t_data *content, char *arg)
       i++;
     if (content->env[i]) //ft_strncmp(content->env[i], variable, len) == 0)
     {
-       printf("halooo kuuluuko\n");
       manipulate_variable(content, content->env[i], variable, arg);
       return ;
     }
-  } */
+  } 
   if (ft_strchr(arg, '='))
-    export(arg, content->env);
-  //export(arg, content->exp);
+    content->env = export(arg, content->env);
+  i = -1;
+  while(ft_strncmp(content->exp[++i], arg, ft_strlen(arg)) != 0)
+    if (!content->exp[i])
+      content->exp = export(arg, content->exp);
 }
 void  built_exit(char **args)
 {
@@ -173,12 +174,12 @@ int main(int argc, char **argv, char **envp)
 
   create_envp(envp, &content);
   build_export(&content);
-  env(&content);
+  //env(&content);
   initialize_export(&content, argv[1]);
   env(&content);
-  printf("\n");
-  env(&content);
- // print_export(&content);
+ // printf("\n");
+ // env(&content);
+  print_export(&content);
 
   //env(&content);
 }

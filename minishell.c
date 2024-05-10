@@ -149,6 +149,7 @@ void  update_envp(t_data  *content)
     }
     content->env = envp;
 }
+
 void  create_envp(char **env, t_data *content)
 {
     char **envp;
@@ -158,7 +159,7 @@ void  create_envp(char **env, t_data *content)
     n = 0;
     while (env[n])
       n++;
-    envp = (char **)malloc(sizeof(char *) * n + 1);
+    envp = (char **)malloc(sizeof(char *) * (n + 1));
     i = 0;
     while (i < n)
     {
@@ -167,7 +168,7 @@ void  create_envp(char **env, t_data *content)
           perror("Error al asignar memoria");
       i++;
     }
-    env[i] = NULL;
+    envp[i] = NULL;
     content->env = envp;
 }
 

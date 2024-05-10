@@ -98,7 +98,7 @@ char	*safe_strjoin(char const *s1, char const *s2);
 void	*safe_calloc(size_t nitems, size_t size);
 char	*safe_strdup(const char *src);
 void    create_envp(char **env, t_data *content);
-int     export(char *arg, char **table);
+char    **export(char *arg, char **table);
 int     unset_variable(t_data *content, char **args);
 void    env(t_data *content);
 void	build_export(t_data *content);
