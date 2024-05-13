@@ -126,10 +126,11 @@ void  initialize_export(t_data *content, char *arg)
   } 
   if (ft_strchr(arg, '='))
     content->env = export(arg, content->env);
-  i = -1;
-  while(ft_strncmp(content->exp[++i], arg, ft_strlen(arg)) != 0)
-    if (!content->exp[i])
-      content->exp = export(arg, content->exp);
+  i = 1;
+  while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
+  i++;
+  if (!content->exp[i])
+    content->exp = export(arg, content->exp);
 }
 void  built_exit(char **args)
 {
@@ -176,10 +177,11 @@ int main(int argc, char **argv, char **envp)
   build_export(&content);
   //env(&content);
   initialize_export(&content, argv[1]);
+  printf("test\n");
   env(&content);
  // printf("\n");
  // env(&content);
   print_export(&content);
 
   //env(&content);
-}
+} 
