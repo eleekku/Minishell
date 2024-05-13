@@ -169,7 +169,7 @@ void  env(t_data *content)
   //printf("%s\n", content->env[i + 1]);
 }
 
-int main(int argc, char **argv, char **envp)
+/* int main(int argc, char **argv, char **envp)
 {
   t_data content;
 
@@ -184,4 +184,4 @@ int main(int argc, char **argv, char **envp)
   print_export(&content);
 
   //env(&content);
-} 
+}  */
