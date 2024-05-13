@@ -28,7 +28,7 @@ typedef enum s_token_name
     TOKEN_STR,
     TOKEN_DOLAR,
     TOKEN_SPACE,
-    TOKEN_COMMAND,
+    TOKEN_HEREDOC,
     TOKEN_IN_REDIRECT,
     TOKEN_OUT_REDIRECT,
     TOKEN_REDIR_APPEND,

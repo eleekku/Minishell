@@ -1,7 +1,27 @@
 # include "minishell.h"
 
+void	take_redir_heredoc(t_char_iter *iter, t_token *token)
+{
+	token->type = TOKEN_HEREDOC;
+	token->pos.start = char_iter_cursor(iter);
+	token->pos.len = 2;
+	char_iter_next(iter);
+	char_iter_next(iter);
+}
+
 void    take_redir_in(t_token *token, t_char_iter *iter)
 {
+    char	peek_next;
+
+	peek_next = *(iter->start + 1);
+	if (peek_next != *iter->end)
+	{
+		if (peek_next == '<')
+		{
+			take_redir_heredoc(iter, token);
+			return ;
+		}
+	}
     token->type = TOKEN_IN_REDIRECT;
     token->pos.start = char_iter_cursor(iter);
     token->pos.len = 1;
@@ -68,6 +88,7 @@ void take_d_quote(t_token *token, t_char_iter *iter)
         token->type = TOKEN_DQUOTE_OPEN;
         token->pos.start++;
         char_iter_next(iter);
+        //printf("hola\n");
         while (char_iter_cursor(iter) != iter->end && char_iter_peek(iter) != '"')
         {
             if (char_iter_peek(iter) == '$' && char_iter_peek_next(iter) != ' ' && char_iter_peek_next(iter) != '"')
@@ -197,14 +218,14 @@ void    take_error(t_token *token, t_char_iter *iter)
 {
     token->type = TOKEN_ERROR;
     token->pos.start = char_iter_cursor(iter);
-    if (iter->d_flag % 2 == 1) //?
+    /*if (iter->d_flag % 2 == 1) //?
     {
         token->pos.start = char_find_dq(iter);
         *iter = char_iter_constructor(token->pos.start, ft_strlen(token->pos.start));
         token->pos.len = 1;
         return ;
-    }
-    printf("Error token %s\n", token->pos.start);
+    }*/
+    printf("Error Quotes %s\n", token->pos.start);
     token->pos.len = 0;
     while (char_iter_cursor(iter) != iter->end)
     {

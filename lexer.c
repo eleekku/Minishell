@@ -46,7 +46,13 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
     i_token++;
     if (data->lexer_array[i_token].type == TOKEN_SPACE)
+    {
         i_token++;
+        if (data->lexer_array[i_token].type == TOKEN_EOL)
+            return (NULL);
+    }
+    if (data->lexer_array[i_token].type == TOKEN_EOL)
+        return (NULL);
     temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
     //malloc handle
     rec = ft_strjoin(tem1, temp2);
@@ -125,7 +131,8 @@ void    make_cmd_str(t_data *data, t_parse *parse)
         }
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND)
+            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
+            || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
             i++;
             if (data->lexer_array[i].type == TOKEN_SPACE)
@@ -145,7 +152,8 @@ void    parse_redic(t_data *data, t_parse *parse)
     {
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND)
+            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
+            || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
             parse[0].rec_file[i_rec] = make_recd_str(parse, data, i);
             i_rec++;
@@ -171,7 +179,8 @@ void    simple_cmd(t_parse *parse, t_data *data)
             str++;
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND)
+            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
+            || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
             irec++;
             i++;
@@ -216,8 +225,18 @@ void    creating_parse(t_data *data)
             pipex++;
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND)
+            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
+            || data->lexer_array[i].type == TOKEN_HEREDOC)
+        {
             redic++;
+            if (data->lexer_array[i + 1].type == TOKEN_EOL)
+            {
+                printf("minishell: syntax error near unexpected token `newline'\n");
+                return ;
+            }
+        }
+        if (data->lexer_array[i].type == TOKEN_ERROR)
+            return ;
         i++;
     }
     parse = ft_calloc(pipex, sizeof(t_parse));
@@ -228,7 +247,7 @@ void    creating_parse(t_data *data)
         parse[i].rec_file = NULL;
         i++;
     }
-    if (pipex == 1)
+    //if (pipex == 1)
         simple_cmd(parse, data);
     //if (pipex > 1)
 }

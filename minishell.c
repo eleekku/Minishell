@@ -82,23 +82,24 @@ void just_redirect(char *str)
   }
   just_redirect_final(temp, i, r);
 }
-void  just_pipes(char *str)
+int  just_pipes(char *str)
 {
-   if (str[0] == '\0')
-    return ;
-  if (*str == '|' && *(++str) == '\0')
+  if (str[0] == '\0')
+    return (1);
+  
+  if (*str == '|' && ft_strlen(str) == 1)
   {
      printf("%s\n",  "minishell: syntax error near unexpected token `|'");
-     return ;
+     return (1);
   }
-  while (*str)
+  if (*str == '|' && *str++ == '|')
   {
-    if (*str != '|')
-        return ;
-    str++;
+      printf("%s\n",  "minishell: syntax error near unexpected token `||'");
+      return (1);
   }
-  printf("%s\n",  "minishell: syntax error near unexpected token `||'");
+  return (0);
 }
+
 int input_check(t_data *content)
 {
     int i;
@@ -106,8 +107,10 @@ int input_check(t_data *content)
     char *str;
 
     str = content->str_rl;
-    just_redirect(str);
-    just_pipes(str);  
+    //just_redirect(str);
+    int error = just_pipes(str);
+    if (error)
+        return (1);
     lexer_tokenizer(content);
     tokens = content->lexer_array;
     /*i = 0;
@@ -117,7 +120,7 @@ int input_check(t_data *content)
       i++;
     }*/
     //init_lexer(content);
-    return (1);
+    return (0);
 }
 void exit_error(char *str)
 {
@@ -173,11 +176,11 @@ void  create_envp(char **env, t_data *content)
           perror("Error al asignar memoria");
       i++;
     }
-    env[i] = NULL;
+    envp[i] = NULL;
     content->env = envp;
 }
 
-int main(int ac, char **av, char **envp) 
+int main(int ac, char **av, char **envp) //trabajar para manejar errores  cuando existen dos tokens continuos de >> << > < y empepezar a organizar para trabajar con many pipes //error con las comillas
 {
     char* input;
     t_data content;
@@ -193,7 +196,8 @@ int main(int ac, char **av, char **envp)
         add_history(input);
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
-      creating_parse(&content);
+      if (in == 0)
+        creating_parse(&content);
       //printf("%s\n", input);
       if (ft_strncmp(input, "exit", 4) == 0)
           exit(0);
