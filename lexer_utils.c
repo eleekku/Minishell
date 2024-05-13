@@ -62,13 +62,11 @@ void take_d_quote(t_token *token, t_char_iter *iter)
 {
     token->pos.start = char_iter_cursor(iter);
     token->pos.len = 0;
-    printf("d_flag1: %d\n", iter->d_flag);
     if (iter->d_flag % 2 == 0)
     {
         iter->d_flag += 1;
         token->type = TOKEN_DQUOTE_OPEN;
         token->pos.start++;
-        printf("d_flag: %d\n", iter->d_flag);
         char_iter_next(iter);
         while (char_iter_cursor(iter) != iter->end && char_iter_peek(iter) != '"')
         {
@@ -221,4 +219,24 @@ void	take_redir_append(t_char_iter *iter, t_token *token)
 	token->pos.len = 2;
 	char_iter_next(iter);
 	char_iter_next(iter);
+}
+char	*ft_add_cmd_str(const char *src, int len)
+{
+	char	*new;
+	size_t	i;
+
+	new = malloc(sizeof(char) * (len + 1));
+	if (!new)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (src[i] && len > 0)
+	{
+		new[i] = src[i];
+		i++;
+        len--;
+	}
+	new[i] = '\0';
+	return (new);
 }

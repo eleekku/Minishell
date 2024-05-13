@@ -83,6 +83,7 @@ void    add_token(t_token *token, t_char_iter *iter);
 
 //parse
 void    creating_parse(t_data *data);
+char	*ft_add_cmd_str(const char *src, int len);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
