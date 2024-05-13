@@ -28,7 +28,7 @@ char	*safe_strjoin(char const *s1, char const *s2)
 
 void	*safe_calloc(size_t nitems, size_t size)
 {
-	void	*ptr;
+	char	*ptr;
 
 	ptr = ft_calloc(nitems, size);
 	if (!ptr)
@@ -38,3 +38,17 @@ void	*safe_calloc(size_t nitems, size_t size)
 	}
 	return (ptr);
 }
+
+char	*safe_strdup(const char *src)
+{
+	char *str;
+
+	str = ft_strdup(src);
+	if (!str)
+	{
+		// call some error function
+		exit (255);
+	}
+	return (str);
+}
+
