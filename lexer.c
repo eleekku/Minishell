@@ -186,7 +186,7 @@ void    simple_cmd(t_parse *parse, t_data *data)
     //protect and free
     make_cmd_str(data, parse);
     parse_redic(data, parse);
-    i = 0;
+    /*i = 0;
     while (parse[0].cmd[i])
     {
         printf("cmd %s\n", parse[0].cmd[i]);
@@ -197,7 +197,8 @@ void    simple_cmd(t_parse *parse, t_data *data)
     {
         printf("redc %s\n", parse[0].rec_file[i]);
         i++;
-    }
+    }*/
+    data->parse = parse;
 }
 
 void    creating_parse(t_data *data)

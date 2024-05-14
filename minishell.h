@@ -60,7 +60,7 @@ typedef struct s_char_iter
 
 typedef struct s_parse
 {
-    char **cmd;
+    char **cmd; 
     char **rec_file;
 } t_parse;
 
@@ -104,5 +104,9 @@ int     unset_variable(t_data *content, char **args);
 void    env(t_data *content);
 void	build_export(t_data *content);
 void	print_export(t_data *content);
+void    initialize_export(t_data *content, char *arg);
+void    check_command(t_data *cnt, int i);
+void	echo(char **args);
+char	*get_pwd(void);
 
 # endif
