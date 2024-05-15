@@ -180,7 +180,7 @@ void  create_envp(char **env, t_data *content)
     content->env = envp;
 }
 
-int main(int ac, char **av, char **envp) //trabajar para manejar errores  cuando existen dos tokens continuos de >> << > < y empepezar a organizar para trabajar con many pipes //error con las comillas
+int main(int ac, char **av, char **envp) //comenzar a trabajar con $ para crear los str dependiendo del env
 {
     char* input;
     t_data content;

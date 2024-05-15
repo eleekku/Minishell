@@ -30,11 +30,12 @@ void lexer_tokenizer(t_data *data)
     data->lexer_array = token;
 }
 
-bool    is_redic(t_data *data)
+bool    is_redic(t_data *data, int i)
 {
-    if (data->lexer_array->type == TOKEN_IN_REDIRECT
-        || data->lexer_array->type == TOKEN_OUT_REDIRECT
-        || data->lexer_array->type == TOKEN_REDIR_APPEND)
+    if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
+        || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
+        || data->lexer_array[i].type == TOKEN_REDIR_APPEND
+        || data->lexer_array[i].type == TOKEN_HEREDOC)
         return (true);
     return (false);
 }
@@ -61,36 +62,41 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     free(temp2);
     return (rec);
 }
-bool    check_next_token(t_data *data, int i)
+bool    check_next_token(t_data *data, int i) //this check is to create the str when there are quates
 {
     if (data->lexer_array[i + 2].type == TOKEN_EOL)
         return (false);
     if (data->lexer_array[i].type == TOKEN_DQUOTE_OPEN  && data->lexer_array[i + 2].type != TOKEN_SPACE)
-    {
         return (true);
-    }
     if (data->lexer_array[i].type == TOKEN_S_QUOTE  && data->lexer_array[i + 2].type != TOKEN_SPACE)
-    {
         return (true);
-    }
     return (false);
 }
 
-char    *make_str_dquote(t_data *data, int i_token)
+char    *make_str_dquote(t_data *data, int i_token, int i_quate)
 {
-    char    *tem1;
     char    *temp2;
     char    *rec;
-    tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
-    i_token += 2;
-    temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
-    //malloc handle
-    rec = ft_strjoin(tem1, temp2);
-    //malloc handle
-    free(tem1);
-    free(temp2);
+    
+    rec = NULL;
+    temp2 =  NULL;
+    while (i_quate > i_token)
+    {
+        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN)
+        {  
+            temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+            if (!temp2)
+            {
+                if(rec)
+                    free(rec);
+                return(NULL);
+            }//malloc handle
+            rec = ft_strjoingnl(rec, temp2);
+            free(temp2);
+        }
+        i_token++;
+    }
     return (rec);
-
 }
 char    *parse_dolar(t_data *data, int i_token)
 {
@@ -99,40 +105,38 @@ char    *parse_dolar(t_data *data, int i_token)
     str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
     return (str);
 }
-
-void    make_cmd_str(t_data *data, t_parse *parse)
+int index_after_quate(t_data *data, int i)
+{
+    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE && is_redic(data, i) == false && data->lexer_array[i].type != TOKEN_SPACE)
+        i++;
+    return (i);
+}
+void    parse_str(t_data *data, t_parse *parse, int i_parse)
 {
     int i;
     int str;
 
-    i = 0;
+    i = data->i_token;
     str = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL)
+    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
     {
         if (data->lexer_array[i].type == TOKEN_DOLAR)
         {
-            parse[0].cmd[str] = parse_dolar(data, i);
+            parse[i_parse].cmd[str] = parse_dolar(data, i);
             str++;
         }
-        if (data->lexer_array[i].type == TOKEN_STR || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
-        {   
-            //continuar trabajando con las comillas
-            if (check_next_token(data, i) == true)
-            {
-                parse[0].cmd[str] = make_str_dquote(data, i);
-                i += 2;
-            }
-            else
-            {
-                //printf("hola\n");
-                parse[0].cmd[str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
-            }
+        if (data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
+        {
+            parse[i_parse].cmd[str] = make_str_dquote(data, i, index_after_quate(data, i));
+            i = index_after_quate(data, i) - 1;
             str++;
         }
-        if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
-            || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
-            || data->lexer_array[i].type == TOKEN_HEREDOC)
+        if  (data->lexer_array[i].type == TOKEN_STR )
+        {
+            parse[i_parse].cmd[str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
+            str++;
+        }
+        if (is_redic(data, i) == true)
         {
             i++;
             if (data->lexer_array[i].type == TOKEN_SPACE)
@@ -141,70 +145,113 @@ void    make_cmd_str(t_data *data, t_parse *parse)
         i++;
     }
 }
-void    parse_redic(t_data *data, t_parse *parse)
+void    parse_redic(t_data *data, t_parse *parse, int i_parse)
 {
     int i;
     int i_rec;
 
-    i = 0;
+    i = data->i_token;
     i_rec = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL)
+    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
     {
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
             || data->lexer_array[i].type == TOKEN_REDIR_APPEND
             || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
-            parse[0].rec_file[i_rec] = make_recd_str(parse, data, i);
+            parse[i_parse].rec_file[i_rec] = make_recd_str(parse, data, i);
             i_rec++;
         }
         i++;
     }
 }
-void    simple_cmd(t_parse *parse, t_data *data)
+
+void    count_str_redic(t_data *data)
 {
     int i;
-    int str;
-    int irec;
 
-    i = 0;
-    str = 0;
-    irec = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL)
+    i = data->i_token;
+    data->str = 0;
+    data->irec = 0;
+    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
     {
         if (data->lexer_array[i].type == TOKEN_STR 
             || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN 
             || data->lexer_array[i].type == TOKEN_S_QUOTE 
             || data->lexer_array[i].type == TOKEN_DOLAR)
-            str++;
+            data->str++;
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
             || data->lexer_array[i].type == TOKEN_REDIR_APPEND
             || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
-            irec++;
+            data->irec++;
             i++;
             if (data->lexer_array[i].type == TOKEN_SPACE)
                 i++;
         }
         i++;
     }
-    parse[0].cmd = (char **)ft_calloc(str + 1, sizeof(char *));
-    //protect and free
-    parse[0].rec_file = (char **)ft_calloc(irec + 1, sizeof(char *));
-    //protect and free
-    make_cmd_str(data, parse);
-    parse_redic(data, parse);
-    i = 0;
-    while (parse[0].cmd[i])
+}
+void    current_itoken(t_data *data)
+{
+    int i;
+
+    i = data->i_token;
+    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
+        i++;
+    data->i_token = i + 1;
+}
+void    simple_test(t_parse *parse, t_data *data, int i_pipex)
+{
+    int i_parse;
+
+    i_parse = 0;
+    data->i_token = 0;
+    while (i_parse < i_pipex)
     {
-        printf("cmd %s\n", parse[0].cmd[i]);
+        count_str_redic(data);
+        parse[i_parse].cmd = (char **)ft_calloc(data->str + 1, sizeof(char *));
+        //protect and free
+        parse[i_parse].rec_file = (char **)ft_calloc(data->irec + 1, sizeof(char *));
+        //protect and free
+        parse_str(data, parse, i_parse);
+        parse_redic(data, parse, i_parse);
+        current_itoken(data);
+        i_parse++;
+    }
+                                            // parte para imprimir mi parse struc
+    int i = 0;
+    int j = 0;
+    int pi = i_pipex;
+    while (i < pi)
+    {
+        printf("\nPARSE [%d]\n\n", i);
+        j = 0;
+        while (parse[i].cmd[j])
+        {
+            printf("cmd %s\n", parse[i].cmd[j]);
+            j++;
+        }
+        j = 0;
+        while (parse[i].rec_file[j])
+        {
+            printf("redc %s\n", parse[i].rec_file[j]);
+            j++;
+        }
         i++;
     }
+    printf("\n");
+}
+void    init_parse_struct(t_parse *parse, t_data *data)
+{
+    int i;
+
     i = 0;
-    while (parse[0].rec_file[i] != NULL)
+    while (i < data->i_pipex)
     {
-        printf("redc %s\n", parse[0].rec_file[i]);
+        parse[i].cmd = NULL;
+        parse[i].rec_file = NULL;
         i++;
     }
 }
@@ -212,23 +259,16 @@ void    simple_cmd(t_parse *parse, t_data *data)
 void    creating_parse(t_data *data)
 {
     int i;
-    int pipex;
-    int redic;
     t_parse *parse;
 
     i = 0;
-    pipex = 1;
-    redic = 0;
+    data->i_pipex = 1;
     while (data->lexer_array[i].type != TOKEN_EOL) 
     {
         if (data->lexer_array[i].type == TOKEN_PIPE)
-            pipex++;
-        if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
-            || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
-            || data->lexer_array[i].type == TOKEN_REDIR_APPEND
-            || data->lexer_array[i].type == TOKEN_HEREDOC)
+            data->i_pipex++;
+        if (is_redic(data, i) == true)
         {
-            redic++;
             if (data->lexer_array[i + 1].type == TOKEN_EOL)
             {
                 printf("minishell: syntax error near unexpected token `newline'\n");
@@ -239,43 +279,7 @@ void    creating_parse(t_data *data)
             return ;
         i++;
     }
-    parse = ft_calloc(pipex, sizeof(t_parse));
-    i = 0;
-    while (i < pipex)
-    {
-        parse[i].cmd = NULL;
-        parse[i].rec_file = NULL;
-        i++;
-    }
-    //if (pipex == 1)
-        simple_cmd(parse, data);
-    //if (pipex > 1)
+    parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
+    init_parse_struct(parse, data);
+    simple_test(parse, data, data->i_pipex);
 }
-/*char *fill_cmd(t_data *data)
-{
-    char *tem;
-
-    tem = (char *)ft_calloc(data->lexer_array->pos.len, sizeof(char));
-    //tem = ft_strlcpy()
-}*/
-void    creating_command(t_data *data)
-{
-    //no pipes and redic
-    int i;
-    char **cmd;
-
-    cmd = (char **)ft_calloc(2, sizeof(char *));
-    if (!cmd)
-        printf("Error malloc");
-    //i = 0;
-    /*while (data->lexer_array[i].type != TOKEN_EOL != TOKEN_EOL)
-    {
-        if (data->lexer_array[i].type == TOKEN_STR)
-            ft_strdup()
-    }*/
-    //data->parse[0].cmd 
-}
-/*void    creating_str_files(t_data *data)
-{
-
-}*/

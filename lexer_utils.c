@@ -88,7 +88,7 @@ void take_d_quote(t_token *token, t_char_iter *iter)
         token->type = TOKEN_DQUOTE_OPEN;
         token->pos.start++;
         char_iter_next(iter);
-        //printf("hola\n");
+        //printf("hola %c\n", char_iter_peek(iter));
         while (char_iter_cursor(iter) != iter->end && char_iter_peek(iter) != '"')
         {
             if (char_iter_peek(iter) == '$' && char_iter_peek_next(iter) != ' ' && char_iter_peek_next(iter) != '"')
@@ -225,7 +225,7 @@ void    take_error(t_token *token, t_char_iter *iter)
         token->pos.len = 1;
         return ;
     }*/
-    printf("Error Quotes %s\n", token->pos.start);
+    printf("found unclosed quote %s\n", token->pos.start);
     token->pos.len = 0;
     while (char_iter_cursor(iter) != iter->end)
     {
