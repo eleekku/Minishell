@@ -38,6 +38,17 @@ void	check_command(t_data *cnt, int i)
 		if (!cnt->parse[i].cmd[1])
 			print_export(cnt);
 		else
+			if (!(ft_strchr(cnt->parse[i].cmd[1], '=') + 1))
+				{
+					cnt->parse[i].cmd[1] = safe_strjoin(cnt->parse[i].cmd[1], cnt->parse[i].cmd[2]);
+					free (cnt->parse[i].cmd[2]);
+				}
 			initialize_export(cnt, cnt->parse[i].cmd[1]); 
 	}
+	if (ft_strncmp(cnt->parse[i].cmd[0], "cd", 2) == 0)
+		change_directory(cnt->parse[i].cmd[1], cnt);
+	if (ft_strncmp(cnt->parse[i].cmd[0], "exit", 4) == 0)
+		built_exit(cnt->parse[i].cmd);
+	if (ft_strncmp(cnt->parse[i].cmd[0], "unset", 5) == 0)
+		unset_variable(cnt, cnt->parse[i].cmd);
 }

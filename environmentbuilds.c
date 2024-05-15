@@ -8,10 +8,12 @@ int unset_variable(t_data *content, char **args)
 	  while (content->env[i] && ft_strncmp(args[1], content->env[i], ft_strlen(args[1])) != 0)
 		  i++;
     if (content->env[i])
-      free(content->env[i]);
+    {
+    free(content->env[i]);
     content->env[i] = ft_strdup("");
-    if (!content->env[i])
-        return (255);
+    }
+   // if (!content->env[i])
+       // return (255);
      i = 0;
     while (content->exp[i] && ft_strncmp(args[1], content->exp[i], ft_strlen(args[1])) != 0)
 		  i++;
@@ -87,21 +89,25 @@ char **export(char *arg, char **table)
   return (table);
 }
 
-void  manipulate_variable(t_data *content, char *spot, char *variable, char *arg)
+char  *manipulate_variable(t_data *content, char *spot, char *variable, char *arg)
 {
   int i;
+
   i = 0;
   free(spot);
   spot = ft_strdup(arg);
     if (!spot)
       exit(1); //errooooor
-  while (content->exp[i] && ft_strncmp(content->exp[i], variable, ft_strlen(variable)) != 0)
+  while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
     i++;
-  if (ft_strncmp(content->exp[i], variable, ft_strlen(variable)) == 0)
+  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0)
     {
-      free(content->exp[i]);
-      content->exp[i] = ft_strdup(arg);
+      free(content->env[i]);
+      content->env[i] = ft_strdup(arg);
+      return(ft_strdup(arg));
     }
+  content->env = export(arg, content->env);
+  return (ft_strdup(arg));
 }
 
 void  initialize_export(t_data *content, char *arg)
@@ -116,11 +122,12 @@ void  initialize_export(t_data *content, char *arg)
     if (!variable)
       exit(1);
     i = 0;
-    while (content->env[i] && ft_strncmp(content->env[i], variable, len) != 0)
+    while (content->exp[i] && ft_strncmp(content->exp[i], variable, len) != 0)
       i++;
-    if (content->env[i]) //ft_strncmp(content->env[i], variable, len) == 0)
+    if (content->exp[i]) //ft_strncmp(content->env[i], variable, len) == 0)
     {
-      manipulate_variable(content, content->env[i], variable, arg);
+      if (ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
+        content->exp[i] = manipulate_variable(content, content->exp[i], variable, arg); //content->exp[i] = manipulate_variable(content, content->exp[i], variable, arg);
       return ;
     }
   } 
@@ -139,14 +146,14 @@ void  built_exit(char **args)
   ft_printf(1, "exit\n");
   if (!args)
     exit(0);
-  else if(ft_atoi(args[0]) == 0 && ft_isdigit(args[0] == 0))
+  else if(ft_atoi(args[1]) == 0 && ft_isdigit(args[1] == 0))
   {
-    ft_printf(2, "los_pran: exit: %s: numeric argument required", args[0]);
+    ft_printf(2, "minishell$: exit: %s: numeric argument required", args[1]);
     args[0] = "255";
   }
-  else if (args[1])
-    ft_printf(2, "los_pran: exit: too many arguments", args[0]);
-  i = ft_atoi(args[0]);
+  else if (args[2])
+    ft_printf(2, "minishell$: exit: too many arguments", args[1]);
+  i = ft_atoi(args[1]);
   if (i < 0 && i >= -256)
     exit(256 + i);
   if (i > 255)

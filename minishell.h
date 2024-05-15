@@ -69,6 +69,7 @@ typedef struct s_data
     char **env;
     char **exp;
     char *str_rl;
+    char *root;
     t_token *lexer_array;
     t_parse *parse;
 } t_data;
@@ -98,6 +99,7 @@ void	free_args(char **args);
 char	*safe_strjoin(char const *s1, char const *s2);
 void	*safe_calloc(size_t nitems, size_t size);
 char	*safe_strdup(const char *src);
+char	*get_root(void);
 void    create_envp(char **env, t_data *content);
 char    **export(char *arg, char **table);
 int     unset_variable(t_data *content, char **args);
@@ -108,5 +110,9 @@ void    initialize_export(t_data *content, char *arg);
 void    check_command(t_data *cnt, int i);
 void	echo(char **args);
 char	*get_pwd(void);
+int     change_directory(char *path, t_data *content);
+void    built_exit(char **args);
+char    *manipulate_variable(t_data *content, char *spot, char *variable, char *arg);
+int     unset_variable(t_data *content, char **args);
 
 # endif

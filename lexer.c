@@ -55,7 +55,7 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     free(temp2);
     return (rec);
 }
-bool    check_next_token(t_data *data, int i)
+ bool    check_next_token(t_data *data, int i)
 {
     if (data->lexer_array[i + 2].type == TOKEN_EOL)
         return (false);
@@ -111,16 +111,16 @@ void    make_cmd_str(t_data *data, t_parse *parse)
         if (data->lexer_array[i].type == TOKEN_STR || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
         {   
             //continuar trabajando con las comillas
-            if (check_next_token(data, i) == true)
-            {
-                parse[0].cmd[str] = make_str_dquote(data, i);
-                i += 2;
-            }
-            else
-            {
+        //    if (check_next_token(data, i) == true)
+        //    {
+         //       parse[0].cmd[str] = make_str_dquote(data, i);
+          //      i += 2;
+         //   }
+          //  else
+           // {
                 //printf("hola\n");
                 parse[0].cmd[str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
-            }
+           // }
             str++;
         }
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
