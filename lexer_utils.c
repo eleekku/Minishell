@@ -62,6 +62,7 @@ void    take_s_quote(t_token *token, t_char_iter *iter)
         token->type = TOKEN_ERROR;
         token->pos.start--;
         token->pos.len = 1;
+        take_error(token, iter);
         return ;
     }
     else

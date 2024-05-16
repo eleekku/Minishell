@@ -80,16 +80,30 @@ char    *make_str_dquote(t_data *data, int i_token, int i_quate)
     
     rec = NULL;
     temp2 =  NULL;
-    while (i_quate > i_token)
+    while (i_quate > i_token)//i_quate es el punto final del str que va a crear.
     {
-        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN)
-        {  
-            temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
-            if (!temp2)
+        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i_token].type == TOKEN_STR || data->lexer_array[i_token].type == TOKEN_S_QUOTE || data->lexer_array[i_token].type == TOKEN_DOLAR)
+        {
+            if (data->lexer_array[i_token].type == TOKEN_DOLAR)
             {
-                if(rec)
-                    free(rec);
-                return(NULL);
+                temp2 = parse_dolar(data, i_token);
+                //printf("dolar : %s\n.", temp2);
+                if (!temp2)
+                {
+                    if(rec)
+                        free(rec);
+                    return(NULL);
+                }
+            }//malloc handle
+            else
+            {
+                temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+                if (!temp2)
+                {
+                    if(rec)
+                        free(rec);
+                    return(NULL);
+                }
             }//malloc handle
             rec = ft_strjoingnl(rec, temp2);
             free(temp2);
@@ -101,8 +115,25 @@ char    *make_str_dquote(t_data *data, int i_token, int i_quate)
 char    *parse_dolar(t_data *data, int i_token)
 {
     char *str;
-    
+    char **envp;
+    int i;
+
+    envp = data->env;
     str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+    i = 0;
+    while (envp[i])
+    {
+        if (ft_strncmp(envp[i], str + 1, data->lexer_array[i_token].pos.len - 1) == 0)
+        {
+            free(str);
+            str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);
+            //check for null
+            return (str);
+        }
+        i++;
+    }
+    free(str);
+    str = ft_strdup("");
     return (str);
 }
 int index_after_quate(t_data *data, int i)

@@ -113,6 +113,7 @@ int input_check(t_data *content)
         return (1);
     lexer_tokenizer(content);
     tokens = content->lexer_array;
+    ///////////////////////print tokens\\\\\\\\\\\\\\\\\\\\\\\\\/
     /*i = 0;
     while (tokens[i].type != TOKEN_EOL)
     {
@@ -180,7 +181,7 @@ void  create_envp(char **env, t_data *content)
     content->env = envp;
 }
 
-int main(int ac, char **av, char **envp) //comenzar a trabajar con $ para crear los str dependiendo del env
+int main(int ac, char **av, char **envp) //seguir con los casos especiales de $ ($ $? $$ $>)
 {
     char* input;
     t_data content;
