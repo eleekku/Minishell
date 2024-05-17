@@ -1,7 +1,7 @@
 NAME = minishell
 
 SRC = build_export.c echo.c environmentbuilds.c free_doble_array.c ft_skip_split.c iter_token.c \
-lexer_utils.c lexer.c minishell.c pwd.c safe_functions.c check_command.c
+lexer_utils.c lexer.c minishell.c pwd.c safe_functions.c check_command.c execution.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -13,7 +13,7 @@ LIBFT = -Llibft -lft
 
 CC = cc
 
-FLAGS = -g -fsanitize=address,undefined -lreadline 
+FLAGS = -lreadline 
 
 all: $(NAME)
 

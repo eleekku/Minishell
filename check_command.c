@@ -50,18 +50,19 @@ void	check_command(t_data *cnt, int i)
 {
 	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		echo(cnt->parse[i].cmd);
-	if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
 		printf("%s\n", get_pwd());
-	if (ft_strncmp(cnt->parse[i].cmd[0], "env", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "env", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
 		env(cnt);
-	if (ft_strncmp(cnt->parse[i].cmd[0], "export", 6) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 6)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "export", 6) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 6)
 		pre_export(cnt, i);
-	if (ft_strncmp(cnt->parse[i].cmd[0], "cd", 2) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 2)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "cd", 2) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 2)
 		change_directory(cnt->parse[i].cmd[1], cnt);
-	if (ft_strncmp(cnt->parse[i].cmd[0], "exit", 4) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 4)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "exit", 4) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		built_exit(cnt->parse[i].cmd);
-	if (ft_strncmp(cnt->parse[i].cmd[0], "unset", 5) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 5)
+	else if (ft_strncmp(cnt->parse[i].cmd[0], "unset", 5) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 5)
 		unset_variable(cnt, cnt->parse[i].cmd);
-	//execution(cnt, i);
+	else
+	execution(cnt, i);
 	
 }
