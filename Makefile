@@ -13,7 +13,7 @@ LIBFT = -Llibft -lft
 
 CC = cc
 
-FLAGS = -lreadline 
+FLAGS = -g -fsanitize=address,undefined -lreadline 
 
 all: $(NAME)
 
