@@ -248,7 +248,7 @@ void    current_itoken(t_data *data)
         i++;
     data->i_token = i + 1;
 }
-void    simple_test(t_parse *parse, t_data *data, int i_pipex)
+void    add_data_parse(t_parse *parse, t_data *data, int i_pipex)
 {
     int i_parse;
 
@@ -320,6 +320,11 @@ void    creating_parse(t_data *data)
                 printf("minishell: syntax error near unexpected token `newline'\n");
                 return ;
             }
+            if (data->lexer_array[i + 1].type != TOKEN_STR)
+            {
+                printf("minishell: syntax error near unexpected token `|'\n");
+                return ;
+            }
         }
         if (data->lexer_array[i].type == TOKEN_ERROR)
             return ;
@@ -327,5 +332,6 @@ void    creating_parse(t_data *data)
     }
     parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
     init_parse_struct(parse, data);
-    simple_test(parse, data, data->i_pipex);
+    add_data_parse(parse, data, data->i_pipex);
+    data->parse = parse;
 }
