@@ -62,11 +62,7 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     free(temp2);
     return (rec);
 }
-<<<<<<< HEAD
- bool    check_next_token(t_data *data, int i)
-=======
 bool    check_next_token(t_data *data, int i) //this check is to create the str when there are quates
->>>>>>> parsing
 {
     if (data->lexer_array[i + 2].type == TOKEN_EOL)
         return (false);
@@ -167,21 +163,6 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
             parse[i_parse].cmd[str] = parse_dolar(data, i);
             str++;
         }
-<<<<<<< HEAD
-        if (data->lexer_array[i].type == TOKEN_STR || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
-        {   
-            //continuar trabajando con las comillas
-        //    if (check_next_token(data, i) == true)
-        //    {
-         //       parse[0].cmd[str] = make_str_dquote(data, i);
-          //      i += 2;
-         //   }
-          //  else
-           // {
-                //printf("hola\n");
-                parse[0].cmd[str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
-           // }
-=======
         if (data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
         {
             parse[i_parse].cmd[str] = make_str_dquote(data, i, index_after_quate(data, i));
@@ -199,7 +180,6 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
                 free(temp);
                 i = index_after_quate(data, i) - 1;
             }
->>>>>>> parsing
             str++;
         }
         if (is_redic(data, i) == true)
@@ -258,18 +238,6 @@ void    count_str_redic(t_data *data)
         }
         i++;
     }
-<<<<<<< HEAD
-    parse[0].cmd = (char **)ft_calloc(str + 1, sizeof(char *));
-    //protect and free
-    parse[0].rec_file = (char **)ft_calloc(irec + 1, sizeof(char *));
-    //protect and free
-    make_cmd_str(data, parse);
-    parse_redic(data, parse);
-    /*i = 0;
-    while (parse[0].cmd[i])
-    {
-        printf("cmd %s\n", parse[0].cmd[i]);
-=======
 }
 void    current_itoken(t_data *data)
 {
@@ -277,7 +245,6 @@ void    current_itoken(t_data *data)
 
     i = data->i_token;
     while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
->>>>>>> parsing
         i++;
     data->i_token = i + 1;
 }
@@ -319,13 +286,8 @@ void    simple_test(t_parse *parse, t_data *data, int i_pipex)
             j++;
         }
         i++;
-<<<<<<< HEAD
-    }*/
-    data->parse = parse;
-=======
     }
     printf("\n");
->>>>>>> parsing
 }
 void    init_parse_struct(t_parse *parse, t_data *data)
 {

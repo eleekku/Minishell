@@ -69,15 +69,12 @@ typedef struct s_data
     char **env;
     char **exp;
     char *str_rl;
-<<<<<<< HEAD
     char *root;
-=======
     int str;
     int irec;
     int i_token;
     int i_pipex;
     int i_quate;
->>>>>>> parsing
     t_token *lexer_array;
     t_parse *parse;
 } t_data;
