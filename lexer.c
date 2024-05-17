@@ -123,6 +123,12 @@ char    *parse_dolar(t_data *data, int i_token)
     i = 0;
     while (envp[i])
     {
+        if (*str == '$' && ft_strlen(str) == 1)
+        {
+            str = ft_strdup("$");
+            //protect malloc
+            return(str);
+        }
         if (ft_strncmp(envp[i], str + 1, data->lexer_array[i_token].pos.len - 1) == 0)
         {
             free(str);
@@ -146,6 +152,7 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
 {
     int i;
     int str;
+    char *temp;
 
     i = data->i_token;
     str = 0;
@@ -162,9 +169,17 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
             i = index_after_quate(data, i) - 1;
             str++;
         }
-        if  (data->lexer_array[i].type == TOKEN_STR )
+        if  (data->lexer_array[i].type == TOKEN_STR)
         {
             parse[i_parse].cmd[str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
+            if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i + 1].type == TOKEN_S_QUOTE)
+            {
+                i++;
+                temp = make_str_dquote(data, i, index_after_quate(data, i));
+                parse[i_parse].cmd[str] = ft_strjoingnl(parse[i_parse].cmd[str], temp);
+                free(temp);
+                i = index_after_quate(data, i) - 1;
+            }
             str++;
         }
         if (is_redic(data, i) == true)
