@@ -48,7 +48,7 @@ void	pre_export(t_data *cnt, int i)
 
 void	check_command(t_data *cnt, int i)
 {
-	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 4)
+	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		echo(cnt->parse[i].cmd);
 	if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
 		printf("%s\n", get_pwd());

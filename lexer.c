@@ -328,4 +328,5 @@ void    creating_parse(t_data *data)
     parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
     init_parse_struct(parse, data);
     simple_test(parse, data, data->i_pipex);
+    data->parse = parse;
 }

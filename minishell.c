@@ -202,7 +202,7 @@ int main(int ac, char **av, char **envp) //seguir con los casos especiales de $ 
       int in = input_check(&content);//lexer for the parse
       if (in == 0)
         creating_parse(&content);
-     //check_command(&content, 0);
+     check_command(&content, 0);
       //printf("%s\n", input);
       if (ft_strncmp(input, "exit", 4) == 0)
           exit(0);
