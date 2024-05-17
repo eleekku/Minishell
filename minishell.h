@@ -28,7 +28,7 @@ typedef enum s_token_name
     TOKEN_STR,
     TOKEN_DOLAR,
     TOKEN_SPACE,
-    TOKEN_COMMAND,
+    TOKEN_HEREDOC,
     TOKEN_IN_REDIRECT,
     TOKEN_OUT_REDIRECT,
     TOKEN_REDIR_APPEND,
@@ -70,6 +70,11 @@ typedef struct s_data
     char **exp;
     char *str_rl;
     char *root;
+    int str;
+    int irec;
+    int i_token;
+    int i_pipex;
+    int i_quate;
     t_token *lexer_array;
     t_parse *parse;
 } t_data;
@@ -85,6 +90,7 @@ void    add_token(t_token *token, t_char_iter *iter);
 //parse
 void    creating_parse(t_data *data);
 char	*ft_add_cmd_str(const char *src, int len);
+char    *parse_dolar(t_data *data, int i_token);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
