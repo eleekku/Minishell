@@ -74,6 +74,7 @@ typedef struct s_data
     int i_token;
     int i_pipex;
     int i_quate;
+    int exit_error;
     t_token *lexer_array;
     t_parse *parse;
 } t_data;

@@ -116,20 +116,30 @@ char    *parse_dolar(t_data *data, int i_token)
 {
     char *str;
     char **envp;
+    char *equal;
     int i;
 
     envp = data->env;
-    str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+    char *que;
+
+    que = ft_itoa(data->exit_error);
+    if (data->lexer_array[i_token].pos.start[0] == '?')
+    {
+        str = ft_add_cmd_str(que, ft_strlen(que));
+        return (str);
+    }
+    else
+        str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+    printf("str : %s\n", str);
     i = 0;
     while (envp[i])
     {
+        //equal = ft_strchr(envp[i], '=');
         if (*str == '$' && ft_strlen(str) == 1)
         {
-            str = ft_strdup("$");
-            //protect malloc
             return(str);
         }
-        if (ft_strncmp(envp[i], str + 1, data->lexer_array[i_token].pos.len - 1) == 0)
+        if (ft_strncmp(envp[i], str + 1, ft_strchr(envp[i], '=') - envp[i]) == 0)
         {
             free(str);
             str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);
@@ -301,6 +311,31 @@ void    init_parse_struct(t_parse *parse, t_data *data)
         i++;
     }
 }
+bool    print_recd_error(t_data *data, int i)
+{
+    int red;
+
+    red = 0;
+    if (data->lexer_array[i + 1].type == TOKEN_EOL)
+        {
+            printf("minishell: syntax error near unexpected token `newline'\n");
+            return (true);
+        }
+    if (data->lexer_array[i + 1].type != TOKEN_STR)
+    {
+        while (data->lexer_array[i].pos.start[red] == '>' || data->lexer_array[i].pos.start[red] == '<')
+            red++;
+        if (red > 2)
+        {
+            if (red == 3)
+                printf("minishell: syntax error near unexpected token >\n");
+            if (red > 3)
+                printf("minishell: syntax error near unexpected token >>\n");
+            return (true);
+        }
+    }
+    return (false);
+}
 
 void    creating_parse(t_data *data)
 {
@@ -315,6 +350,10 @@ void    creating_parse(t_data *data)
             data->i_pipex++;
         if (is_redic(data, i) == true)
         {
+            if (print_recd_error(data, i) == true)
+                return ;
+        }
+        /*{
             if (data->lexer_array[i + 1].type == TOKEN_EOL)
             {
                 printf("minishell: syntax error near unexpected token `newline'\n");
@@ -322,10 +361,10 @@ void    creating_parse(t_data *data)
             }
             if (data->lexer_array[i + 1].type != TOKEN_STR)
             {
-                printf("minishell: syntax error near unexpected token `|'\n");
+                print_recd_error(data);
                 return ;
             }
-        }
+        }*/
         if (data->lexer_array[i].type == TOKEN_ERROR)
             return ;
         i++;
