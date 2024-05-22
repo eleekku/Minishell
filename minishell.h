@@ -12,6 +12,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # define DELIMITER "|<>\"\'$ '\t'"
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 typedef struct s_split
 {
@@ -113,7 +116,7 @@ void    env(t_data *content);
 void	build_export(t_data *content);
 void	print_export(t_data *content);
 void    initialize_export(t_data *content, char *arg);
-void    check_command(t_data *cnt, int i);
+void    check_command(t_data *cnt);
 void	echo(char **args);
 char	*get_pwd(void);
 int     change_directory(char *path, t_data *content);
@@ -121,5 +124,8 @@ void    built_exit(char **args);
 char    *manipulate_variable(t_data *content, char *spot, char *variable, char *arg);
 int     unset_variable(t_data *content, char **args);
 void	execution(t_data *cnt, int i);
+void	pipex(t_data *cnt, int i);
+void	last_command(t_data *cnt, int i);
+void	executor(t_data *cnt);
 
 # endif

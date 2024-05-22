@@ -13,7 +13,7 @@ LIBFT = -Llibft -lft
 
 CC = cc
 
-FLAGS = -lreadline 
+FLAGS = -g -fsanitize=address,undefined -lreadline 
 
 all: $(NAME)
 
@@ -21,12 +21,12 @@ $(NAME): $(OBJ) $(OBJ_PAR)
 		$(MAKE) -C ./libft
 		$(CC) $(FLAGS) -I. -Ilibft $(OBJ) $(OBJ_PAR) $(LIBFT) -o $(NAME)
 
-bonus: .bonus
+#bonus: .bonus
 
-.bonus: $(OBJ_BONUS) $(OBJ_PAR)
-		$(MAKE) -C ./libft
-		$(CC) $(FLAGS) -I. -Ilibft $(OBJ_BONUS) $(OBJ_PAR) $(LIBFT) -o $(NAME)
-		@touch .bonus
+#.bonus: $(OBJ_BONUS) $(OBJ_PAR)
+#		$(MAKE) -C ./libft
+#	#	$(CC) $(FLAGS) -I. -Ilibft $(OBJ_BONUS) $(OBJ_PAR) $(LIBFT) -o $(NAME)
+#	#	@touch .bonus
 
 %.o: %.c
 		$(CC) $(FLAGS) -I. -c $< -o $@

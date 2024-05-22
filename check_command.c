@@ -46,8 +46,11 @@ void	pre_export(t_data *cnt, int i)
 		}
 	}
 
-void	check_command(t_data *cnt, int i)
+void	check_command(t_data *cnt)
 {
+	int i;
+	
+	i = 0;
 	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		echo(cnt->parse[i].cmd);
 	else if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
@@ -63,6 +66,27 @@ void	check_command(t_data *cnt, int i)
 	else if (ft_strncmp(cnt->parse[i].cmd[0], "unset", 5) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 5)
 		unset_variable(cnt, cnt->parse[i].cmd);
 	else
-	execution(cnt, i);
-	
+	last_command(cnt, i); // execution(cnt, i);
 }
+
+void	executor(t_data *cnt)
+{
+	int i;
+	int j;
+	//int		pipefd[2];
+	//pid_t	child;
+
+	i = 0;
+	if (cnt->parse[1].cmd)
+	{
+		while(cnt->parse[i + 1].cmd)
+		{
+			execution(cnt, i);
+			i++;
+		}
+		last_command(cnt, i);
+	}
+	else
+	check_command(cnt);
+}
+
