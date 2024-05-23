@@ -74,19 +74,27 @@ void	executor(t_data *cnt)
 	int i;
 	int j;
 	//int		pipefd[2];
-	//pid_t	child;
+	pid_t	child1;
+	pid_t	child2;
 
 	i = 0;
 	if (cnt->parse[1].cmd)
 	{
 		while(cnt->parse[i + 1].cmd)
 		{
+			child1 = fork();
+			if (child1 == 0)
 			execution(cnt, i);
+			waitpid(child1, NULL, 0);
 			i++;
 		}
+		child2 = fork();
+		if (child2 == 0)
 		last_command(cnt, i);
 	}
-	else
-	check_command(cnt);
+	waitpid(child2, NULL, 0);
+	ft_printf(2, "moi\n");
+	//else
+//	check_command(cnt);
 }
 
