@@ -1,5 +1,5 @@
 # include "minishell.h"
-
+#include <errno.h>
 //think about "heredoc"
 
 int  just_pipes(char *str)
@@ -77,6 +77,7 @@ void  update_envp(t_data  *content)
     }
     content->env = envp;
 }
+
 void  create_envp(char **env, t_data *content)
 {
     char **envp;
@@ -86,7 +87,7 @@ void  create_envp(char **env, t_data *content)
     n = 0;
     while (env[n])
       n++;
-    envp = (char **)malloc(sizeof(char *) * n + 1);
+    envp = (char **)malloc(sizeof(char *) * (n + 1));
     i = 0;
     while (i < n)
     {
@@ -97,6 +98,8 @@ void  create_envp(char **env, t_data *content)
     }
     envp[i] = NULL;
     content->env = envp;
+    content->root = get_root();
+    build_export(content);
 }
 
 int main(int ac, char **av, char **envp) //arreglar parte de $ (por ejemplo a="hello work", $a = hello) chequear segnal.
@@ -110,18 +113,23 @@ int main(int ac, char **av, char **envp) //arreglar parte de $ (por ejemplo a="h
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
     //update_envp(&content);
-    while ((input = readline("minishell$ ")) != NULL)
+    while (1)// (input = readline("minishell$ ")) != NULL)
     {
-      if (strlen(input) > 0) 
+      input = readline("minishell$ ");
+      printf("im here erno is %s\n", strerror(errno));
+     if (input && ft_strlen(input) > 0) 
         add_history(input);
+        printf("im here too\n");
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
       if (in == 0)
         creating_parse(&content);
+      executor(&content);
+     //check_command(&content);
       //printf("%s\n", input);
       if (ft_strncmp(input, "exit", 4) == 0)
           exit(0);
       free(input);
     }
-    printf("hola");
+   printf("hola mundo\n");
 }

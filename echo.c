@@ -1,34 +1,57 @@
 #include "minishell.h"
 
-char	*check_flag(char *args, int *flag)
+char	*check_flag(char *args, int *flag, int *n)
 {
 	int	i;
 	int temp;
 
-	*flag = 0;
 	temp = 0;
 	i = 0;
-	while (args[i] && (args[i] == '-' || args[i] == ' '))
+	if (args[i] && (args[i] == '-')) // || args[i] == ' '))
 	{
 		i++;
 		if (args[i] == 'n')
 		{
 			while (args[i] == 'n')
 				i++;
-			if (args[i] == ' ')
+			//temp += (i - temp);
+			if (!args[i] || args[i] == ' ')
+			*flag = 1;
+			/* if (args[i] == ' ')
 			{
 				temp += (i - temp);
 				*flag = 1;
 				i++;
-			}
+			} */
 		}				
 	}
-	if (*flag == 0)
+	if (*flag == 0 || args[i + 1])
 		return (args);
-	return (args + temp);
+	*n += 1;
+	return (args + i); //temp);
 }
 
-void	echo(char *args)
+void	echo(char **args)
+{
+	int i;
+	int flag;
+	int	n;
+
+	i = 0;
+	flag = 0;
+	n = 0;
+	while (args[++i])
+	{
+		args[i] = check_flag(args[i], &flag, &n);
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1] && n <= 0)
+			ft_putchar_fd(' ', 1);
+		n--;	
+	}
+	if (flag == 0)
+		write(1, "\n", 1);
+}
+/* void	echo(char *args)
 {
 	int i;
 	int	sin_quotations;
@@ -55,7 +78,7 @@ void	echo(char *args)
 	}
 	if (flag == 0)
 		write(1, "\n", 1);
-}
+} */
 
 /* int main(int argc, char **argv)
 {

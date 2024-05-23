@@ -21,29 +21,20 @@ char	*get_pwd(void)
 	return (pwd);
 }
 
-char	*get_root(char *root)
+char	*get_root(void)
 {
 	char	*pwd;
 	char	*temp;
 	int 	i;
-	int		j;
 	
+	i = -1;
 	pwd = getcwd(NULL, 1);
-	j = 0;
-	i = ft_strlen(root);
-	temp = ft_strnstr(pwd, root, ft_strlen(pwd));
-	i += ft_strlen(pwd) - ft_strlen(temp);
-	root = malloc(i + 1 * sizeof(char));
-	if (!root)
-		exit(1);
-	while (j < i)
-	{
-		root[j] = pwd[j];
-		j++;
-	}
+	int len = ft_strlen(pwd);
+	temp = safe_calloc(len + 1, sizeof(char));
+	while (pwd[++i])
+		temp[i] = pwd[i];
 	free(pwd);
-	root[j] = '\0';
-	return (root);
+	return (temp);
 }
 
 int	change_directory(char *path, t_data *content)
@@ -54,23 +45,21 @@ int	change_directory(char *path, t_data *content)
 	char	*pwd = get_pwd();
 	char	*root;
 	if (!path)
-		path = get_root("minishell");
+		path = content->root;
 	i = 0;
 	while (content->env[i] && ft_strncmp("OLDPWD=", content->env[i], 7) != 0)
 		i++;
 	if (!content->env[i])
-		export(safe_strjoin("OLDPWD=", get_pwd()), content);
+		export(safe_strjoin("OLDPWD=", get_pwd()), content->env);
 	free(content->env[i]);
-	content->env[i] = ft_strjoin("OLDPWD=", get_pwd());
+	content->env[i] = safe_strjoin("OLDPWD=", get_pwd());
 	i = 0;
 	return_value = chdir(path);
 	while (content->env[i] && ft_strncmp("PWD=", content->env[i], 4) != 0)
 		i++;
 	free(content->env[i]);
-	content->env[i] = ft_strjoin("PWD=", get_pwd());
-	printf("%d\n", return_value);
+	content->env[i] = safe_strjoin("PWD=", get_pwd());
 	//char *pwd = get_pwd();
-	printf("%s\n", pwd);
 	return (return_value);
 }
 /* 
