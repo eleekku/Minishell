@@ -99,39 +99,39 @@ void	exec(char **cmd, t_data *cnt)
 
 void	last_command(t_data *cnt, int i)
 {
-//	pid_t	child;
+	pid_t	child;
 	//int		pipefd[2];
-//	if (pipe(pipefd) == -1)
+	//if (pipe(pipefd) == -1)
 	//	exit (1);
 //	printf("last command\n");
 //	char *line;
 //	dup2(3, STDIN);
 	//printf("from pipe read (stdin) %s\n", line = get_next_line(3));
 	//free (line);
-//	child = fork();
+	child = fork();
 //	if (child == -1)
 //	{
 	//	close(pipefd[0]);
 	//	close(pipefd[1]);
 		//terminate_program("fork", 1);
 //	}
-//	if (child != 0)
-//	{
-//		waitpid(child, NULL, 0);
+	if (child != 0)
+	{
+		waitpid(child, NULL, 0);
 //		close(4);
 	//	close(3);
-//	}
-//	if (child == 0)
-//	{
+	}
+	if (child == 0)
+	{
 	//	close(4);
 	//	dup2(3, STDIN);
 	//	printf("from pipe read (stdin) %s\n", line = get_next_line(3));
 	//	free(line);
 	//	close(pipefd[0]);
 	//	close(pipefd[1]);
-		dup2(3, STDIN);
+	//	dup2(3, STDIN);
 		exec(cnt->parse[i].cmd, cnt);
-	//}
+	}
 }
 void	execution(t_data *cnt, int i)
 {
