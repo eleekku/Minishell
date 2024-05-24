@@ -78,7 +78,7 @@ void	executor(t_data *cnt)
 	//int		pipefd[2];
 	//pid_t	child;
 	i = 0;
-	/* if (cnt->parse[1].cmd)
+	/*  if (cnt->parse[1].cmd)
 	{
 		while(cnt->parse[i + 1].cmd)
 		{
@@ -92,7 +92,7 @@ void	executor(t_data *cnt)
 		if (child2 == 0)
 		last_command(cnt, i);
 	}
-	else
+	else */
 	check_command(cnt);
 }
 
