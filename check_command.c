@@ -51,6 +51,8 @@ void	check_command(t_data *cnt)
 	int i;
 	
 	i = 0;
+	if (!cnt->parse)
+		return;
 	if (!cnt->parse[i].cmd[0])
 		return ;
 	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
