@@ -64,20 +64,3 @@ void  env(t_data *content)
   //printf("%s\n", content->env[i]);
   //printf("%s\n", content->env[i + 1]);
 }
-
-/* int main(int argc, char **argv, char **envp)
-{
-  t_data content;
-
-  create_envp(envp, &content);
-  build_export(&content);
-  //env(&content);
-  initialize_export(&content, argv[1]);
-  printf("test\n");
-  env(&content);
- // printf("\n");
- // env(&content);
-  print_export(&content);
-
-  //env(&content);
-}  */

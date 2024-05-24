@@ -30,15 +30,14 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
   int i;
 
   i = 0;
- // printf("%p\n", content->exp[index]);
   free(content->exp[index]);
   content->exp[index] = ft_strdup(arg);
- // printf("%p\n", content->exp[index]);
     if (!content->exp[index])
       exit(1); //errooooor
   while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
     i++;
-  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0)
+  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0 
+  && content->env[i][ft_strlen(variable)] == '=')
     {
       free(content->env[i]);
       content->env[i] = ft_strdup(arg);
@@ -72,8 +71,8 @@ void  initialize_export(t_data *content, char *arg)
       }
     }
   }
-  if (ft_strchr(arg, '='))
-    content->env = export(arg, content->env);
+	if ((*(ft_strchr(arg, '=') + 1)))
+		content->env = export(arg, content->env);
   i = 1;
   while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
   i++;
