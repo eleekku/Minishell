@@ -197,10 +197,8 @@ int main(int ac, char **av, char **envp) //seguir con los casos especiales de $ 
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
       input = readline("minishell$ ");
-      printf("im here erno is %s\n", strerror(errno));
      if (input && ft_strlen(input) > 0) 
         add_history(input);
-        printf("im here too\n");
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
       if (in == 0)
