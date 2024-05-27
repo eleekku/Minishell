@@ -102,7 +102,7 @@ void  create_envp(char **env, t_data *content)
     build_export(content);
 }
 
-int main(int ac, char **av, char **envp) //arreglar parte de $ (por ejemplo a="hello work", $a = hello) chequear segnal.
+int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes y nada luego
 {
     char* input;
     t_data content;
@@ -116,20 +116,17 @@ int main(int ac, char **av, char **envp) //arreglar parte de $ (por ejemplo a="h
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
       input = readline("minishell$ ");
-      printf("im here erno is %s\n", strerror(errno));
      if (input && ft_strlen(input) > 0) 
         add_history(input);
-        printf("im here too\n");
       content.str_rl = input;
       int in = input_check(&content);//lexer for the parse
       if (in == 0)
         creating_parse(&content);
-      executor(&content);
+      //executor(&content);
      //check_command(&content);
       //printf("%s\n", input);
       if (ft_strncmp(input, "exit", 4) == 0)
           exit(0);
       free(input);
     }
-   printf("hola mundo\n");
 }

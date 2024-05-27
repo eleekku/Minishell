@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/17 11:11:12 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:44:49 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+
+# include "minishell.h"
 
 void	pre_echo(char	**args)
 {
@@ -51,6 +52,8 @@ void	check_command(t_data *cnt)
 	int i;
 	
 	i = 0;
+	if (!cnt->parse[i].cmd[0])
+	return ;
 	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		echo(cnt->parse[i].cmd);
 	else if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
@@ -76,7 +79,7 @@ void	executor(t_data *cnt)
 	//int		pipefd[2];
 	//pid_t	child;
 
-	i = 0;
+	/* i = 0;
 	if (cnt->parse[1].cmd)
 	{
 		while(cnt->parse[i + 1].cmd)
@@ -86,7 +89,9 @@ void	executor(t_data *cnt)
 		}
 		last_command(cnt, i);
 	}
-	else
+	else */
+	if (!cnt->parse)
+		return ;
 	check_command(cnt);
 }
 

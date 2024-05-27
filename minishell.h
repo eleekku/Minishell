@@ -76,8 +76,10 @@ typedef struct s_data
     int str;
     int irec;
     int i_token;
+    int i_str;
     int i_pipex;
     int i_quate;
+    int i_parse;
     int exit_error;
     t_token *lexer_array;
     t_parse *parse;
@@ -94,7 +96,7 @@ void    add_token(t_token *token, t_char_iter *iter);
 //parse
 void    creating_parse(t_data *data);
 char	*ft_add_cmd_str(const char *src, int len);
-char    *parse_dolar(t_data *data, int i_token);
+void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
