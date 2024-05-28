@@ -44,6 +44,7 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     char *tem1;
     char *temp2;
     char *rec;
+    
     tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
     //check for null
     i_token++;
@@ -99,47 +100,91 @@ char *parse_dolar_dquate(t_data *data, int i_token)
     }
     free(str);
     str = ft_strdup("");
+    //check for null
     return (str);
 }
+char    *check_dquote_str(t_data *data, int i_token)
+{
+    char    *temp2;
 
-char    *make_str_dquote(t_data *data, int i_token, int i_quate)
+    temp2 = NULL;
+    if (data->lexer_array[i_token].type == TOKEN_DOLAR)
+    {
+        temp2 = parse_dolar_dquate(data, i_token);
+        if (!temp2)
+            return(NULL);
+            
+    }
+    else
+    {
+        temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+        if (!temp2)
+            return(NULL);            
+    }
+    return (temp2);
+}
+bool    check_token_str_dquote(t_data *data, int i_token)
+{
+    if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN
+        || data->lexer_array[i_token].type == TOKEN_STR 
+        || data->lexer_array[i_token].type == TOKEN_S_QUOTE 
+        || data->lexer_array[i_token].type == TOKEN_DOLAR)
+    {
+        return (true);
+    }
+    return (false);
+}
+
+char    *make_str_dquote(t_data *data, int i_token, int i_quate)//created the str when there is a dquote token this part handle the dolar"$MAIL"
 {
     char    *temp2;
     char    *rec;
     
     rec = NULL;
-    temp2 =  NULL;
     while (i_quate > i_token)//i_quate es el punto final del str que va a crear.
     {
-        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i_token].type == TOKEN_STR || data->lexer_array[i_token].type == TOKEN_S_QUOTE || data->lexer_array[i_token].type == TOKEN_DOLAR)
+        if (check_token_str_dquote(data, i_token) == true)
         {
-            if (data->lexer_array[i_token].type == TOKEN_DOLAR)
+            temp2 = check_dquote_str(data, i_token);
+            if (!temp2)
             {
-                temp2 = parse_dolar_dquate(data, i_token);
-                //check for NULL
-                if (!temp2)
-                {
-                    if(rec)
-                        free(rec);
-                    return(NULL);
-                }
-            }//malloc handle
-            else
-            {
-                temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
-                if (!temp2)
-                {
-                    if(rec)
-                        free(rec);
-                    return(NULL);
-                }
-            }//malloc handle
+                free(rec);
+                return (NULL);
+            }
             rec = ft_strjoingnl(rec, temp2);
+            if (!rec)
+            {
+                free(temp2);
+                return (NULL);
+            }
             free(temp2);
         }
         i_token++;
     }
     return (rec);
+}
+
+char    **copy_realloc(char *str, char **new_ptr, int i, int size)
+{
+    int end;
+
+    end = 0;
+    while (++i < size - 1)
+    {
+        while (*str == ' ' && *str)
+            str++;
+		end = 0;
+		while (str[end] != ' ' && str[end])
+			end++;
+		new_ptr[i] = ft_substr(str, 0, end);
+        if (!new_ptr[i])
+        {
+            free_args(new_ptr);
+            return (NULL);
+        }
+        str = str + end;
+    }
+    return (new_ptr);
 }
 
 char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t new_size) 
@@ -162,16 +207,7 @@ char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t 
     end = 0;
     str = ft_strchr(str, '=') + 1;
     i = data->i_str - 1;
-    while (++i < new_size - 1)
-    {
-        while (*str == ' ' && *str)
-            str++;
-		end = 0;
-		while (str[end] != ' ' && str[end])
-			end++;
-		new_ptr[i] = ft_substr(str, 0, end);
-        str = str + end;
-    }
+    new_ptr = copy_realloc(str, new_ptr, i, new_size);
     return (new_ptr);
 }
 
@@ -195,6 +231,52 @@ int	ft_cont_str(const char *s, char c)
 	}
 	return (i);
 }
+bool   change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
+{
+    int re_size;
+
+    if (ft_strchr(str, ' ') == NULL)
+    {
+        parse[data->i_parse].cmd[data->i_str] = ft_strdup(str + data->lexer_array[i_token].pos.len);;
+        return (true);
+    }
+    //check for null
+    else
+    {   
+        re_size = ft_cont_str(ft_strchr(str, '=') + 1, ' ');
+        parse[data->i_parse].cmd = ft_realloc_char_array(str, parse, data, data->str + re_size);
+        data->i_str += re_size - 1;
+        return (true);
+    }
+    //check for null
+    return (false);
+} 
+
+bool parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token)
+{
+    int i;
+    char **envp;
+    int re_size;
+
+    i = 0;
+    envp = data->env;
+    while (envp[i])
+    {
+        if (*str == '$' && ft_strlen(str) == 1)
+        {   
+            parse->cmd[data->i_str] = str;
+            return (true);
+        }
+        if (ft_strncmp(envp[i], str + 1, ft_strchr(envp[i], '=') - envp[i]) == 0)
+        {
+            free(str);
+            if (change_str_dolar(data, parse, envp[i], i_token) == true)
+                return (true);   
+        }
+        i++;
+    }
+    return (false);
+}
 
 void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
 {
@@ -214,34 +296,8 @@ void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
     else
         str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
     //check for null;
-    i = 0;
-    while (envp[i])
-    {
-        if (*str == '$' && ft_strlen(str) == 1)
-        {   
-            parse->cmd[data->i_str] = str;
-            return ;
-        }
-        if (ft_strncmp(envp[i], str + 1, ft_strchr(envp[i], '=') - envp[i]) == 0)
-        {
-            free(str);
-            if (ft_strchr(envp[i], ' ') == NULL)
-            {
-                str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);
-                parse[i_parse].cmd[data->i_str] = str;
-                return ;
-            }
-            //check for null
-            else
-            {   
-                re_size = ft_cont_str(ft_strchr(envp[i], '=') + 1, ' ');
-                parse[i_parse].cmd = ft_realloc_char_array(envp[i], parse, data, data->str + re_size);
-                data->i_str += re_size - 1;
-                return ;
-            }
-        }
-        i++;
-    }
+    if (parse_dolar_envp(data, parse, str, i_token) == true)
+        return ;
     free(str);
     parse[i_parse].cmd[data->i_str] = ft_strdup("");
     //check for NULL
@@ -269,11 +325,16 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
             parse_dolar(data, parse, i, i_parse);
             data->i_str++;
         }
-        if (data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE)
+        if ((data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE))
         {
-            parse[i_parse].cmd[data->i_str] = make_str_dquote(data, i, index_after_quate(data, i));
-            i = index_after_quate(data, i) - 1;
-            data->i_str++;
+            if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_CLOSED && data->lexer_array[i].pos.len == 0)
+                i++;
+            else 
+            {
+                parse[i_parse].cmd[data->i_str] = make_str_dquote(data, i, index_after_quate(data, i));
+                i = index_after_quate(data, i) - 1;
+                data->i_str++;
+            }
         }
         if  (data->lexer_array[i].type == TOKEN_STR)
         {
@@ -380,7 +441,6 @@ void    add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
     int i = 0;
     int j = 0;
     int pi = i_pipex;
-    printf("aki %d\n", data->i_str - 2);
     while (i < pi)
     {
         printf("\nPARSE [%d]\n\n", i);
