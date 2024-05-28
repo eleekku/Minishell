@@ -38,11 +38,15 @@ int	open_doc(char *file, int i)
 
 void	redirect(t_data	*cnt, int i)
 {
-	int fdin;
+	int fdout;
 	int j;
 
 	j = -1;
 	while (cnt->parse[i].rec_file[++j])
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
-			fdin = open_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 0);
+		{
+			fdout = open_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
+			dup2(fdout, STDOUT);
+			close(fdout);
+		}
 }

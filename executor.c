@@ -58,6 +58,8 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
+	if (cnt->parse[0].rec_file[0])
+		redirect(cnt, 0);
 	child = fork();
 		if (child == -1)
 			exit (1);
@@ -77,8 +79,6 @@ void	executor(t_data *cnt)
 	i = -1;
 	if (!cnt->parse || !cnt->parse[0].cmd[0])
 		return;
-	if (cnt->parse[0].rec_file[0])
-		printf("redirect found");
 	if (!cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
