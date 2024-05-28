@@ -33,19 +33,19 @@ void	pre_export(t_data *cnt, int i)
 	else
 		while (cnt->parse[i].cmd[j])
 		{
-		if (ft_strchr(cnt->parse[i].cmd[j], '=') && !(ft_strchr(cnt->parse[i].cmd[j], '=') + 1))
+	/* 	if (ft_strchr(cnt->parse[i].cmd[j], '=')) // && !(ft_strchr(cnt->parse[i].cmd[j], '=') + 1))
 			{
 				cnt->parse[i].cmd[j] = safe_strjoin(cnt->parse[i].cmd[j], cnt->parse[i].cmd[j + 1]);
 				free (cnt->parse[i].cmd[j + 1]);
 				j += 2;
 			}
 		else
-		{
+		{ */
 			initialize_export(cnt, cnt->parse[i].cmd[j]);
 			j++;
 		}
-		}
-	}
+	//	}
+}
 
 void	check_command(t_data *cnt)
 {
@@ -53,7 +53,7 @@ void	check_command(t_data *cnt)
 	
 	i = 0;
 	if (!cnt->parse[i].cmd[0])
-	return ;
+		return ;
 	if (ft_strncmp(cnt->parse[i].cmd[0], "echo", 4) == 0) // && ft_strlen(cnt->parse[i].cmd[0]) == 4)
 		echo(cnt->parse[i].cmd);
 	else if (ft_strncmp(cnt->parse[i].cmd[0], "pwd", 3) == 0 && ft_strlen(cnt->parse[i].cmd[0]) == 3)
@@ -78,20 +78,22 @@ void	executor(t_data *cnt)
 	int j;
 	//int		pipefd[2];
 	//pid_t	child;
-
-	/* i = 0;
-	if (cnt->parse[1].cmd)
+	i = 0;
+	/*  if (cnt->parse[1].cmd)
 	{
 		while(cnt->parse[i + 1].cmd)
 		{
+			child1 = fork();
+			if (child1 == 0)
 			execution(cnt, i);
+			waitpid(child1, NULL, 0);
 			i++;
 		}
+		child2 = fork();
+		if (child2 == 0)
 		last_command(cnt, i);
 	}
 	else */
-	if (!cnt->parse)
-		return ;
 	check_command(cnt);
 }
 

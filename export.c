@@ -13,6 +13,74 @@
 #include "minishell.h"
 //#include "minishelld.h"
 
+char **export(char *arg, char **table)
+{
+  int i;
+  char  *data;
+  i = 0;
+  while (table[i])
+    i++;
+  table = add_space(table, ft_strlen(arg));
+  table[i] = ft_strdup(arg);
+  return (table);
+}
+
+char  *manipulate_variable(t_data *content, int index, char *variable, char *arg)
+{
+  int i;
+
+  i = 0;
+ // printf("%p\n", content->exp[index]);
+  free(content->exp[index]);
+  content->exp[index] = ft_strdup(arg);
+ // printf("%p\n", content->exp[index]);
+    if (!content->exp[index])
+      exit(1); //errooooor
+  while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
+    i++;
+  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0)
+    {
+      free(content->env[i]);
+      content->env[i] = ft_strdup(arg);
+      return(ft_strdup(arg));
+    }
+  content->env = export(arg, content->env);
+  return (ft_strdup(arg));
+}
+
+void  initialize_export(t_data *content, char *arg)
+{
+  int   len;
+  int   i;
+  char  *variable;
+
+  if (ft_strchr(arg, '='))
+  {
+    len = ft_strlen(arg) - ft_strlen(ft_strchr(arg, '='));
+    variable = ft_substr(arg, 0, len);
+    if (!variable)
+      exit(1);
+    i = 0;
+    while (content->exp[i] && ft_strncmp(content->exp[i], variable, len) != 0)
+      i++;
+    if (content->exp[i]) //ft_strncmp(content->env[i], variable, len) == 0)
+    { 
+      if (ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
+      {
+        content->exp[i] = manipulate_variable(content, i, variable, arg);
+        return ;
+      }
+    }
+  }
+  if (ft_strchr(arg, '='))
+    content->env = export(arg, content->env);
+  i = 1;
+  while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
+  i++;
+  if (!content->exp[i])
+    content->exp = export(arg, content->exp);
+}
+
 void	print_export(t_data *content)
 {
 	int		i;
