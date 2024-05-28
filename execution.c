@@ -73,7 +73,7 @@ char	*get_path(char *cmd, char **envp, int *p)
 	return (cmd);
 }
 
-void	exec(char **cmd, t_data *cnt)
+void	exec(char **cmd, char **env)
 {
 	char		**args;
 	static char	*path;
@@ -89,80 +89,10 @@ void	exec(char **cmd, t_data *cnt)
 	if (ft_strchr(cmd[0], '/') != 0)
 		path = args[0];
 	else
-		path = get_path(cmd[0], cnt->env, &p);
+		path = get_path(cmd[0], env, &p);
 	//checkpath(path);
 	if (path)
-		execve(path, cmd, cnt->env);
+		execve(path, cmd, env);
 	//free_args(args);
 	exit(127);
-}
-
-void	last_command(t_data *cnt, int i)
-{
-	pid_t	child;
-	//int		pipefd[2];
-	//if (pipe(pipefd) == -1)
-	//	exit (1);
-//	printf("last command\n");
-//	char *line;
-//	dup2(3, STDIN);
-	//printf("from pipe read (stdin) %s\n", line = get_next_line(3));
-	//free (line);
-	child = fork();
-//	if (child == -1)
-//	{
-	//	close(pipefd[0]);
-	//	close(pipefd[1]);
-		//terminate_program("fork", 1);
-//	}
-	if (child != 0)
-	{
-		waitpid(child, NULL, 0);
-//		close(4);
-	//	close(3);
-	}
-	if (child == 0)
-	{
-	//	close(4);
-	//	dup2(3, STDIN);
-	//	printf("from pipe read (stdin) %s\n", line = get_next_line(3));
-	//	free(line);
-	//	close(pipefd[0]);
-	//	close(pipefd[1]);
-	//	dup2(3, STDIN);
-		exec(cnt->parse[i].cmd, cnt);
-	}
-}
-void	execution(t_data *cnt, int i)
-{
-	pid_t	child;
-	int		pipefd[2];
-
-	if (pipe(pipefd) == -1)
-		exit (1);
-//	dup2(pipefd[0], STDIN);
-//	dup2(pipefd[1], STDOUT);
-//	printf("pipefd 0 = %d and pipefd 1 = %d\n", pipefd[0], pipefd[1]);
-//	child = fork();
-//	if (child == -1)
-	//	exit (1);
-//	if (child != 0)
-//	{
-		//dup2(pipefd[0], STDIN);
-	//	close(pipefd[0]);
-		//close(pipefd[1]);
-	//	waitpid(child, NULL, 0);
-	//	close(pipefd[1]);
-//	}
-//	if (child == 0)
-//	{
-	//	close(pipefd[0]);
-		dup2(pipefd[1], STDOUT);
-		//close(pipefd[1]);
-	//	close(pipefd[0]);
-		//if (fdin == -1 && index == 2)
-			//exit(127);
-		exec(cnt->parse[i].cmd, cnt);
-	//}
-
 }

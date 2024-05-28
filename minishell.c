@@ -180,7 +180,7 @@ void  create_envp(char **env, t_data *content)
     }
     envp[i] = NULL;
     content->env = envp;
-    content->root = get_root();
+    content->root = getenv("HOME");
     build_export(content);
 }
 

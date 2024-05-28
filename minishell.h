@@ -42,6 +42,15 @@ typedef enum s_token_name
     TOKEN_EOL,
 } t_token_name;
 
+typedef struct s_execute
+{
+    pid_t   *child;
+    int     *pipesfd;
+    int		fdtrack;
+    int     currentfd;
+
+} t_execute;
+
 typedef struct s_lexer
 {
     char *start;
@@ -69,17 +78,19 @@ typedef struct s_parse
 
 typedef struct s_data
 {
-    char **env;
-    char **exp;
-    char *str_rl;
-    char *root;
-    int str;
-    int irec;
-    int i_token;
-    int i_pipex;
-    int i_quate;
-    t_token *lexer_array;
-    t_parse *parse;
+    char        **env;
+    char        **exp;
+    char        *str_rl;
+    char        *root;
+    int         exit_status;
+    int         str;
+    int         irec;
+    int         i_token;
+    int         i_pipex;
+    int         i_quate;
+    t_execute   *exec;
+    t_token     *lexer_array;
+    t_parse     *parse;
 } t_data;
 
 //lexer
@@ -125,8 +136,8 @@ void    built_exit(char **args);
 char    **add_space(char **table, int linel);
 char    *manipulate_variable(t_data *content, int index, char *variable, char *arg);
 int     unset_variable(t_data *content, char **args);
-void	execution(t_data *cnt, int i);
-void	last_command(t_data *cnt, int i);
+void	execution(t_data *cnt, int i, int fd);
 void	executor(t_data *cnt);
+void	exec(char **cmd, char **env);
 
 # endif
