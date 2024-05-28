@@ -82,19 +82,18 @@ typedef struct s_parse
 
 typedef struct s_data
 {
-    char        **env;
-    char        **exp;
-    char        *str_rl;
-    char        *root;
-    int         exit_status;
-    int         str;
-    int         irec;
-    int         i_token;
-    int         i_pipex;
-    int         i_quate;
+    char **env;
+    char **exp;
+    char *str_rl;
+    char *root;
+    int str;
+    int irec;
+    int i_token;
+    int i_pipex;
+    int i_quate;
+    t_token *lexer_array;
+    t_parse *parse;
     t_execute   *exec;
-    t_token     *lexer_array;
-    t_parse     *parse;
 } t_data;
 
 //lexer
@@ -108,7 +107,7 @@ void    add_token(t_token *token, t_char_iter *iter);
 //parse
 void    creating_parse(t_data *data);
 char	*ft_add_cmd_str(const char *src, int len);
-char    *parse_dolar(t_data *data, int i_token);
+void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
