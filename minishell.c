@@ -125,8 +125,8 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
       executor(&content);
      //check_command(&content);
       //printf("%s\n", input);
-      if (ft_strncmp(input, "exit", 4) == 0)
-          exit(0);
+      //if (ft_strncmp(input, "exit", 4) == 0)
+      //    exit(0);
       free(input);
     }
 }

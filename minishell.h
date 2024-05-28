@@ -8,6 +8,7 @@
 # include <unistd.h>
 # include <ctype.h>
 # include <stdbool.h>
+# include <fcntl.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -148,5 +149,6 @@ void        piping_and_forking(t_data *cnt, int i);
 t_execute	*init_exec_struct(int pipes);
 char	    *get_path(char *cmd, char **envp, int *p);
 void	    run_builtin_child(char **args, t_data *cnt);
+void	    redirect(t_data	*cnt, int i);
 
 # endif
