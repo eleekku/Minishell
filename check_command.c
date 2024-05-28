@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/17 11:11:12 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:44:49 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+
+# include "minishell.h"
 
 void	pre_echo(char	**args)
 {
