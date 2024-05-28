@@ -9,8 +9,25 @@
 /*   Updated: 2024/05/17 14:31:15 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
  #include "minishell.h"
+
+t_execute	*init_exec_struct(int pipes)
+{
+	t_execute	*exec;
+
+	exec = malloc(sizeof(t_execute));
+		if (!exec)
+			exit(1);
+	exec->pipesfd = malloc(((pipes) * 2) * sizeof(int));
+		if(!exec->pipesfd)
+			exit(1);
+	exec->fdtrack = 0;
+	exec->currentfd = 0;
+	exec->child = malloc((pipes + 1) * sizeof(pid_t));
+		if (!exec->child)
+			exit(1);
+	return (exec);
+}
 
 char	*create_string(char *path, char *cmd)
 {
@@ -71,28 +88,4 @@ char	*get_path(char *cmd, char **envp, int *p)
 	if (path)
 		return (path);
 	return (cmd);
-}
-
-void	exec(char **cmd, char **env)
-{
-	char		**args;
-	static char	*path;
-	int			p;
-
-	p = 0;
-//	if (ft_strchr(cmd, 39) != 0)
-	//	args = split_quotations(cmd);
-//	else
-	//	args = ft_split(cmd, ' ');
-	//if (!args)
-	//	terminate_program("ft_split", 1);
-	if (ft_strchr(cmd[0], '/') != 0)
-		path = args[0];
-	else
-		path = get_path(cmd[0], env, &p);
-	//checkpath(path);
-	if (path)
-		execve(path, cmd, env);
-	//free_args(args);
-	exit(127);
 }

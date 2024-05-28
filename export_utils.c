@@ -29,6 +29,28 @@ void  free_array(char **args)
   free (args);
 }
 
+void	build_export(t_data *content)
+{
+	int		i;
+
+	i = 0; 
+	while (content->env[i])
+		i++;
+	content->exp = safe_calloc(i + 1, sizeof(char *));
+	i = 0;
+	while (content->env[i])
+	{
+		content->exp[i] = ft_strdup(content->env[i]);
+			if (!content->exp[i])
+			{
+				// error stuff
+				exit(255);
+			}
+		i++;
+	}
+	content->exp[i] = NULL;
+}
+
 char  **add_space(char **table, int linel)
 {
   int   i;

@@ -130,19 +130,21 @@ char        **export(char *arg, char **table);
 int         unset_variable(t_data *content, char **args);
 void        env(t_data *content);
 void	    build_export(t_data *content);
-void        print_export(t_data *content);
-void        initialize_export(t_data *content, char *arg);
+void	    pre_export(t_data *cnt);
 void        run_builtin(t_data *cnt);
-void	    echo(char **args);
+void        echo(char **args);
 char	    *get_pwd(void);
 int         change_directory(char *path, t_data *content);
 void        built_exit(char **args);
 char        **add_space(char **table, int linel);
-char        *manipulate_variable(t_data *content, int index, char *variable, char *arg);
 int         unset_variable(t_data *content, char **args);
 void	    execution(t_data *cnt, int i, int fd);
-void	    executor(t_data *cnt);
+void        executor(t_data *cnt);
 void	    exec(char **cmd, char **env);
 t_bool	    check_built_in(char **args);
+void        piping_and_forking(t_data *cnt, int i);
+t_execute	*init_exec_struct(int pipes);
+char	    *get_path(char *cmd, char **envp, int *p);
+void	    run_builtin_child(char **args, t_data *cnt);
 
 # endif

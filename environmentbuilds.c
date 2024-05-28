@@ -61,6 +61,4 @@ void  env(t_data *content)
     if (content->env[i] && ft_strlen(content->env[i]) > 0)
       ft_putendl_fd(content->env[i], 1);
   }
-  //printf("%s\n", content->env[i]);
-  //printf("%s\n", content->env[i + 1]);
 }

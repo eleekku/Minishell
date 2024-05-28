@@ -11,19 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-//#include "minishelld.h"
-
-char **export(char *arg, char **table)
-{
-  int i;
-  char  *data;
-  i = 0;
-  while (table[i])
-    i++;
-  table = add_space(table, ft_strlen(arg));
-  table[i] = ft_strdup(arg);
-  return (table);
-}
 
 char  *manipulate_variable(t_data *content, int index, char *variable, char *arg)
 {
@@ -45,6 +32,18 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
     }
   content->env = export(arg, content->env);
   return (ft_strdup(arg));
+}
+
+char **export(char *arg, char **table)
+{
+  int i;
+  char  *data;
+  i = 0;
+  while (table[i])
+    i++;
+  table = add_space(table, ft_strlen(arg));
+  table[i] = ft_strdup(arg);
+  return (table);
 }
 
 void  initialize_export(t_data *content, char *arg)
@@ -108,47 +107,14 @@ void	print_export(t_data *content)
 	}
 }
 
-void	build_export(t_data *content)
+void	pre_export(t_data *cnt)
 {
-	int		i;
+	int j;
 
-	i = 0; 
-	while (content->env[i])
-		i++;
-	content->exp = safe_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (content->env[i])
-	{
-		content->exp[i] = ft_strdup(content->env[i]);
-			if (!content->exp[i])
-			{
-				// error stuff
-				exit(255);
-			}
-		i++;
-	}
-	content->exp[i] = NULL;
+	j = 0;
+	if (!cnt->parse[0].cmd[1])
+		print_export(cnt);
+	else
+		while (cnt->parse[0].cmd[++j])
+			initialize_export(cnt, cnt->parse[0].cmd[j]);
 }
-
-/* int	main(int argc, char **argv, char **envp)
-{
-	char	**arr;
-	t_data content;
-	int	i;
-
-	i = -1;
-	create_envp(envp, &content);
-	build_export(&content);
-	unset_variable(&content, ft_split("unset MAIL", ' '));
-	env(&content);
-	print_export(&content);
-	
-	while (content.env[++i])
-		printf("%s\n", content.env[i]);
-	 i = 0;
-	while (i < content.exp[i])
-	{
-		printf("%s\n", content.exp[i]);
-		i++;
-	} 
-} */
