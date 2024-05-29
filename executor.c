@@ -6,9 +6,10 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 14:37:36 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/05/29 15:26:36 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 void	exec(char **cmd, char **env)
@@ -87,7 +88,6 @@ void	executor(t_data *cnt)
 		run_builtin(cnt);
 		return ;
 	}
-	//printf("im here too %s\n", cnt->parse[0]->cmd[0]);
 	if (!cnt->parse[1].cmd[0])
 		single_command(cnt, cnt->parse[0].cmd);
 	if (cnt->i_pipex > 1)

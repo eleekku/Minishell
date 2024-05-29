@@ -519,11 +519,9 @@ void    creating_parse(t_data *data)
             return ;
         i++;
     }
-    data->parse = safe_calloc(data->i_pipex + 1, sizeof(t_parse*));
-   // parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
-   while (i < data->i_pipex)
-   data->parse[i] = init_parse_struct(parse, data);
+    parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
+    init_parse_struct(parse, data);
     parse = init_parse_struct(parse, data);
     add_data_to_parse(parse, data, data->i_pipex);
-    data->parse = &parse;
+    data->parse = parse;
 }
