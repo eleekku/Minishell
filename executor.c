@@ -6,11 +6,10 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 14:37:36 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/05/29 15:01:43 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 
 void	exec(char **cmd, char **env)
 {
@@ -59,12 +58,13 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
+	printf("im here\n");
 	child = fork();
 		if (child == -1)
 			exit (1);
 	if (child == 0)
 	{
-		if (cnt->parse[0].rec_file[0])
+		if (cnt->parse[0]->rec_file[0])
 			redirect(cnt, 0);
 		exec(args, cnt->env);
 	}
@@ -80,15 +80,18 @@ void	executor(t_data *cnt)
 	int	i;
 
 	i = -1;
-	if (!cnt->parse || !cnt->parse[0].cmd[0])
+//	printf("command is %s\n", cnt->parse[0]->cmd[0]);
+	if (!cnt->parse || !cnt->parse[0]->cmd[0])
 		return;
-	if (!cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
+	//printf("im here too %s\n", cnt->parse[0]->cmd[0]);
+	if (!cnt->parse[1]->cmd[0] && check_built_in(cnt->parse[0]->cmd) == TRUE)
 	{
 		run_builtin(cnt);
 		return ;
 	}
-	if (!cnt->parse[1].cmd)
-		single_command(cnt, cnt->parse[0].cmd);
+	//printf("im here too %s\n", cnt->parse[0]->cmd[0]);
+	if (!cnt->parse[1]->cmd[0])
+		single_command(cnt, cnt->parse[0]->cmd);
 	if (cnt->i_pipex > 1)
 	{
 	cnt->exec = init_exec_struct(cnt->i_pipex - 1);
@@ -96,4 +99,5 @@ void	executor(t_data *cnt)
 		piping_and_forking(cnt, i);
 	parent_process(cnt);
 	}
+//	printf("im here too %s\n", cnt->parse[0]->cmd[0]);
 }
