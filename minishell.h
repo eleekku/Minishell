@@ -8,6 +8,7 @@
 # include <unistd.h>
 # include <ctype.h>
 # include <stdbool.h>
+# include <fcntl.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -15,6 +16,10 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+# define TRUE 1
+# define FALSE 0
+
+typedef int	t_bool;
 
 typedef struct s_split
 {
@@ -42,6 +47,15 @@ typedef enum s_token_name
     TOKEN_EOL,
 } t_token_name;
 
+typedef struct s_execute
+{
+    pid_t   *child;
+    int     *pipesfd;
+    int		fdtrack;
+    int     currentfd;
+
+} t_execute;
+
 typedef struct s_lexer
 {
     char *start;
@@ -63,8 +77,8 @@ typedef struct s_char_iter
 
 typedef struct s_parse
 {
-    char **cmd; 
-    char **rec_file;
+    char    **cmd;
+    char    **rec_file;
 } t_parse;
 
 typedef struct s_data
@@ -76,13 +90,14 @@ typedef struct s_data
     int str;
     int irec;
     int i_token;
-    int i_str;
     int i_pipex;
     int i_quate;
+    int i_str;
     int i_parse;
-    int exit_error;
+    int exit_status;
     t_token *lexer_array;
     t_parse *parse;
+    t_execute   *exec;
 } t_data;
 
 //lexer
@@ -107,29 +122,33 @@ char			char_iter_peek(t_char_iter *self);
 char			char_iter_next(t_char_iter *self);
 
 //execution
-void	free_args(char **args);
-char	*safe_strjoin(char const *s1, char const *s2);
-void	*safe_calloc(size_t nitems, size_t size);
-char	*safe_strdup(const char *src);
-void    free_array(char **args);
-char	*get_root(void);
-void    create_envp(char **env, t_data *content);
-char    **export(char *arg, char **table);
-int     unset_variable(t_data *content, char **args);
-void    env(t_data *content);
-void	build_export(t_data *content);
-void	print_export(t_data *content);
-void    initialize_export(t_data *content, char *arg);
-void    check_command(t_data *cnt);
-void	echo(char **args);
-char	*get_pwd(void);
-int     change_directory(char *path, t_data *content);
-void    built_exit(char **args);
-char    **add_space(char **table, int linel);
-char    *manipulate_variable(t_data *content, int index, char *variable, char *arg);
-int     unset_variable(t_data *content, char **args);
-void	execution(t_data *cnt, int i);
-void	last_command(t_data *cnt, int i);
-void	executor(t_data *cnt);
+void	    free_args(char **args);
+char	    *safe_strjoin(char const *s1, char const *s2);
+void	    *safe_calloc(size_t nitems, size_t size);
+char	    *safe_strdup(const char *src);
+void        free_array(char **args);
+char	    *get_root(void);
+void        create_envp(char **env, t_data *content);
+char        **export(char *arg, char **table);
+int         unset_variable(t_data *content, char **args);
+void        env(t_data *content);
+void	    build_export(t_data *content);
+void	    pre_export(t_data *cnt);
+void        run_builtin(t_data *cnt);
+void        echo(char **args);
+char	    *get_pwd(void);
+int         change_directory(char *path, t_data *content);
+void        built_exit(char **args);
+char        **add_space(char **table, int linel);
+int         unset_variable(t_data *content, char **args);
+void	    execution(t_data *cnt, int i, int fd);
+void        executor(t_data *cnt);
+void	    exec(char **cmd, char **env);
+t_bool	    check_built_in(char **args);
+void        piping_and_forking(t_data *cnt, int i);
+t_execute	*init_exec_struct(int pipes);
+char	    *get_path(char *cmd, char **envp, int *p);
+void	    run_builtin_child(char **args, t_data *cnt);
+void	    redirect(t_data	*cnt, int i);
 
 # endif

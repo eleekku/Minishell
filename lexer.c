@@ -289,7 +289,7 @@ void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
     envp = data->env;
     if (data->lexer_array[i_token].pos.start[0] == '?')
     {
-        parse->cmd[data->i_str] = ft_itoa(data->exit_error);
+        parse->cmd[data->i_str] = ft_itoa(data->exit_status);
         //check for NULL
         return ;
     }

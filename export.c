@@ -11,7 +11,28 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-//#include "minishelld.h"
+
+char  *manipulate_variable(t_data *content, int index, char *variable, char *arg)
+{
+  int i;
+
+  i = 0;
+  free(content->exp[index]);
+  content->exp[index] = ft_strdup(arg);
+    if (!content->exp[index])
+      exit(1); //errooooor
+  while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
+    i++;
+  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0 
+  && content->env[i][ft_strlen(variable)] == '=')
+    {
+      free(content->env[i]);
+      content->env[i] = ft_strdup(arg);
+      return(ft_strdup(arg));
+    }
+  content->env = export(arg, content->env);
+  return (ft_strdup(arg));
+}
 
 char **export(char *arg, char **table)
 {
@@ -23,29 +44,6 @@ char **export(char *arg, char **table)
   table = add_space(table, ft_strlen(arg));
   table[i] = ft_strdup(arg);
   return (table);
-}
-
-char  *manipulate_variable(t_data *content, int index, char *variable, char *arg)
-{
-  int i;
-
-  i = 0;
- // printf("%p\n", content->exp[index]);
-  free(content->exp[index]);
-  content->exp[index] = ft_strdup(arg);
- // printf("%p\n", content->exp[index]);
-    if (!content->exp[index])
-      exit(1); //errooooor
-  while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
-    i++;
-  if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0)
-    {
-      free(content->env[i]);
-      content->env[i] = ft_strdup(arg);
-      return(ft_strdup(arg));
-    }
-  content->env = export(arg, content->env);
-  return (ft_strdup(arg));
 }
 
 void  initialize_export(t_data *content, char *arg)
@@ -72,8 +70,8 @@ void  initialize_export(t_data *content, char *arg)
       }
     }
   }
-  if (ft_strchr(arg, '='))
-    content->env = export(arg, content->env);
+	if ((*(ft_strchr(arg, '=') + 1)))
+		content->env = export(arg, content->env);
   i = 1;
   while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
   i++;
@@ -109,47 +107,14 @@ void	print_export(t_data *content)
 	}
 }
 
-void	build_export(t_data *content)
+void	pre_export(t_data *cnt)
 {
-	int		i;
+	int j;
 
-	i = 0; 
-	while (content->env[i])
-		i++;
-	content->exp = safe_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (content->env[i])
-	{
-		content->exp[i] = ft_strdup(content->env[i]);
-			if (!content->exp[i])
-			{
-				// error stuff
-				exit(255);
-			}
-		i++;
-	}
-	content->exp[i] = NULL;
+	j = 0;
+	if (!cnt->parse[0].cmd[1])
+		print_export(cnt);
+	else
+		while (cnt->parse[0].cmd[++j])
+			initialize_export(cnt, cnt->parse[0].cmd[j]);
 }
-
-/* int	main(int argc, char **argv, char **envp)
-{
-	char	**arr;
-	t_data content;
-	int	i;
-
-	i = -1;
-	create_envp(envp, &content);
-	build_export(&content);
-	unset_variable(&content, ft_split("unset MAIL", ' '));
-	env(&content);
-	print_export(&content);
-	
-	while (content.env[++i])
-		printf("%s\n", content.env[i]);
-	 i = 0;
-	while (i < content.exp[i])
-	{
-		printf("%s\n", content.exp[i]);
-		i++;
-	} 
-} */
