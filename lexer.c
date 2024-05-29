@@ -460,7 +460,7 @@ void    add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
     }
     printf("\n");
 }
-void    init_parse_struct(t_parse *parse, t_data *data)
+t_parse    *init_parse_struct(t_parse *parse, t_data *data)
 {
     int i;
 
@@ -471,6 +471,7 @@ void    init_parse_struct(t_parse *parse, t_data *data)
         parse[i].rec_file = NULL;
         i++;
     }
+    return (parse);
 }
 bool    print_recd_error(t_data *data, int i)
 {
@@ -518,8 +519,11 @@ void    creating_parse(t_data *data)
             return ;
         i++;
     }
-    parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
-    init_parse_struct(parse, data);
+    data->parse = safe_calloc(data->i_pipex + 1, sizeof(t_parse*));
+   // parse = ft_calloc(data->i_pipex + 1, sizeof(t_parse));
+   while (i < data->i_pipex)
+   data->parse[i] = init_parse_struct(parse, data);
+    parse = init_parse_struct(parse, data);
     add_data_to_parse(parse, data, data->i_pipex);
-    data->parse = parse;
+    data->parse = &parse;
 }

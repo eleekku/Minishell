@@ -57,14 +57,14 @@ void	first_command(t_data *cnt, char **args, char **env, t_bool builtin)
 
 void	child_process(t_data *cnt, int i, int currentfd, t_bool builtin)
 {
-	if (cnt->parse[i].rec_file[0])
+	if (cnt->parse[i]->rec_file[0])
 			redirect(cnt, i);
 	if (i == 0)
-		first_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		first_command(cnt, cnt->parse[i]->cmd, cnt->env, builtin);
 	else if(i > 0 && i < cnt->i_pipex - 1)
-		middle_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		middle_command(cnt, cnt->parse[i]->cmd, cnt->env, builtin);
 	else if (i < cnt->i_pipex)
-		last_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		last_command(cnt, cnt->parse[i]->cmd, cnt->env, builtin);
 }
 
 void	piping_and_forking(t_data *cnt, int i)
@@ -72,9 +72,9 @@ void	piping_and_forking(t_data *cnt, int i)
 	int 	pipefd[2];
 	t_bool	builtin;
 
-	if (cnt->parse[i].rec_file[0])
+	if (cnt->parse[i]->rec_file[0])
 		redirect(cnt, i);
-	builtin = check_built_in(cnt->parse[i].cmd);
+	builtin = check_built_in(cnt->parse[i]->cmd);
 	if (i < (cnt->i_pipex - 1))
 	{
 		pipe(pipefd);
