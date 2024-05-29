@@ -96,7 +96,7 @@ typedef struct s_data
     int i_parse;
     int exit_status;
     t_token *lexer_array;
-    t_parse **parse;
+    t_parse *parse;
     t_execute   *exec;
 } t_data;
 

@@ -6,10 +6,11 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 13:25:01 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/05/29 14:37:36 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
 void	exec(char **cmd, char **env)
 {
