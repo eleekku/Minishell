@@ -58,13 +58,15 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
-	if (cnt->parse[0].rec_file[0])
-		redirect(cnt, 0);
 	child = fork();
 		if (child == -1)
 			exit (1);
 	if (child == 0)
+	{
+		if (cnt->parse[0].rec_file[0])
+			redirect(cnt, 0);
 		exec(args, cnt->env);
+	}
 	if (child != 0)
 	{
 		waitpid(child, &status, 0);
