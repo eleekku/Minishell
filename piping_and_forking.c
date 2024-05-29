@@ -72,8 +72,6 @@ void	piping_and_forking(t_data *cnt, int i)
 	int 	pipefd[2];
 	t_bool	builtin;
 
-	if (cnt->parse[i].rec_file[0])
-		redirect(cnt, i);
 	builtin = check_built_in(cnt->parse[i].cmd);
 	if (i < (cnt->i_pipex - 1))
 	{
