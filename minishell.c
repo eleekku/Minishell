@@ -101,6 +101,20 @@ void  create_envp(char **env, t_data *content)
     content->root = getenv("HOME");
     build_export(content);
 }
+void  free_struct_parse(t_data *data)
+{
+  int i;
+
+  i = 0;
+  while (i > data->i_pipex)
+  {
+    free_args(data->parse[i]->cmd);
+    free_args(data->parse[i]->rec_file);
+    free(data->parse[i]);
+    i++;
+  }
+  data->parse = NULL;
+}
 
 int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes y nada luego
 {
@@ -123,6 +137,7 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
       if (in == 0)
         creating_parse(&content);
       executor(&content);
+      free_struct_parse(&content);
      //check_command(&content);
       //printf("%s\n", input);
       //if (ft_strncmp(input, "exit", 4) == 0)
