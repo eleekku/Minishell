@@ -59,7 +59,6 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
-	printf("im here\n");
 	child = fork();
 		if (child == -1)
 			exit (1);
@@ -82,13 +81,13 @@ void	executor(t_data *cnt)
 
 	i = -1;
 	if (!cnt->parse || !cnt->parse[0].cmd[0])
-		return;;
-	if (!cnt->parse[1].cmd[0] && check_built_in(cnt->parse[0].cmd) == TRUE)
+		return;
+	if (!cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
 		return ;
 	}
-	if (!cnt->parse[1].cmd[0])
+	if (!cnt->parse[1].cmd)
 		single_command(cnt, cnt->parse[0].cmd);
 	if (cnt->i_pipex > 1)
 	{
