@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 14:37:36 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/05/29 15:05:34 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,5 @@ void	executor(t_data *cnt)
 		piping_and_forking(cnt, i);
 	parent_process(cnt);
 	}
+	//nothing
 }
