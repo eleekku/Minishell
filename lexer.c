@@ -407,6 +407,7 @@ void    count_str_redic(t_data *data)
         i++;
     }
 }
+
 void    current_itoken(t_data *data)
 {
     int i;
