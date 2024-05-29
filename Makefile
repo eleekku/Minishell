@@ -1,7 +1,7 @@
 NAME = minishell
 
-SRC = build_export.c echo.c environmentbuilds.c free_doble_array.c ft_skip_split.c iter_token.c \
-lexer_utils.c lexer.c minishell.c pwd.c safe_functions.c check_command.c
+SRC = export.c export_utils.c echo.c environmentbuilds.c free_doble_array.c ft_skip_split.c iter_token.c \
+lexer_utils.c lexer.c minishell.c pwd.c safe_functions.c check_command.c execution.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -21,12 +21,12 @@ $(NAME): $(OBJ) $(OBJ_PAR)
 		$(MAKE) -C ./libft
 		$(CC) $(FLAGS) -I. -Ilibft $(OBJ) $(OBJ_PAR) $(LIBFT) -o $(NAME)
 
-bonus: .bonus
+#bonus: .bonus
 
-.bonus: $(OBJ_BONUS) $(OBJ_PAR)
-		$(MAKE) -C ./libft
-		$(CC) $(FLAGS) -I. -Ilibft $(OBJ_BONUS) $(OBJ_PAR) $(LIBFT) -o $(NAME)
-		@touch .bonus
+#.bonus: $(OBJ_BONUS) $(OBJ_PAR)
+#		$(MAKE) -C ./libft
+#	#	$(CC) $(FLAGS) -I. -Ilibft $(OBJ_BONUS) $(OBJ_PAR) $(LIBFT) -o $(NAME)
+#	#	@touch .bonus
 
 %.o: %.c
 		$(CC) $(FLAGS) -I. -c $< -o $@

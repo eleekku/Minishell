@@ -25,4 +25,5 @@ void	free_args(char **args)
 		temp++;
 	}
 	free(args);
+	args = NULL;
 }
