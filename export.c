@@ -112,9 +112,9 @@ void	pre_export(t_data *cnt)
 	int j;
 
 	j = 0;
-	if (!cnt->parse[0]->cmd[1])
+	if (!cnt->parse[0].cmd[1])
 		print_export(cnt);
 	else
-		while (cnt->parse[0]->cmd[++j])
-			initialize_export(cnt, cnt->parse[0]->cmd[j]);
+		while (cnt->parse[0].cmd[++j])
+			initialize_export(cnt, cnt->parse[0].cmd[j]);
 }
