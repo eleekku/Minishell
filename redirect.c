@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:37:43 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/28 19:37:44 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:24:11 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 int	open_doc(char *file, int i)
