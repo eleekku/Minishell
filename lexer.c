@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
+/*   Updated: 2024/05/30 17:45:08 by dzurita          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "minishell.h"
 
 void	take_eol(t_char_iter *iter, t_token *token)
@@ -39,15 +51,84 @@ bool    is_redic(t_data *data, int i)
         return (true);
     return (false);
 }
+char    *check_str_envp_redc(t_data *data, t_parse *parse, char *str, int i_token)
+{
+    int i;
+    int len;
+
+    i = 0;
+    while (data->env[i])
+    {
+        len = ft_strchr(data->env[i], '=') - data->env[i];
+        if (ft_strncmp(data->env[i], str + 1, len) == 0)
+        {
+            if (ft_strchr(str, ' ') == NULL)
+            {    
+                free(str);
+                len = data->lexer_array[i_token].pos.len;
+                str = ft_strdup(data->env[i] + len);
+                return (str);
+            } 
+        }
+        i++;
+    }
+    return (str); 
+}
+char    *str_redc_dolar(t_data *data, t_parse *parse, int i_token)
+{
+    char *str;
+    int len;
+
+    len = data->lexer_array[i_token].pos.len;
+    if (data->lexer_array[i_token].pos.start[0] == '$' && len == 1)
+        return (ft_strdup("$"));
+    if (data->lexer_array[i_token].pos.start[0] == '?')
+    {
+        str = ft_itoa(data->exit_status);
+        //check for NULL
+        return (str);
+    }
+    else
+        str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
+    //check for null;
+    str = check_str_envp_redc(data, parse, str, i_token);
+    return (str);
+    //check for NULL
+}
 char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
 {
     char *tem1;
     char *temp2;
     char *rec;
     
-    tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+    tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
+                        data->lexer_array[i_token].pos.len);
     //check for null
     i_token++;
+    while (data->lexer_array[i_token].type != TOKEN_EOL 
+            && data->lexer_array[i_token].type != TOKEN_PIPE)
+    {
+        printf("t: %d\n", data->lexer_array[i_token].type);
+        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i_token].type == TOKEN_S_QUOTE)
+        {
+            if (data->lexer_array[i_token + 1].type == TOKEN_DQUOTE_CLOSED
+                && data->lexer_array[i_token].pos.len == 0)
+                i_token++;
+            else 
+            {
+                temp2 = make_str_dquote(data, i_token, index_after_quate(data, i_token));
+                data->i_token = index_after_quate(data, i_token) - 1;
+            }
+        }
+        if(data->lexer_array[i_token].type == TOKEN_DOLAR)
+            temp2 = str_redc_dolar(data, parse, i_token);
+        if(data->lexer_array[i_token].type == TOKEN_STR)
+            temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
+                        data->lexer_array[i_token].pos.len);
+        i_token++;
+    }
+    /////////
+    /*i_token++;
     if (data->lexer_array[i_token].type == TOKEN_SPACE)
     {
         i_token++;
@@ -56,57 +137,69 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     }
     if (data->lexer_array[i_token].type == TOKEN_EOL)
         return (NULL);
-    temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+    if ((data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i_token].type == TOKEN_S_QUOTE))
+    {
+        if (data->lexer_array[i_token + 1].type == TOKEN_DQUOTE_CLOSED
+            && data->lexer_array[i_token].pos.len == 0)
+            i_token++;
+        else 
+        {
+            temp2 = make_str_dquote(data, i_token, index_after_quate(data, i_token));
+            data->i_token = index_after_quate(data, i_token) - 1;
+        }
+    }
+    i_token++;
+    if(data->lexer_array[i_token].type == TOKEN_EOL)
+        temp2 = ft_strdup("");
+    if(data->lexer_array[i_token].type == TOKEN_DOLAR)
+        temp2 = str_redc_dolar(data, parse, i_token);
+    if(data->lexer_array[i_token].type == TOKEN_STR)
+        temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
+                        data->lexer_array[i_token].pos.len);*/
     //malloc handle
     rec = ft_strjoin(tem1, temp2);
     //malloc handle
     free(tem1);
     free(temp2);
+    data->i_token = i_token;
     return (rec);
 }
-/*bool    check_next_token(t_data *data, int i) //this check is to create the str when there are quates
-{
-    if (data->lexer_array[i + 2].type == TOKEN_EOL)
-        return (false);
-    if (data->lexer_array[i].type == TOKEN_DQUOTE_OPEN  && data->lexer_array[i + 2].type != TOKEN_SPACE)
-        return (true);
-    if (data->lexer_array[i].type == TOKEN_S_QUOTE  && data->lexer_array[i + 2].type != TOKEN_SPACE)
-        return (true);
-    return (false);
-}*/
 
 char *parse_dolar_dquate(t_data *data, int i_token)
 {
     char *str;
     char **envp;
     int i;
+    int len;
 
     envp = data->env;
-    str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
-    //check for NULL
+    len = data->lexer_array[i_token].pos.len;
+    str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
     i = 0;
     while (envp[i])
     {
         if (*str == '$' && ft_strlen(str) == 1)
             return(str);
-        if (ft_strncmp(envp[i], str + 1, data->lexer_array[i_token].pos.len - 1) == 0)
+        len = ft_strchr(envp[i], '=') - envp[i];
+        if (ft_strncmp(envp[i], str + 1, len) == 0)
         {
             free(str);
             str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);
-            //check for null
             return (str);
         }
         i++;
     }
     free(str);
     str = ft_strdup("");
-    //check for null
     return (str);
 }
+
 char    *check_dquote_str(t_data *data, int i_token)
 {
     char    *temp2;
+    int     len;
 
+    len = data->lexer_array[i_token].pos.len;
     temp2 = NULL;
     if (data->lexer_array[i_token].type == TOKEN_DOLAR)
     {
@@ -117,7 +210,7 @@ char    *check_dquote_str(t_data *data, int i_token)
     }
     else
     {
-        temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+        temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
         if (!temp2)
             return(NULL);            
     }
@@ -187,7 +280,8 @@ char    **copy_realloc(char *str, char **new_ptr, int i, int size)
     return (new_ptr);
 }
 
-char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t new_size) 
+char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data,
+                                size_t new_size) 
 {
     char **new_ptr;
     size_t copy_size;
@@ -234,17 +328,20 @@ int	ft_cont_str(const char *s, char c)
 bool   change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
 {
     int re_size;
-
+    int len;
+    
+    len = data->lexer_array[i_token].pos.len;
     if (ft_strchr(str, ' ') == NULL)
     {
-        parse[data->i_parse].cmd[data->i_str] = ft_strdup(str + data->lexer_array[i_token].pos.len);;
+        parse[data->i_parse].cmd[data->i_str] = ft_strdup(str + len);
         return (true);
     }
     //check for null
     else
     {   
         re_size = ft_cont_str(ft_strchr(str, '=') + 1, ' ');
-        parse[data->i_parse].cmd = ft_realloc_char_array(str, parse, data, data->str + re_size);
+        parse[data->i_parse].cmd = ft_realloc_char_array(str, parse, data,
+                                                        data->str + re_size);
         data->i_str += re_size - 1;
         return (true);
     }
@@ -252,11 +349,11 @@ bool   change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
     return (false);
 } 
 
-bool parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token)
+bool parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token)//str + 1 is because str = $something
 {
     int i;
     char **envp;
-    int re_size;
+    size_t len;
 
     i = 0;
     envp = data->env;
@@ -267,7 +364,8 @@ bool parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token)
             parse->cmd[data->i_str] = str;
             return (true);
         }
-        if (ft_strncmp(envp[i], str + 1, ft_strchr(envp[i], '=') - envp[i]) == 0)
+        len = ft_strchr(envp[i], '=') - envp[i];
+        if (ft_strncmp(envp[i], str + 1, len) == 0)
         {
             free(str);
             if (change_str_dolar(data, parse, envp[i], i_token) == true)
@@ -281,12 +379,9 @@ bool parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token)
 void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
 {
     char *str;
-    char **envp;
-    char *equal;
-    int i;
-    int re_size;
+    int len;
 
-    envp = data->env;
+    len = data->lexer_array[i_token].pos.len;
     if (data->lexer_array[i_token].pos.start[0] == '?')
     {
         parse->cmd[data->i_str] = ft_itoa(data->exit_status);
@@ -294,7 +389,7 @@ void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
         return ;
     }
     else
-        str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, data->lexer_array[i_token].pos.len);
+        str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
     //check for null;
     if (parse_dolar_envp(data, parse, str, i_token) == true)
         return ;
@@ -305,55 +400,82 @@ void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
 
 int index_after_quate(t_data *data, int i)
 {
-    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE && is_redic(data, i) == false && data->lexer_array[i].type != TOKEN_SPACE)
+    while (data->lexer_array[i].type != TOKEN_EOL
+            && data->lexer_array[i].type != TOKEN_PIPE
+            && is_redic(data, i) == false
+            && data->lexer_array[i].type != TOKEN_SPACE)
         i++;
     return (i);
 }
+int parse_quote(t_data *data, t_parse *parse, int i_parse, int i)
+{
+    if ((data->lexer_array[i].type == TOKEN_DQUOTE_OPEN
+        || data->lexer_array[i].type == TOKEN_S_QUOTE))
+    {
+        if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_CLOSED
+            && data->lexer_array[i].pos.len == 0)
+            i++;
+        else 
+        {
+            parse[i_parse].cmd[data->i_str] = make_str_dquote(data, i,
+                                                index_after_quate(data, i));
+            i = index_after_quate(data, i) - 1;
+            data->i_str++;
+        }
+    }
+    return (i);
+}
+
+int parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i)
+{
+    char *temp;
+    char *str;
+    int len;
+
+    i = parse_quote(data, parse, i_parse, i);
+    len = data->lexer_array[i].pos.len;
+    str = data->lexer_array[i].pos.start;
+    if  (data->lexer_array[i].type == TOKEN_STR)
+    {
+        parse[i_parse].cmd[data->i_str] = ft_add_cmd_str(str, len);
+        if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_OPEN
+            || data->lexer_array[i + 1].type == TOKEN_S_QUOTE)
+        {
+            i++;
+            temp = make_str_dquote(data, i, index_after_quate(data, i));
+            str = parse[i_parse].cmd[data->i_str];
+            parse[i_parse].cmd[data->i_str] = ft_strjoingnl(str, temp);
+            free(temp);
+            i = index_after_quate(data, i) - 1;
+        }
+        data->i_str++;
+    }
+    return(i);
+}
+
 void    parse_str(t_data *data, t_parse *parse, int i_parse)
 {
     int i;
-    int str;
-    char *temp;
 
     i = data->i_token;
-    str = 0;
     data->i_str = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
+    while (data->lexer_array[i].type != TOKEN_EOL 
+            && data->lexer_array[i].type != TOKEN_PIPE)
     {
+
         if (data->lexer_array[i].type == TOKEN_DOLAR)
         {
             parse_dolar(data, parse, i, i_parse);
             data->i_str++;
         }
-        if ((data->lexer_array[i].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i].type == TOKEN_S_QUOTE))
-        {
-            if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_CLOSED && data->lexer_array[i].pos.len == 0)
-                i++;
-            else 
-            {
-                parse[i_parse].cmd[data->i_str] = make_str_dquote(data, i, index_after_quate(data, i));
-                i = index_after_quate(data, i) - 1;
-                data->i_str++;
-            }
-        }
-        if  (data->lexer_array[i].type == TOKEN_STR)
-        {
-            parse[i_parse].cmd[data->i_str] = ft_add_cmd_str(data->lexer_array[i].pos.start, data->lexer_array[i].pos.len);
-            if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i + 1].type == TOKEN_S_QUOTE)
-            {
-                i++;
-                temp = make_str_dquote(data, i, index_after_quate(data, i));
-                parse[i_parse].cmd[data->i_str] = ft_strjoingnl(parse[i_parse].cmd[data->i_str], temp);
-                free(temp);
-                i = index_after_quate(data, i) - 1;
-            }
-            data->i_str++;
-        }
+        i = parse_str_loop(data, parse, i_parse, i);
         if (is_redic(data, i) == true)
         {
             i++;
             if (data->lexer_array[i].type == TOKEN_SPACE)
                 i++;
+            if (data->lexer_array[i].type == TOKEN_S_QUOTE || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN)
+                i = index_after_quate(data, i) - 1;
         }
         i++;
     }
@@ -366,7 +488,8 @@ void    parse_redic(t_data *data, t_parse *parse, int i_parse)
 
     i = data->i_token;
     i_rec = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
+    while (data->lexer_array[i].type != TOKEN_EOL 
+            && data->lexer_array[i].type != TOKEN_PIPE)
     {
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
@@ -374,7 +497,12 @@ void    parse_redic(t_data *data, t_parse *parse, int i_parse)
             || data->lexer_array[i].type == TOKEN_HEREDOC)
         {
             parse[i_parse].rec_file[i_rec] = make_recd_str(parse, data, i);
+            /*if (parse[i_parse].rec_file[i_rec] + 1 == '\0')
+            {
+                printf("bash: $ok: ambiguous redirect");
+            }*/
             i_rec++;
+            i = data->i_token;
         }
         i++;
     }
@@ -387,7 +515,8 @@ void    count_str_redic(t_data *data)
     i = data->i_token;
     data->str = 0;
     data->irec = 0;
-    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
+    while (data->lexer_array[i].type != TOKEN_EOL
+            && data->lexer_array[i].type != TOKEN_PIPE)
     {
         if (data->lexer_array[i].type == TOKEN_STR 
             || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN 
@@ -413,7 +542,8 @@ void    current_itoken(t_data *data)
     int i;
 
     i = data->i_token;
-    while (data->lexer_array[i].type != TOKEN_EOL && data->lexer_array[i].type != TOKEN_PIPE)
+    while (data->lexer_array[i].type != TOKEN_EOL
+            && data->lexer_array[i].type != TOKEN_PIPE)
         i++;
     data->i_token = i + 1;
 }
@@ -425,6 +555,7 @@ void    add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
     data->i_parse = i_parse;
     data->i_token = 0;
     data->i_str = 0;
+    data->irec = 0;
     while (i_parse < i_pipex)
     {
         count_str_redic(data);
@@ -485,7 +616,8 @@ bool    print_recd_error(t_data *data, int i)
         }
     if (data->lexer_array[i + 1].type != TOKEN_STR)
     {
-        while (data->lexer_array[i].pos.start[red] == '>' || data->lexer_array[i].pos.start[red] == '<')
+        while (data->lexer_array[i].pos.start[red] == '>'
+                || data->lexer_array[i].pos.start[red] == '<')
             red++;
         if (red > 2)
         {

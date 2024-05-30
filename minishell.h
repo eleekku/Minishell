@@ -112,6 +112,8 @@ void    add_token(t_token *token, t_char_iter *iter);
 void    creating_parse(t_data *data);
 char	*ft_add_cmd_str(const char *src, int len);
 void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
+int     index_after_quate(t_data *data, int i);
+char    *make_str_dquote(t_data *data, int i_token, int i_quate);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);
