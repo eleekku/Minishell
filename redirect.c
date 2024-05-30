@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-int	open_doc(char *file, int i)
+int	open_out_doc(char *file, int i)
 {
 	int	fd;
 
 	if (i == 0)
 	{
-		fd = open(file, O_RDONLY);
+		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
 		if (fd == -1)
 		{
 			printf("minishell$ %s: ", file);
@@ -44,10 +44,18 @@ void	redirect(t_data	*cnt, int i)
 
 	j = -1;
 	while (cnt->parse[i].rec_file[++j])
+	{
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
 		{
-			fdout = open_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
+			fdout = open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
 		 	dup2(fdout, STDOUT);
 			close(fdout);
 		}
+		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] == '>')
+		{
+			fdout = open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
+		 	dup2(fdout, STDOUT);
+			close(fdout);
+		}
+	}
 }
