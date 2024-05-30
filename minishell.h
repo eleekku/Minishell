@@ -83,20 +83,20 @@ typedef struct s_parse
 
 typedef struct s_data
 {
-    char **env;
-    char **exp;
-    char *str_rl;
-    char *root;
-    int str;
-    int irec;
-    int i_token;
-    int i_pipex;
-    int i_quate;
-    int i_str;
-    int i_parse;
-    int exit_status;
-    t_token *lexer_array;
-    t_parse *parse;
+    char        **env;
+    char        **exp;
+    char        *str_rl;
+    char        *root;
+    int         str;
+    int         irec;
+    int         i_token;
+    int         i_pipex;
+    int         i_quate;
+    int         i_str;
+    int         i_parse;
+    int         exit_status;
+    t_token     *lexer_array;
+    t_parse     *parse;
     t_execute   *exec;
 } t_data;
 
@@ -149,6 +149,6 @@ void        piping_and_forking(t_data *cnt, int i);
 t_execute	*init_exec_struct(int pipes);
 char	    *get_path(char *cmd, char **envp, int *p);
 void	    run_builtin_child(char **args, t_data *cnt);
-void	    redirect(t_data	*cnt, int i);
+int         redirect(t_data	*cnt, int i);
 
 # endif

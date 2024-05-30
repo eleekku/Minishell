@@ -61,7 +61,8 @@ void	child_process(t_data *cnt, int i, int currentfd, t_bool builtin)
 	if (cnt->parse[i].rec_file[0])
 	{
 			close(cnt->exec->pipesfd[cnt->exec->currentfd - 1]);
-			redirect(cnt, i);
+			if (redirect(cnt, i) < 0)
+				exit (1);
 	}
 	if (i == 0)
 		first_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);

@@ -36,7 +36,8 @@ void	run_builtin_child(char **args, t_data *cnt)
 void	run_builtin(t_data *cnt)
 {
 	if (cnt->parse[0].rec_file[0])
-		redirect(cnt, 0);
+		if (redirect(cnt, 0) < 0)
+			return ;
 	if (!cnt->parse)
 		return;
 	if (!cnt->parse[0].cmd[0])

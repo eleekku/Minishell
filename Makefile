@@ -5,32 +5,20 @@ lexer_utils.c lexer.c minishell.c piping_and_forking.c pwd.c redirect.c safe_fun
 
 OBJ = $(SRC:.c=.o)
 
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
-
-OBJ_PAR = $(PAR:.c=.o)
-
 LIBFT = -Llibft -lft
 
+LINK_FLAGS = -lreadline
 CC = cc
-
-FLAGS = -lreadline
-# -g -fsanitize=address,undefined
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(OBJ_PAR)
+$(NAME): $(OBJ)
 		$(MAKE) -C ./libft
-		$(CC) $(FLAGS) -I. -Ilibft $(OBJ) $(OBJ_PAR) $(LIBFT) -o $(NAME)
-
-#bonus: .bonus
-
-#.bonus: $(OBJ_BONUS) $(OBJ_PAR)
-#		$(MAKE) -C ./libft
-#	#	$(CC) $(FLAGS) -I. -Ilibft $(OBJ_BONUS) $(OBJ_PAR) $(LIBFT) -o $(NAME)
-#	#	@touch .bonus
+		$(CC) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) -I. -c $< -o $@
+		$(CC) $(FLAGS) -I. -Ilibft -c $< -o $@
 
 clean:
 		$(MAKE) clean -C ./libft

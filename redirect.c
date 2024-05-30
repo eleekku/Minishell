@@ -12,7 +12,40 @@
 
 #include "minishell.h"
 
-int	open_out_doc(char *file, int i)
+void	here_doc(char *limiter)
+{
+	int		pipefd[2];
+	char	*line;
+	printf("im here\n");
+	pipe(pipefd);
+	while (1)//ft_strncmp(line, limiter, ft_strlen(limiter)) != 0
+	{
+		line = readline(" > ");
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+			break;
+		ft_putstr_fd(line, pipefd[1]);
+		free(line);
+	}
+	free(line);
+	close(pipefd[1]);
+	//return (pipefd[0]);
+}
+
+void	open_in_doc(char *file)
+{
+	int	fd;
+
+	fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		printf("minishell$ %s: ", file);
+		perror("");
+	}
+	dup2(fd, STDIN);
+	close(fd);
+}
+
+void	open_out_doc(char *file, int i)
 {
 	int	fd;
 
@@ -34,28 +67,31 @@ int	open_out_doc(char *file, int i)
 			perror("");
 		}
 	}
-	return (fd);
+	dup2(fd, STDOUT);
+	close(fd);
 }
 
-void	redirect(t_data	*cnt, int i)
+int	redirect(t_data	*cnt, int i)
 {
-	int fdout;
 	int j;
 
 	j = -1;
 	while (cnt->parse[i].rec_file[++j])
 	{
+		if ((cnt->parse[i].rec_file[j][1] == '$' && cnt->parse[i].rec_file[j][2]) ||
+		(cnt->parse[i].rec_file[j][2] == '$' && cnt->parse[i].rec_file[j][3]))
+		{
+		ft_printf(2, "minishell$ %s: ambigious redirect\n", ft_strchr(cnt->parse[i].rec_file[j], '$'));
+		return (-1);
+		}
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
-		{
-			fdout = open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
-		 	dup2(fdout, STDOUT);
-			close(fdout);
-		}
+			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] == '>')
-		{
-			fdout = open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
-		 	dup2(fdout, STDOUT);
-			close(fdout);
-		}
+			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
+		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')
+			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
+		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
+			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2);	
 	}
+	return (0);
 }
