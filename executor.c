@@ -66,11 +66,13 @@ void	single_command(t_data *cnt, char **args)
 	{
 		if (cnt->parse[0].rec_file[0])
 			redirect(cnt, 0);
+		ft_printf(2, "child goint to exec\n");
 		exec(args, cnt->env);
 	}
 	if (child != 0)
 	{
 		waitpid(child, &status, 0);
+		ft_printf(2, "I waited and child exited status %d\n", status);
 		cnt->exit_status = status;
 	}
 }

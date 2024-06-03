@@ -122,6 +122,8 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
     t_data content;
 
     content.exit_status = 127;
+    content.here_doc_fd = -1;
+    content.stdin_backup = dup(STDIN);
     if (ac == 0 || ac > 1)
         exit_error("Invalid input\n");
     printf("Welcome to Minishell los pran...\n");

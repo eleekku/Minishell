@@ -80,7 +80,8 @@ void	piping_and_forking(t_data *cnt, int i)
 	builtin = check_built_in(cnt->parse[i].cmd);
 	if (i < (cnt->i_pipex - 1))
 	{
-		pipe(pipefd);
+		if (pipe(pipefd) == -1)
+			exit (1);
 		cnt->exec->pipesfd[cnt->exec->currentfd++] = pipefd[0];
 		cnt->exec->pipesfd[cnt->exec->currentfd++] = pipefd[1];
 	}

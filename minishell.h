@@ -95,6 +95,8 @@ typedef struct s_data
     int         i_str;
     int         i_parse;
     int         exit_status;
+    int         here_doc_fd;
+    int         stdin_backup;
     t_token     *lexer_array;
     t_parse     *parse;
     t_execute   *exec;
