@@ -95,6 +95,7 @@ typedef struct s_data
     int i_str;
     int i_parse;
     int exit_status;
+    bool is_exp;
     t_token *lexer_array;
     t_parse *parse;
     t_execute   *exec;
@@ -114,6 +115,11 @@ char	*ft_add_cmd_str(const char *src, int len);
 void    parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
 int     index_after_quate(t_data *data, int i);
 char    *make_str_dquote(t_data *data, int i_token, int i_quate);
+void    parse_str(t_data *data, t_parse *parse, int i_parse);
+bool    is_redic(t_data *data, int i);
+bool    check_token_str_dquote(t_data *data, int i_token);
+char    *check_dquote_str(t_data *data, int i_token);
+bool    parse_dolar_envp(t_data *data, t_parse *parse, char *str, int i_token);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);

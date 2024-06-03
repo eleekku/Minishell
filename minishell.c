@@ -137,7 +137,7 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
       if (in == 0)
         creating_parse(&content);
       //executor(&content);
-      free_struct_parse(&content);
+      //free_struct_parse(&content);
      //check_command(&content);
       //printf("%s\n", input);
       //if (ft_strncmp(input, "exit", 4) == 0)
