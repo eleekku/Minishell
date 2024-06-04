@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 15:26:36 by esalmela          ##     #   ########.fr */
+/*   Updated: 2024/06/04 14:59:28 by esalmela          ##     #   ########.fr */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	exec(char **cmd, char **env)
 		path = get_path(cmd[0], env, &p);
 	checkpath(path);
 	if (path)
-	{
-		ft_printf(2, "im here\n");
 		execve(path, cmd, env);
-	}
 	exit(127);
 }
 
@@ -122,4 +119,5 @@ void	executor(t_data *cnt)
 		piping_and_forking(cnt, i);
 	parent_process(cnt);
 	}
+	//nothing
 }
