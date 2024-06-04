@@ -97,23 +97,9 @@ typedef struct s_data
     int         exit_status;
     int         here_doc_fd;
     int         stdin_backup;
+    bool        is_exp;
     t_token     *lexer_array;
     t_parse     *parse;
-    char **env;
-    char **exp;
-    char *str_rl;
-    char *root;
-    int str;
-    int irec;
-    int i_token;
-    int i_pipex;
-    int i_quate;
-    int i_str;
-    int i_parse;
-    int exit_status;
-    bool is_exp;
-    t_token *lexer_array;
-    t_parse *parse;
     t_execute   *exec;
 } t_data;
 
