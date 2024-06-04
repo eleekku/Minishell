@@ -128,7 +128,7 @@ void    current_itoken(t_data *data);
 int	    ft_cont_str(const char *s, char c);
 char    *parse_dolar_dquate(t_data *data, int i_token);
 char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t new_size);
-char    *str_redc_dolar(t_data *data, t_parse *parse, int i_token);
+char    *str_redc_dolar(t_data *data, int i_token);
 char    *check_str_envp_redc(t_data *data, char *str, int i_token);
 //bool    change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token);
 

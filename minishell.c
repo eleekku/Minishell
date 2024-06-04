@@ -115,19 +115,19 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
     char* input;
     t_data content;
 
-    ac = 0;
+    //ac = 0;
     av = NULL;
     content.exit_status = 127;
     content.here_doc_fd = -1;
     content.stdin_backup = dup(STDIN);
-    if (ac == 0 || ac > 1)
+    if (ac != 1)
         exit_error("Invalid input\n");
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
     //update_envp(&content);
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
-      system("leaks -q minishell");
+      //system("leaks -q minishell");
       input = readline("minishell$ ");
      if (input && ft_strlen(input) > 0) 
         add_history(input);

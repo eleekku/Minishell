@@ -24,7 +24,7 @@ bool   change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
     return (false);
 } 
 
-char    *str_redc_dolar(t_data *data, t_parse *parse, int i_token)
+char    *str_redc_dolar(t_data *data, int i_token)
 {
     char *str;
     int len;
@@ -41,7 +41,7 @@ char    *str_redc_dolar(t_data *data, t_parse *parse, int i_token)
     else
         str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
     //check for null;
-    str = check_str_envp_redc(data, parse, str, i_token);
+    str = check_str_envp_redc(data, str, i_token);
     return (str);
     //check for NULL
 }
@@ -62,7 +62,7 @@ char *parse_dolar_dquate(t_data *data, int i_token)
         if (*str == '$' && ft_strlen(str) == 1)
             return(str);
         len = ft_strchr(envp[i], '=') - envp[i];
-        if (ft_strncmp(envp[i], str + 1, len) == 0 && len + 1 == ft_strlen(str))
+        if (ft_strncmp(envp[i], str + 1, len) == 0 && len + 1 == (int)ft_strlen(str))
         {
             free(str);
             str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);

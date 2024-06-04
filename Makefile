@@ -8,7 +8,7 @@ OBJ = $(SRC:.c=.o)
 
 LIBFT = -Llibft -lft
 
-LINK_FLAGS = -lreadline
+LINK_FLAGS = -lreadline -g -fsanitize=address,undefined
 CC = cc
 CFLAGS = -g -fsanitize=address,undefined -Wall -Wextra -Werror
 
