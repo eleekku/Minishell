@@ -1,5 +1,32 @@
 #include  "minishell.h"
 
+static  char    *make_recd_str_utils(t_parse *parse, t_data *data,
+                 char *temp2, int i_token)
+{
+    if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN
+        || data->lexer_array[i_token].type == TOKEN_S_QUOTE)
+    {
+        if (data->lexer_array[i_token + 1].type == TOKEN_DQUOTE_CLOSED
+            && data->lexer_array[i_token].pos.len == 0)
+        {
+            data->is_exp = 1;
+            i_token++;
+        }
+        else 
+        {
+            temp2 = make_str_dquote(data, i_token, index_after_quate(data, i_token));
+            i_token = index_after_quate(data, i_token) - 1;
+        }
+    }
+    if(data->lexer_array[i_token].type == TOKEN_DOLAR)
+        temp2 = str_redc_dolar(data, parse, i_token);
+    if(data->lexer_array[i_token].type == TOKEN_STR)
+        temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
+                    data->lexer_array[i_token].pos.len);
+    data->i_token = i_token;
+    return(temp2);
+}
+
 char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
 {
     char *tem1;
@@ -11,43 +38,13 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
                         data->lexer_array[i_token].pos.len);
     //check for null
     i_token++;
-    data->i_token = i_token;
-    while (data->lexer_array[i_token].type != TOKEN_EOL 
-            && data->lexer_array[i_token].type != TOKEN_PIPE)
-    {
-        if (data->lexer_array[i_token].type == TOKEN_DQUOTE_OPEN || data->lexer_array[i_token].type == TOKEN_S_QUOTE)
-        {
-            if (data->lexer_array[i_token + 1].type == TOKEN_DQUOTE_CLOSED
-                && data->lexer_array[i_token].pos.len == 0)
-            {
-                data->is_exp = 1;
-                i_token++;
-            }
-            else 
-            {
-                temp2 = make_str_dquote(data, i_token, index_after_quate(data, i_token));
-                i_token = index_after_quate(data, i_token) - 1;
-                break ;
-            }
-        }
-        if(data->lexer_array[i_token].type == TOKEN_DOLAR)
-        {
-            temp2 = str_redc_dolar(data, parse, i_token);
-            break ;
-        }
-        if(data->lexer_array[i_token].type == TOKEN_STR)
-        {
-            temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
-                        data->lexer_array[i_token].pos.len);
-            break ;
-        }
+    if (data->lexer_array[i_token].type == TOKEN_SPACE)
         i_token++;
-    }
+    temp2 = make_recd_str_utils(parse, data,  temp2, i_token);
     rec = ft_strjoin(tem1, temp2);
     //malloc handle
     free(tem1);
     free(temp2);
-    data->i_token = i_token;
     return (rec);
 }
 
