@@ -10,7 +10,7 @@ LIBFT = -Llibft -lft
 
 LINK_FLAGS = -lreadline
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -fsanitize=address,undefined -Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -19,7 +19,7 @@ $(NAME): $(OBJ)
 		$(CC) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) -I. -Ilibft -c $< -o $@
+		$(CC) $(CFLAGS) -I. -Ilibft -c $< -o $@
 
 clean:
 		$(MAKE) clean -C ./libft

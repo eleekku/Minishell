@@ -33,6 +33,7 @@ t_bool  exit_lvl(t_data  *cnt)
   int   lvl;
   char  *arg;
 
+  i = 0;
   while (cnt->env[i] && ft_strncmp(cnt->env[i], "SHLVL", 5) != 0)
     i++;
   if (cnt->env[i]) // && ft_strncmp(cnt->env[i], "SHLVL", 5) == 0)
@@ -72,11 +73,10 @@ void  built_exit(char **args, t_data *cnt)
   {
     ft_printf(2, "minishell$: exit: %s: numeric argument required\n", args[1]);
     flag = TRUE;
-  }
-  else if (args[1])
-    i = ft_atoi(args[1]);
-  else 
     i = 255;
+  }
+  else
+    i = ft_atoi(args[1]);
   if (args[2] && flag == FALSE)
     ft_printf(2, "minishell$: exit: %s too many arguments\n", args[1]);
   i = convert_status(i);

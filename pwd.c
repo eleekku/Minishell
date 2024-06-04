@@ -42,8 +42,6 @@ int	change_directory(char *path, t_data *content)
 	int	i;
 	int return_value;
 
-	char	*pwd = get_pwd();
-	char	*root;
 	if (!path)
 		path = content->root;
 	i = 0;

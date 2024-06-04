@@ -56,12 +56,12 @@ void	first_command(t_data *cnt, char **args, char **env, t_bool builtin)
 	exec(args, env);
 }
 
-void	child_process(t_data *cnt, int i, int currentfd, t_bool builtin)
+void	child_process(t_data *cnt, int i, t_bool builtin)
 {
 	if (cnt->parse[i].rec_file[0])
 	{
 			close(cnt->exec->pipesfd[cnt->exec->currentfd - 1]);
-			if (redirect(cnt, i) < 0)
+			if (redirect(cnt, i) > 0)
 				exit (1);
 	}
 	if (i == 0)
@@ -95,5 +95,5 @@ void	piping_and_forking(t_data *cnt, int i)
 	}
 	cnt->exec->child[i] = fork();
 	if (cnt->exec->child[i] == 0)
-		child_process(cnt, i, cnt->exec->currentfd, builtin);
+		child_process(cnt, i, builtin);
 }

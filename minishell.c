@@ -115,6 +115,8 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
     char* input;
     t_data content;
 
+    ac = 0;
+    av = NULL;
     content.exit_status = 127;
     content.here_doc_fd = -1;
     content.stdin_backup = dup(STDIN);
@@ -125,6 +127,7 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
     //update_envp(&content);
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
+      system("leaks -q minishell");
       input = readline("minishell$ ");
      if (input && ft_strlen(input) > 0) 
         add_history(input);

@@ -43,7 +43,6 @@ void	checkpath(char *path)
 
 void	exec(char **cmd, char **env)
 {
-	char		**args;
 	static char	*path;
 	int			p;
 
@@ -88,7 +87,7 @@ void	single_command(t_data *cnt, char **args)
 	if (child == 0)
 	{
 		if (cnt->parse[0].rec_file[0])
-			redirect(cnt, 0);
+			cnt->exit_status = redirect(cnt, 0);
 		exec(args, cnt->env);
 	}
 	if (child != 0)

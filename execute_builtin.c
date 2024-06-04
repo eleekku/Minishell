@@ -61,8 +61,6 @@ void	run_builtin(t_data *cnt)
 
 t_bool	check_built_in(char **args)
 {
-	t_bool	value;
-
 	if (!args)
 		return (FALSE);
 	if (!args[0])

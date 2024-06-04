@@ -37,7 +37,7 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
 char **export(char *arg, char **table)
 {
   int i;
-  char  *data;
+ 
   i = 0;
   while (table[i])
     i++;

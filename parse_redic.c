@@ -33,6 +33,7 @@ char    *make_recd_str(t_parse *parse, t_data *data, int i_token)
     char *temp2;
     char *rec;
     
+    temp2 = NULL;
     data->is_exp = 0;
     tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
                         data->lexer_array[i_token].pos.len);

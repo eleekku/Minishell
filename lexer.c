@@ -42,7 +42,7 @@ void lexer_tokenizer(t_data *data)
     data->lexer_array = token;
 }
 
-char    *check_str_envp_redc(t_data *data, t_parse *parse, char *str, int i_token)
+char    *check_str_envp_redc(t_data *data, char *str, int i_token)
 {
     int i;
     int len;
@@ -51,7 +51,7 @@ char    *check_str_envp_redc(t_data *data, t_parse *parse, char *str, int i_toke
     while (data->env[i])
     {
         len = ft_strchr(data->env[i], '=') - data->env[i];
-        if (ft_strncmp(data->env[i], str + 1, len) == 0 && len + 1 == ft_strlen(str))
+        if (ft_strncmp(data->env[i], str + 1, len) == 0 && len + 1 == (int)ft_strlen(str))
         {
             if (ft_strchr(str, ' ') == NULL)
             {   

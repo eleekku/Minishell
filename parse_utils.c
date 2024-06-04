@@ -68,7 +68,6 @@ char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data,
                                 size_t new_size) 
 {
     char **new_ptr;
-    size_t copy_size;
     int i;
     int end;
 

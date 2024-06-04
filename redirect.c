@@ -91,7 +91,7 @@ int	redirect(t_data	*cnt, int i)
 		(cnt->parse[i].rec_file[j][2] == '$' && cnt->parse[i].rec_file[j][3]))
 		{
 		ft_printf(2, "minishell$ %s: ambigious redirect\n", ft_strchr(cnt->parse[i].rec_file[j], '$'));
-		return (-1);
+		return (1);
 		}
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
 			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
