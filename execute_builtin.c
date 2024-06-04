@@ -29,7 +29,7 @@ void	run_builtin_child(char **args, t_data *cnt)
 		exit (0);
 	}
 	else if (ft_strncmp(args[0], "exit", 4) == 0 && ft_strlen(args[0]) == 4)
-		built_exit(args);
+		built_exit(args, cnt);
 	exit (0);
 }
 
@@ -53,9 +53,10 @@ void	run_builtin(t_data *cnt)
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "cd", 2) == 0 && ft_strlen(cnt->parse[0].cmd[0]) == 2)
 		change_directory(cnt->parse[0].cmd[1], cnt);
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "exit", 4) == 0 && ft_strlen(cnt->parse[0].cmd[0]) == 4)
-		built_exit(cnt->parse[0].cmd);
+		built_exit(cnt->parse[0].cmd, cnt);
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "unset", 5) == 0 && ft_strlen(cnt->parse[0].cmd[0]) == 5)
 		unset_variable(cnt, cnt->parse[0].cmd);
+	cnt->exit_status = 0;
 }
 
 t_bool	check_built_in(char **args)

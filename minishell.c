@@ -48,16 +48,14 @@ void exit_error(char *str)
 }
 void  update_envp(t_data  *content)
 {
-    char **envp;
     char *lvl;
     int num;
     int i;
 
-    envp = content->env;
     i = 0;
-    while (envp[i]  && ft_strncmp(envp[i], "SHLVL=", 6))
+    while (content->env[i]  && ft_strncmp(content->env[i], "SHLVL=", 6))
       i++;
-    num = ft_atoi(envp[i] + 6);
+    num = ft_atoi(content->env[i] + 6);
     lvl = ft_strjoin("SHLVL=", ft_itoa(num + 1));
     if (!lvl)
     {
@@ -65,17 +63,14 @@ void  update_envp(t_data  *content)
       exit_error("Error Malloc SHLVL");
     }
     i = -1;
-    while (envp[++i])
+    while (content->env[++i])
     {
-      if (ft_strncmp(envp[i], "SHLVL=", 6) == 0)
+      if (ft_strncmp(content->env[i], "SHLVL=", 6) == 0)
       {
-        free (envp[i]);
-        envp[i] = lvl;
-        free (lvl);
+        free (content->env[i]);
+        content->env[i] = lvl;
       }
-      printf("%s\n", envp[i]);
     }
-    content->env = envp;
 }
 
 void  create_envp(char **env, t_data *content)
@@ -98,6 +93,7 @@ void  create_envp(char **env, t_data *content)
     }
     envp[i] = NULL;
     content->env = envp;
+    update_envp(content);
     content->root = getenv("HOME");
     build_export(content);
 }
@@ -142,8 +138,8 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
       free_struct_parse(&content);
      //check_command(&content);
       //printf("%s\n", input);
-      if (ft_strncmp(input, "exit", 4) == 0)
-          exit(0);
+     // if (ft_strncmp(input, "exit", 4) == 0)
+       //   exit(0);
       free(input);
     }
 }

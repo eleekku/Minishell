@@ -27,27 +27,64 @@ int unset_variable(t_data *content, char **args)
     return (0);
 }
 
-void  built_exit(char **args)
+t_bool  exit_lvl(t_data  *cnt)
 {
-  int i;
+  int   i;
+  int   lvl;
+  char  *arg;
 
-  ft_printf(1, "exit\n");
-  if (!args)
-    exit(0);
-  else if(ft_atoi(args[1]) == 0 && ft_isdigit(args[1] == 0))
+  while (cnt->env[i] && ft_strncmp(cnt->env[i], "SHLVL", 5) != 0)
+    i++;
+  if (cnt->env[i]) // && ft_strncmp(cnt->env[i], "SHLVL", 5) == 0)
   {
-    ft_printf(2, "minishell$: exit: %s: numeric argument required", args[1]);
-    args[0] = "255";
+    lvl = ft_atoi((ft_strchr(cnt->env[i], '=') + 1));
+    if (lvl > 1)
+    {
+      arg = safe_strjoin("SHLVL=", ft_itoa(lvl - 1));
+      initialize_export(cnt, arg);
+      free(arg);
+      return (TRUE);
+    }
   }
-  else if (args[2])
-    ft_printf(2, "minishell$: exit: too many arguments", args[1]);
-  i = ft_atoi(args[1]);
+  return (FALSE);
+}
+
+int  convert_status(int i)
+{
   if (i < 0 && i >= -256)
-    exit(256 + i);
+    i = 256 + i;
   if (i > 255)
-    exit(i % 256);
+    i = i % 256;
   if (i < -256)
-    exit(256 + (i % 256));
+    i = 256 + (i % 256);
+  return (i);
+}
+void  built_exit(char **args, t_data *cnt)
+{
+  int     i;
+  t_bool  flag;
+
+  flag = FALSE;
+  ft_printf(1, "exit\n");
+  if (!args[1])
+    i = 0;
+  else if((ft_atoi(args[1])) == 0 && ft_isdigit(args[1][0]) == 0)
+  {
+    ft_printf(2, "minishell$: exit: %s: numeric argument required\n", args[1]);
+    flag = TRUE;
+  }
+  else if (args[1])
+    i = ft_atoi(args[1]);
+  else 
+    i = 255;
+  if (args[2] && flag == FALSE)
+    ft_printf(2, "minishell$: exit: %s too many arguments\n", args[1]);
+  i = convert_status(i);
+  if (exit_lvl(cnt) == TRUE)
+  {
+    cnt->exit_status = i;
+    return ;
+  }
   exit(i);  
 }
 
