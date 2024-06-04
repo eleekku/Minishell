@@ -102,6 +102,5 @@ int	redirect(t_data	*cnt, int i)
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
 			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);	
 	}
-	ft_printf(2, "exited redirect loop\n");
 	return (0);
 }
