@@ -12,6 +12,9 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h> 
+# include <termios.h>  
+
 # define DELIMITER "|<>\"\'$ '\t'"
 # define STDIN 0
 # define STDOUT 1
@@ -20,6 +23,8 @@
 # define FALSE 0
 
 typedef int	t_bool;
+extern int g_num;
+
 
 typedef struct s_split
 {
@@ -83,6 +88,8 @@ typedef struct s_parse
 
 typedef struct s_data
 {
+    struct termios	old;
+	struct termios	new;
     char        **env;
     char        **exp;
     char        *str_rl;
@@ -130,8 +137,12 @@ char    *parse_dolar_dquate(t_data *data, int i_token);
 char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t new_size);
 char    *str_redc_dolar(t_data *data, int i_token);
 char    *check_str_envp_redc(t_data *data, char *str, int i_token);
-//bool    change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token);
 
+//signals
+void	rl_replace_line(const char *text, int clear_undo);
+void	receive_signal(int val);
+char	*tcsetreadline(t_data *msh, int n);
+void	load_termios(t_data *msh);
 
 //iter funtions
 t_char_iter		char_iter_constructor(char *start, size_t	len);

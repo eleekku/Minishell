@@ -1,5 +1,7 @@
 # include "minishell.h"
 
+int	g_num;
+
 int  just_pipes(char *str)
 {
   if (str[0] == '\0')
@@ -108,14 +110,22 @@ void  free_struct_parse(t_data *data)
   }
   free(data->parse);
   data->parse = NULL;
+  i = 0;
+  //while (data->lexer_array[i].type != TOKEN_EOL)
+  //{
+  //  free (data->lexer_array[i].pos.start);
+  //  i++;
+  //}
+  //free (data->lexer_array[i].pos.start);
+  free (data->lexer_array);
 }
 
-int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes y nada luego
+int main(int ac, char **av, char **envp) //need to fix parse >""hola""
 {
     char* input;
+    int in;
     t_data content;
 
-    //ac = 0;
     av = NULL;
     content.exit_status = 127;
     content.here_doc_fd = -1;
@@ -124,17 +134,29 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
         exit_error("Invalid input\n");
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
+    load_termios(&content);
     //update_envp(&content);
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
       //system("leaks -q minishell");
-      input = readline("minishell$ ");
-     if (input && ft_strlen(input) > 0) 
+      receive_signal(0);
+      input = tcsetreadline(&content, 0);
+    if (g_num == SIGINT)
+		{
+			content.exit_status = 1;
+			g_num = 0;
+		}
+     if (input) 
         add_history(input);
       content.str_rl = input;
-      int in = input_check(&content);//lexer for the parse
+      if (!input)
+      {
+        printf("minishell$ exit\n");
+        exit(1);
+      }
+      in = input_check(&content);//lexer for the parse
       if (in == 0)
-        creating_parse(&content);
+          creating_parse(&content);
       executor(&content);
       free_struct_parse(&content);
      //check_command(&content);
@@ -142,7 +164,7 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
       //if (ft_strncmp(input, "exit", 4) == 0)
       //    exit(0);
      // if (ft_strncmp(input, "exit", 4) == 0)
-       //   exit(0);
+       //   exit(0
       free(input);
     }
 }
