@@ -54,7 +54,7 @@ void	open_in_doc(char *file)
 	close(fd);
 }
 
-void	open_out_doc(char *file, int i)
+int	open_out_doc(char *file, int i)
 {
 	int	fd;
 
@@ -63,8 +63,9 @@ void	open_out_doc(char *file, int i)
 		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
 		if (fd == -1)
 		{
-			printf("minishell$ %s: ", file);
+			ft_printf(2, "minishell$ %s: ", file);
 			perror("");
+			return (-1);
 		}
 	}
 	else
@@ -72,12 +73,14 @@ void	open_out_doc(char *file, int i)
 		fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (fd == -1)
 		{
-			printf("minishell$ %s: ", file);
+			ft_printf(2, "minishell$ %s: ", file);
 			perror("");
+			return (-1);
 		}
 	}
 	dup2(fd, STDOUT);
 	close(fd);
+	return (0);
 }
 
 int	redirect(t_data	*cnt, int i)
@@ -87,14 +90,19 @@ int	redirect(t_data	*cnt, int i)
 	j = -1;
 	while (cnt->parse[i].rec_file[++j])
 	{
+		if (!cnt->parse[i].rec_file[j][1])
+		{
+			ft_printf(2, "minishell$ : No such file or directory\n");
+			return (-1);
+		}
 		if ((cnt->parse[i].rec_file[j][1] == '$' && cnt->parse[i].rec_file[j][2]) ||
 		(cnt->parse[i].rec_file[j][2] == '$' && cnt->parse[i].rec_file[j][3]))
 		{
-		ft_printf(2, "minishell$ %s: ambigious redirect\n", ft_strchr(cnt->parse[i].rec_file[j], '$'));
-		return (1);
+			ft_printf(2, "minishell$ %s: ambigious redirect\n", ft_strchr(cnt->parse[i].rec_file[j], '$'));
+			return (-1);
 		}
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
-			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1);
+			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1));
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] == '>')
 			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')

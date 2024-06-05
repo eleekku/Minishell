@@ -10,7 +10,8 @@ LIBFT = -Llibft -lft
 
 LINK_FLAGS = -lreadline -g -fsanitize=address,undefined
 CC = cc
-CFLAGS = -g -fsanitize=address,undefined -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
+# -g -fsanitize=address,undefined
 
 all: $(NAME)
 

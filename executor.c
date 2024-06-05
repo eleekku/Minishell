@@ -87,7 +87,8 @@ void	single_command(t_data *cnt, char **args)
 	if (child == 0)
 	{
 		if (cnt->parse[0].rec_file[0])
-			cnt->exit_status = redirect(cnt, 0);
+			if (redirect(cnt, 0) < 0)
+				exit (1);
 		exec(args, cnt->env);
 	}
 	if (child != 0)
@@ -118,5 +119,4 @@ void	executor(t_data *cnt)
 		piping_and_forking(cnt, i);
 	parent_process(cnt);
 	}
-	//nothing
 }

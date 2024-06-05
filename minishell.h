@@ -94,6 +94,7 @@ typedef struct s_data
     int         i_quate;
     int         i_str;
     int         i_parse;
+    int         shlvl;
     int         exit_status;
     int         here_doc_fd;
     int         stdin_backup;
