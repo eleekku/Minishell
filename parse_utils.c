@@ -69,7 +69,6 @@ char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data,
 {
     char **new_ptr;
     int i;
-    int end;
 
     new_ptr = calloc(new_size + 1, sizeof(char *));
     if (new_ptr == NULL) 
@@ -81,7 +80,6 @@ char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data,
             new_ptr[i] = ft_strdup(parse[data->i_parse].cmd[i]);
     }
     free_args(parse[data->i_parse].cmd);
-    end = 0;
     str = ft_strchr(str, '=') + 1;
     i = data->i_str - 1;
     new_ptr = copy_realloc(str, new_ptr, i, new_size);

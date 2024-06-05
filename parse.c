@@ -47,9 +47,6 @@ void    add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
 }
 bool    print_recd_error(t_data *data, int i)
 {
-    int red;
-    
-    red = 0;
     if (data->lexer_array[i].type == TOKEN_SPACE)
         i++;
     if (data->lexer_array[i].type == TOKEN_EOL)

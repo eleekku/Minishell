@@ -9,6 +9,7 @@
 # include <ctype.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>

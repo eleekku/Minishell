@@ -3,9 +3,7 @@
 char	*check_flag(char *args, int *flag, int *n)
 {
 	int	i;
-	int temp;
 
-	temp = 0;
 	i = 0;
 	if (args[i] && (args[i] == '-')) // || args[i] == ' '))
 	{

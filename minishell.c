@@ -116,7 +116,7 @@ int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes
     t_data content;
 
     //ac = 0;
-    av = NULL;
+    (void)av;
     content.exit_status = 127;
     content.here_doc_fd = -1;
     content.stdin_backup = dup(STDIN);
