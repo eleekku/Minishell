@@ -77,7 +77,7 @@ void  built_exit(char **args, t_data *cnt)
   }
   else
     i = ft_atoi(args[1]);
-  if (args[2] && flag == FALSE)
+  if (args[1] && args[2] && flag == FALSE)
     ft_printf(2, "minishell$: exit: %s too many arguments\n", args[1]);
   i = convert_status(i);
   cnt->exit_status = i;

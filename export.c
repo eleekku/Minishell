@@ -70,7 +70,7 @@ void  initialize_export(t_data *content, char *arg)
       }
     }
   }
-	if ((*(ft_strchr(arg, '=') + 1)))
+	if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
 		content->env = export(arg, content->env);
   i = 1;
   while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
