@@ -132,6 +132,7 @@ char    *parse_dolar_dquate(t_data *data, int i_token);
 char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data, size_t new_size);
 char    *str_redc_dolar(t_data *data, int i_token);
 char    *check_str_envp_redc(t_data *data, char *str, int i_token);
+void    free_struct_parse(t_data *data);
 //bool    change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token);
 
 
@@ -173,5 +174,6 @@ t_execute	*init_exec_struct(int pipes);
 char	    *get_path(char *cmd, char **envp, int *p);
 void	    run_builtin_child(char **args, t_data *cnt);
 int         redirect(t_data	*cnt, int i);
+void	    prepare_exit(t_data *content, int status);
 
 # endif

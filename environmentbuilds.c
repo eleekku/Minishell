@@ -81,7 +81,7 @@ void  built_exit(char **args, t_data *cnt)
     ft_printf(2, "minishell$: exit: %s too many arguments\n", args[1]);
   i = convert_status(i);
   cnt->exit_status = i;
-  exit(i);  
+  prepare_exit(cnt, i);  
 }
 
 void  env(t_data *content)

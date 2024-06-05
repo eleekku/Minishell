@@ -46,20 +46,18 @@ void exit_error(char *str)
 }
 void  update_envp(t_data  *content)
 {
-    char *lvl;
-    int num;
-    int i;
+    char  *lvl;
+    int   num;
+    int   i;
+    char  *tmp;
 
     i = 0;
     while (content->env[i]  && ft_strncmp(content->env[i], "SHLVL=", 6))
       i++;
     num = ft_atoi(content->env[i] + 6);
-    lvl = ft_strjoin("SHLVL=", ft_itoa(num + 1));
-    if (!lvl)
-    {
-      //free envp;
-      exit_error("Error Malloc SHLVL");
-    }
+    tmp = ft_itoa(num + 1);
+    lvl = safe_strjoin("SHLVL=", tmp);
+    free(tmp);
     i = -1;
     while (content->env[++i])
     {
@@ -100,14 +98,15 @@ void  free_struct_parse(t_data *data)
   int i;
 
   i = 0;
-  while (i > data->i_pipex)
+  while (i < data->i_pipex)
   {
-    free_args(data->parse[i].cmd);
-    free_args(data->parse[i].rec_file);
+    free_array(data->parse[i].cmd);
+    free_array(data->parse[i].rec_file);
     i++;
   }
   free(data->parse);
   data->parse = NULL;
+  free(data->lexer_array);
 }
 
 int main(int ac, char **av, char **envp) //arreglar problemas cuando tengo pipes y nada luego

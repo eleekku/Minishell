@@ -31,13 +31,13 @@ void	checkpath(char *path)
 		else
 			ft_printf(2, "minishell$ %s: command not found\n", path);
 		close(fd);
-		exit (127);
+		exit(127);
 	}
 	else if (access(path, X_OK) != 0)
 	{
 		ft_printf(2, "minishell$ %s: Permission denied\n", path);
 		close(fd);
-		exit (126);
+		exit(126);
 	}
 }
 
@@ -86,7 +86,7 @@ void	single_command(t_data *cnt, char **args)
 			exit (1);
 	if (child == 0)
 	{
-		if (cnt->parse[0].rec_file[0])
+		if (cnt->parse[0].rec_file)
 			if (redirect(cnt, 0) < 0)
 				exit (1);
 		exec(args, cnt->env);

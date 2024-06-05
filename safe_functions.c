@@ -11,7 +11,16 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-//#include "minishelld.h"
+
+void	prepare_exit(t_data *content, int status)
+{
+	if (content->env)
+		free_args(content->env);
+	if (content->exp)
+		free_args(content->exp);
+	free_struct_parse(content);
+	exit(status);
+}
 
 char	*safe_strjoin(char const *s1, char const *s2)
 {

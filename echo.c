@@ -12,21 +12,14 @@ char	*check_flag(char *args, int *flag, int *n)
 		{
 			while (args[i] == 'n')
 				i++;
-			//temp += (i - temp);
 			if (!args[i] || args[i] == ' ')
 			*flag = 1;
-			/* if (args[i] == ' ')
-			{
-				temp += (i - temp);
-				*flag = 1;
-				i++;
-			} */
 		}				
 	}
 	if (*flag == 0 || args[i + 1])
 		return (args);
 	*n += 1;
-	return (args + i); //temp);
+	return (args + i);
 }
 
 void	echo(char **args)
