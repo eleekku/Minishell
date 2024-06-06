@@ -89,7 +89,8 @@ void	single_command(t_data *cnt, char **args)
 		if (cnt->parse[0].rec_file)
 			if (redirect(cnt, 0) < 0)
 				exit (1);
-		exec(args, cnt->env);
+		if (args)
+			exec(args, cnt->env);
 	}
 	if (child != 0)
 	{
@@ -103,11 +104,14 @@ void	executor(t_data *cnt)
 	int	i;
 
 	i = -1;
-	if (!cnt->parse || !cnt->parse[0].cmd[0])
+	if (!cnt->parse) // || !cnt->parse[0].cmd[0])
 		return;
-	if (!cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
+	if (cnt->parse[0].cmd[0] && !cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
+		dup2(cnt->stdout_backup, STDOUT);
+		close(cnt->stdin_backup);
+		cnt->stdout_backup = dup(STDOUT);
 		return ;
 	}
 	if (!cnt->parse[1].cmd)

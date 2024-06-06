@@ -27,10 +27,12 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
   && content->env[i][ft_strlen(variable)] == '=')
     {
       free(content->env[i]);
+      free(variable);
       content->env[i] = ft_strdup(arg);
       return(ft_strdup(arg));
     }
   content->env = export(arg, content->env);
+  free(variable);
   return (ft_strdup(arg));
 }
 
@@ -69,6 +71,7 @@ void  initialize_export(t_data *content, char *arg)
         return ;
       }
     }
+    free (variable);
   }
 	if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
 		content->env = export(arg, content->env);

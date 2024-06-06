@@ -128,6 +128,7 @@ int main(int ac, char **av, char **envp) //need to fix parse >""hola""
     content.exit_status = 127;
     content.here_doc_fd = -1;
     content.stdin_backup = dup(STDIN);
+    content.stdout_backup = dup(STDOUT);
     if (ac != 1)
         exit_error("Invalid input\n");
     printf("Welcome to Minishell los pran...\n");
