@@ -9,7 +9,7 @@ static  char    *make_recd_str_utils(t_data *data, char *temp2, int i_token)
             && data->lexer_array[i_token].pos.len == 0)
         {
             data->is_exp = 1;
-            i_token++;
+            i_token += 2;
         }
         else 
         {

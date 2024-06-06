@@ -99,6 +99,12 @@ void  free_struct_parse(t_data *data)
 {
   int i;
 
+  if (!data->parse)
+  {
+    if (data->lexer_array)
+        free (data->lexer_array);
+    return ;
+  }
   i = 0;
   while (i < data->i_pipex)
   {
@@ -109,12 +115,6 @@ void  free_struct_parse(t_data *data)
   free(data->parse);
   data->parse = NULL;
   i = 0;
-  //while (data->lexer_array[i].type != TOKEN_EOL)
-  //{
-  //  free (data->lexer_array[i].pos.start);
-  //  i++;
-  //}
-  //free (data->lexer_array[i].pos.start);
   free (data->lexer_array);
 }
 
@@ -124,7 +124,6 @@ int main(int ac, char **av, char **envp) //need to fix parse >""hola""
     int in;
     t_data content;
 
-    //ac = 0;
     (void)av;
     content.exit_status = 127;
     content.here_doc_fd = -1;
@@ -134,7 +133,6 @@ int main(int ac, char **av, char **envp) //need to fix parse >""hola""
     printf("Welcome to Minishell los pran...\n");
     create_envp(envp, &content);
     load_termios(&content);
-    //update_envp(&content);
     while (1)// (input = readline("minishell$ ")) != NULL)
     {
       //system("leaks -q minishell");
@@ -150,20 +148,14 @@ int main(int ac, char **av, char **envp) //need to fix parse >""hola""
       content.str_rl = input;
       if (!input)
       {
-        printf("minishell$ exit\n");
-        exit(1);
+        printf("minishell$ exit\n");//need to fix propre
+        exit(g_num);
       }
       in = input_check(&content);//lexer for the parse
       if (in == 0)
           creating_parse(&content);
       executor(&content);
       free_struct_parse(&content);
-     //check_command(&content);
-      //printf("%s\n", input);
-      //if (ft_strncmp(input, "exit", 4) == 0)
-      //    exit(0);
-     // if (ft_strncmp(input, "exit", 4) == 0)
-       //   exit(0
       free(input);
     }
 }
