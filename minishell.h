@@ -99,6 +99,7 @@ typedef struct s_data
     int         exit_status;
     int         here_doc_fd;
     int         stdin_backup;
+    int         stdout_backup;
     bool        is_exp;
     t_token     *lexer_array;
     t_parse     *parse;
