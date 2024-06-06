@@ -86,6 +86,7 @@ void	single_command(t_data *cnt, char **args)
 			exit (1);
 	if (child == 0)
 	{
+		receive_signal(2);
 		if (cnt->parse[0].rec_file)
 			if (redirect(cnt, 0) < 0)
 				exit (1);

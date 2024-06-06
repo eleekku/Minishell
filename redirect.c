@@ -27,8 +27,9 @@ void	here_doc(char *limiter, t_data *cnt)
 		exit (1);
 	while (1)
 	{
+		receive_signal(1);
 		line = readline(" > ");
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		if ((g_num == SIGINT) || ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 			break; 
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);

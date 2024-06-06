@@ -58,6 +58,9 @@ void	first_command(t_data *cnt, char **args, char **env, t_bool builtin)
 
 void	child_process(t_data *cnt, int i, t_bool builtin)
 {
+	receive_signal(2);
+	if (g_num == SIGINT || g_num == SIGQUIT)
+		exit(1);
 	if (cnt->parse[i].rec_file[0])
 	{
 			close(cnt->exec->pipesfd[cnt->exec->currentfd - 1]);
