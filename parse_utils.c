@@ -79,14 +79,14 @@ char    **ft_realloc_char_array(char *str, t_parse *parse, t_data *data,
         while (++i < data->i_str)
             new_ptr[i] = ft_strdup(parse[data->i_parse].cmd[i]);
     }
-    i = 0;
+    /*i = 0;
     while (new_ptr[i])
     {
         printf("%d\n", data->i_str);
         printf("reac: %s\n", parse[data->i_parse].cmd[i]);
         i++;
-    }
-    //free_args(parse[data->i_parse].cmd);
+    }*/
+    free_args(parse[data->i_parse].cmd);
     str = ft_strchr(str, '=') + 1;
     i = data->i_str - 1;
     new_ptr = copy_realloc(str, new_ptr, i, new_size);
