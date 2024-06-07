@@ -55,22 +55,14 @@ void	open_in_doc(char *file)
 	close(fd);
 }
 
-int	open_out_doc(char *file, int i)
+int	open_out_doc(char *file, int dirtype, t_data *cnt, int i)
 {
 	int	fd;
 
-	if (i == 0)
-	{
+	cnt->parse[i].outfile = TRUE;
+	if (dirtype == 0)
 		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (fd == -1)
-		{
-			ft_printf(2, "minishell$ %s: ", file);
-			perror("");
-			return (-1);
-		}
-	}
 	else
-	{
 		fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (fd == -1)
 		{
@@ -78,7 +70,6 @@ int	open_out_doc(char *file, int i)
 			perror("");
 			return (-1);
 		}
-	}
 	dup2(fd, STDOUT);
 	close(fd);
 	return (0);
@@ -103,9 +94,9 @@ int	redirect(t_data	*cnt, int i)
 			return (-1);
 		}
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
-			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1));
+			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] == '>')
-			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
+			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')
 			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
 	}

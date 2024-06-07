@@ -85,6 +85,7 @@ typedef struct s_parse
 {
     char    **cmd;
     char    **rec_file;
+    t_bool  outfile;
 } t_parse;
 
 typedef struct s_data

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	last_command(t_data *cnt, char **args, char **env, t_bool builtin)
+void	last_command(t_data *cnt, int i, char **env, t_bool builtin)
 {
 	int piperead;
 	int pipewrite;
@@ -23,10 +23,10 @@ void	last_command(t_data *cnt, char **args, char **env, t_bool builtin)
 	dup2(piperead, STDIN);
 	close(piperead);
 	if (builtin == TRUE)
-		run_builtin_child(args, cnt);
-	exec(args, env);
+		run_builtin_child(cnt->parse[i].cmd, cnt);
+	exec(cnt->parse[i].cmd, env);
 }
-void	middle_command(t_data *cnt, char **args, char **env, t_bool builtin)
+void	middle_command(t_data *cnt, int i, char **env, t_bool builtin)
 {
 	int piperead;
 	int pipewrite;
@@ -34,14 +34,15 @@ void	middle_command(t_data *cnt, char **args, char **env, t_bool builtin)
 	piperead = cnt->exec->pipesfd[cnt->exec->currentfd - 4];
 	pipewrite = cnt->exec->pipesfd[cnt->exec->currentfd - 1];
 	dup2(piperead, STDIN);
+	if (cnt->parse[i].outfile == FALSE)
 	dup2(pipewrite, STDOUT);
 	close(pipewrite);
 	close(piperead);
 	if (builtin == TRUE)
-		run_builtin_child(args, cnt);
-	exec(args, env);
+		run_builtin_child(cnt->parse[i].cmd, cnt);
+	exec(cnt->parse[i].cmd, env);
 }
-void	first_command(t_data *cnt, char **args, char **env, t_bool builtin)
+void	first_command(t_data *cnt, int i, char **env, t_bool builtin)
 {
 	int	piperead;
 	int	pipewrite;
@@ -49,11 +50,12 @@ void	first_command(t_data *cnt, char **args, char **env, t_bool builtin)
 	piperead = cnt->exec->pipesfd[0];
 	pipewrite = cnt->exec->pipesfd[1];
 	close(piperead);
+	if (cnt->parse[i].outfile == FALSE)
 	dup2(pipewrite, STDOUT);
 	close (pipewrite);
 	if (builtin == TRUE)
-		run_builtin_child(args, cnt);
-	exec(args, env);
+		run_builtin_child(cnt->parse[i].cmd, cnt);
+	exec(cnt->parse[i].cmd, env);
 }
 
 void	child_process(t_data *cnt, int i, t_bool builtin)
@@ -68,11 +70,11 @@ void	child_process(t_data *cnt, int i, t_bool builtin)
 				exit (1);
 	}
 	if (i == 0)
-		first_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		first_command(cnt, i, cnt->env, builtin);
 	else if(i > 0 && i < cnt->i_pipex - 1)
-		middle_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		middle_command(cnt, i, cnt->env, builtin);
 	else if (i < cnt->i_pipex)
-		last_command(cnt, cnt->parse[i].cmd, cnt->env, builtin);
+		last_command(cnt, i, cnt->env, builtin);
 }
 
 void	piping_and_forking(t_data *cnt, int i)
