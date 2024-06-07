@@ -64,7 +64,7 @@ int	open_out_doc(char *file, int dirtype, t_data *cnt, int i)
 		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 		fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (fd == -1)
+	if (fd == -1)
 		{
 			ft_printf(2, "minishell$ %s: ", file);
 			perror("");
