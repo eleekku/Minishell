@@ -1,6 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
-static void	heredoc_handler(int signal)
+static	void	heredoc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{

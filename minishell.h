@@ -120,6 +120,15 @@ int	    ft_realloc(t_token **token, size_t size);
 char	*char_find_dq(t_char_iter *self);
 void	take_redir_append(t_char_iter *iter, t_token *token);
 void    add_token(t_token *token, t_char_iter *iter);
+int     input_check(t_data *content);
+void	take_redir_in(t_token *token, t_char_iter *iter);
+void	take_redir_out(t_token *token, t_char_iter *iter);
+void	take_s_quote(t_token *token, t_char_iter *iter);
+void	take_d_quote(t_token *token, t_char_iter *iter);
+void	take_exp(t_token *token, t_char_iter *iter);
+void	take_just_dollar(t_token *token, t_char_iter *iter);
+void	take_dollar(t_token *token, t_char_iter *iter);
+void	take_string(t_token *token, t_char_iter *iter);
 
 //parse
 void    creating_parse(t_data *data);
