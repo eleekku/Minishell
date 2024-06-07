@@ -46,6 +46,19 @@ char **export(char *arg, char **table)
   return (table);
 }
 
+void  initialize_export2(t_data *content, char *arg)
+{
+  int i;
+
+  if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
+		content->env = export(arg, content->env);
+  i = 0;
+  while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
+    i++;
+  if (!content->exp[i])
+    content->exp = export(arg, content->exp);
+}
+
 void  initialize_export(t_data *content, char *arg)
 {
   int   len;
@@ -61,7 +74,7 @@ void  initialize_export(t_data *content, char *arg)
     i = 0;
     while (content->exp[i] && ft_strncmp(content->exp[i], variable, len) != 0)
       i++;
-    if (content->exp[i]) //ft_strncmp(content->env[i], variable, len) == 0)
+    if (content->exp[i])
     { 
       if (ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
       {
@@ -71,13 +84,7 @@ void  initialize_export(t_data *content, char *arg)
     }
     free (variable);
   }
-	if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
-		content->env = export(arg, content->env);
-  i = 1;
-  while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
-  i++;
-  if (!content->exp[i])
-    content->exp = export(arg, content->exp);
+  initialize_export2(content, arg);
 }
 
 void	print_export(t_data *content)
