@@ -17,6 +17,7 @@ void	here_doc(char *limiter, t_data *cnt)
 	int		pipefd[2];
 	char	*line;
 
+	receive_signal(1);
 	if (cnt->here_doc_fd > 0)
 	{
 		dup2(cnt->stdin_backup, STDIN);
@@ -27,9 +28,8 @@ void	here_doc(char *limiter, t_data *cnt)
 		exit (1);
 	while (1)
 	{
-		receive_signal(1);
 		line = readline(" > ");
-		if ((g_num == SIGINT) || ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 			break; 
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
@@ -37,8 +37,8 @@ void	here_doc(char *limiter, t_data *cnt)
 	close(pipefd[1]);
 	free(line);
 	cnt->here_doc_fd = pipefd[0];
-	dup2(cnt->here_doc_fd, STDIN);
-	close(cnt->here_doc_fd);
+	//dup2(cnt->here_doc_fd, STDIN);
+	//close(cnt->here_doc_fd);
 }
 
 void	open_in_doc(char *file)
@@ -108,8 +108,8 @@ int	redirect(t_data	*cnt, int i)
 			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')
 			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
-		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
-			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);	
+		//if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
+		//	here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);	
 	}
 	return (0);
 }

@@ -52,7 +52,6 @@ void	exec(char **cmd, char **env)
 	else
 		path = get_path(cmd[0], env, &p);
 	checkpath(path);
-	//receive_signal(2);
 	if (path)
 		execve(path, cmd, env);
 	exit(127);
@@ -68,6 +67,7 @@ void	parent_process(t_data *cnt)
 	while (i < cnt->i_pipex)
 	{
 	waitpid(cnt->exec->child[i], &status, 0);
+	ft_printf(2, "I waited for %d\n", i);
 	cnt->exit_status = WEXITSTATUS(status);
 	i++;
 	}
@@ -82,6 +82,11 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
+	if (cnt->here_doc_fd > 0)
+	{
+	dup2(cnt->here_doc_fd, STDIN);
+	close(cnt->here_doc_fd);
+	}
 	receive_signal(2);
 	child = fork();
 		if (child == -1)
@@ -101,6 +106,53 @@ void	single_command(t_data *cnt, char **args)
 	}
 }
 
+void	check_here_doc(t_data *cnt)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (cnt->parse[i].rec_file)
+	{
+		while (cnt->parse[i].rec_file[j])
+		{
+		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
+			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);
+		j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
+void	forking(t_data *cnt)
+{
+	int 	i;
+	t_bool	builtin;
+
+	i = 0;
+	
+	while (i < cnt->i_pipex)
+	{
+	if (i == 1)
+		close (cnt->exec->pipesfd[1]);
+	else if (i > 1)
+	{
+		close (cnt->exec->pipesfd[cnt->exec->fdtrack]);
+		close (cnt->exec->pipesfd[(cnt->exec->fdtrack) + 3]);
+		ft_printf(2, "I closed %d and %d\n", cnt->exec->pipesfd[cnt->exec->fdtrack], cnt->exec->pipesfd[(cnt->exec->fdtrack) + 3]);
+		cnt->exec->fdtrack += 2;
+	} 
+	builtin = check_built_in(cnt->parse[i].cmd);
+	receive_signal(2);
+	cnt->exec->child[i] = fork();
+	if (cnt->exec->child[i] == 0)
+		child_process(cnt, i, builtin);
+	i++;
+	}
+}
+
 void	executor(t_data *cnt)
 {
 	int	i;
@@ -108,6 +160,7 @@ void	executor(t_data *cnt)
 	i = -1;
 	if (!cnt->parse)
 		return;
+	check_here_doc(cnt);
 	if (cnt->parse[0].cmd[0] && !cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
@@ -123,6 +176,15 @@ void	executor(t_data *cnt)
 	cnt->exec = init_exec_struct(cnt->i_pipex - 1);
 	while (++i < cnt->i_pipex)
 		piping_and_forking(cnt, i);
+	forking(cnt);
 	parent_process(cnt);
 	}
+	if (cnt->here_doc_fd > 0)
+	{
+		dup2(cnt->stdin_backup, STDIN);
+		close(cnt->stdin_backup);
+		cnt->stdin_backup = dup(STDIN);
+		cnt->here_doc_fd = -1;
+	}
+
 }
