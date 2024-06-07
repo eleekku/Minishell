@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 16:01:24 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/07 17:19:44 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	just_pipes(char *str)
 
 int	input_check(t_data *content)
 {
-	t_token	*tokens;
 	char	*str;
 	int		error;
 
@@ -99,6 +98,5 @@ int	input_check(t_data *content)
 	if (error)
 		return (1);
 	lexer_tokenizer(content);
-	tokens = content->lexer_array;
 	return (0);
 }
