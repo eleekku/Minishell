@@ -119,6 +119,7 @@ void    creating_parse(t_data *data)
     {
         parse[i].cmd = NULL;
         parse[i].rec_file = NULL;
+        parse[i].outfile = FALSE;
     }
     //init_parse_struct(parse, data);
     add_data_to_parse(parse, data, data->i_pipex);

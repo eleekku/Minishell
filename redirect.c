@@ -17,6 +17,7 @@ void	here_doc(char *limiter, t_data *cnt)
 	int		pipefd[2];
 	char	*line;
 
+	receive_signal(1);
 	if (cnt->here_doc_fd > 0)
 	{
 		dup2(cnt->stdin_backup, STDIN);
@@ -27,9 +28,8 @@ void	here_doc(char *limiter, t_data *cnt)
 		exit (1);
 	while (1)
 	{
-		receive_signal(1);
 		line = readline(" > ");
-		if ((g_num == SIGINT) || ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 			break; 
 		ft_putendl_fd(line, pipefd[1]);
 		free(line);
@@ -55,30 +55,21 @@ void	open_in_doc(char *file)
 	close(fd);
 }
 
-int	open_out_doc(char *file, int i)
+int	open_out_doc(char *file, int dirtype, t_data *cnt, int i)
 {
 	int	fd;
 
-	if (i == 0)
-	{
+	cnt->parse[i].outfile = TRUE;
+	if (dirtype == 0)
 		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (fd == -1)
-		{
-			ft_printf(2, "minishell$ %s: ", file);
-			perror("");
-			return (-1);
-		}
-	}
 	else
-	{
 		fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (fd == -1)
+	if (fd == -1)
 		{
 			ft_printf(2, "minishell$ %s: ", file);
 			perror("");
 			return (-1);
 		}
-	}
 	dup2(fd, STDOUT);
 	close(fd);
 	return (0);
@@ -103,13 +94,11 @@ int	redirect(t_data	*cnt, int i)
 			return (-1);
 		}
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] != '>')
-			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1));
+			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 1)), 1, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '>' && cnt->parse[i].rec_file[j][1] == '>')
-			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
+			return (open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')
 			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
-		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
-			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);	
 	}
 	return (0);
 }
