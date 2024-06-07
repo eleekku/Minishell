@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:37:43 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 15:24:11 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/07 18:17:47 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	here_doc(char *limiter, t_data *cnt)
 		exit (1);
 	while (1)
 	{
-		line = readline(" > ");
+		line = tcsetreadline(cnt, 1);
+		if (g_num == SIGINT)
+			break ;
+		if (!line)
+			return ;
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 			break; 
 		ft_putendl_fd(line, pipefd[1]);

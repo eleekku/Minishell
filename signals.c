@@ -6,7 +6,7 @@ static	void	heredoc_handler(int signal)
 	{
 		g_num = SIGINT;
 		close(0);
-		write(1, "> \n", 3);
+		write(1, "\n", 1);
 	}
 }
 
@@ -19,7 +19,7 @@ static void	parent_handler(int signal)
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		//g_num = SIGINT;
+		g_num = SIGINT;
 	}
 	else if (signal == SIGQUIT)
 	{

@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:22:09 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 15:41:20 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/07 18:18:53 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	start_prompt(t_data *content)
 			creating_parse(content);
 		executor(content);
 		free_struct_parse(content);
-		free(input);
+		if (input)
+			free(input);
 	}
 }
 
