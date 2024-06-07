@@ -83,6 +83,11 @@ void	single_command(t_data *cnt, char **args)
 	int		status;
 
 	receive_signal(2);
+	if (cnt->here_doc_fd > 0)
+	{
+	dup2(cnt->here_doc_fd, STDIN);
+	close(cnt->here_doc_fd);
+	}
 	child = fork();
 		if (child == -1)
 			exit (1);
@@ -148,7 +153,9 @@ void	executor(t_data *cnt)
 	}
 	if (cnt->here_doc_fd > 0)
 	{
-	dup2(cnt->here_doc_fd, STDIN);
-	close(cnt->here_doc_fd);
+		dup2(cnt->stdin_backup, STDIN);
+		close(cnt->stdin_backup);
+		cnt->stdin_backup = dup(STDIN);
+		cnt->here_doc_fd = -1;
 	}
 }

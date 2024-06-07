@@ -63,7 +63,7 @@ void	child_process(t_data *cnt, int i, t_bool builtin)
 		exit(1);
 	if (cnt->parse[i].rec_file[0])
 	{
-			close(cnt->exec->pipesfd[cnt->exec->currentfd - 1]);
+		//	close(cnt->exec->pipesfd[cnt->exec->currentfd - 1]);
 			if (redirect(cnt, i) < 0)
 				exit (1);
 	}

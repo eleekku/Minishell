@@ -108,8 +108,6 @@ int	redirect(t_data	*cnt, int i)
 			open_out_doc(((ft_strchr(cnt->parse[i].rec_file[j], '>') + 2)), 0);
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] != '<')
 			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
-	//	if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
-	//		here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);	
 	}
 	return (0);
 }
