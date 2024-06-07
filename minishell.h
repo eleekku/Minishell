@@ -188,5 +188,6 @@ char	    *get_path(char *cmd, char **envp, int *p);
 void	    run_builtin_child(char **args, t_data *cnt);
 int         redirect(t_data	*cnt, int i);
 void	    prepare_exit(t_data *content, int status);
+void	    here_doc(char *limiter, t_data *cnt);
 
 # endif

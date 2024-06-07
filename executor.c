@@ -101,6 +101,26 @@ void	single_command(t_data *cnt, char **args)
 	}
 }
 
+void	check_here_doc(t_data *cnt)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (cnt->parse[i].rec_file)
+	{
+		while (cnt->parse[i].rec_file[j])
+		{
+		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1] == '<')
+			here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);
+		j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
 void	executor(t_data *cnt)
 {
 	int	i;
@@ -108,6 +128,7 @@ void	executor(t_data *cnt)
 	i = -1;
 	if (!cnt->parse)
 		return;
+	check_here_doc(cnt);
 	if (cnt->parse[0].cmd[0] && !cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
@@ -124,5 +145,10 @@ void	executor(t_data *cnt)
 	while (++i < cnt->i_pipex)
 		piping_and_forking(cnt, i);
 	parent_process(cnt);
+	}
+	if (cnt->here_doc_fd > 0)
+	{
+	dup2(cnt->here_doc_fd, STDIN);
+	close(cnt->here_doc_fd);
 	}
 }
