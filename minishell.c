@@ -49,7 +49,8 @@ void	start_prompt(t_data *content)
 		if (in == 0)
 			creating_parse(content);
 		executor(content);
-		free_struct_parse(content);
+    if (content->parse)
+		  free_struct_parse(content);
 		if (input)
 			free(input);
 	}
