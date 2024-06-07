@@ -105,7 +105,7 @@ void	executor(t_data *cnt)
 	int	i;
 
 	i = -1;
-	if (!cnt->parse) // || !cnt->parse[0].cmd[0])
+	if (!cnt->parse)
 		return;
 	if (cnt->parse[0].cmd[0] && !cnt->parse[1].cmd && check_built_in(cnt->parse[0].cmd) == TRUE)
 	{

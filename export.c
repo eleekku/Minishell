@@ -18,9 +18,6 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
 
   i = 0;
   free(content->exp[index]);
-  content->exp[index] = ft_strdup(arg);
-    if (!content->exp[index])
-      exit(1); //errooooor
   while (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) != 0)
     i++;
   if (content->env[i] && ft_strncmp(content->env[i], variable, ft_strlen(variable)) == 0 
@@ -28,12 +25,12 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
     {
       free(content->env[i]);
       free(variable);
-      content->env[i] = ft_strdup(arg);
-      return(ft_strdup(arg));
+      content->env[i] = safe_strdup(arg);
+      return(safe_strdup(arg));
     }
   content->env = export(arg, content->env);
   free(variable);
-  return (ft_strdup(arg));
+  return (safe_strdup(arg));
 }
 
 char **export(char *arg, char **table)
@@ -44,7 +41,8 @@ char **export(char *arg, char **table)
   while (table[i])
     i++;
   table = add_space(table, ft_strlen(arg));
-  table[i] = ft_strdup(arg);
+  free(table[i]);
+  table[i] = safe_strdup(arg);
   return (table);
 }
 
