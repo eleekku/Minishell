@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/04 14:59:28 by esalmela          ##     #   ########.fr */
+/*   Updated: 2024/06/06 15:46:26 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	exec(char **cmd, char **env)
 	else
 		path = get_path(cmd[0], env, &p);
 	checkpath(path);
+	//receive_signal(2);
 	if (path)
 		execve(path, cmd, env);
 	exit(127);
@@ -81,12 +82,12 @@ void	single_command(t_data *cnt, char **args)
 	pid_t	child;
 	int		status;
 
+	receive_signal(2);
 	child = fork();
 		if (child == -1)
 			exit (1);
 	if (child == 0)
 	{
-		receive_signal(2);
 		if (cnt->parse[0].rec_file)
 			if (redirect(cnt, 0) < 0)
 				exit (1);

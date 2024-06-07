@@ -12,13 +12,14 @@ static void	heredoc_handler(int signal)
 
 static void	parent_handler(int signal)
 {
+	
 	if (signal == SIGINT)
 	{
 		rl_replace_line("", 0);
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_num = SIGINT;
+		//g_num = SIGINT;
 	}
 	else if (signal == SIGQUIT)
 	{
@@ -30,10 +31,14 @@ static void	parent_handler(int signal)
 static void	child_handler(int signal)
 {
 	if (signal == SIGINT)
+	{
 		g_num = SIGINT;
+		printf("\n");
+	}
 	else if (signal == SIGQUIT)
 	{
 		ft_putstr_fd("Quit: 3\n", 2);
+		g_num = SIGQUIT;
 	}
 }
 

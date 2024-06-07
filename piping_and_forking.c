@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:20:31 by esalmela          #+#    #+#             */
-/*   Updated: 2024/05/29 15:23:23 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/06 15:50:12 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	piping_and_forking(t_data *cnt, int i)
 		close (cnt->exec->pipesfd[(cnt->exec->fdtrack) + 3]);
 		cnt->exec->fdtrack += 2;
 	}
+	receive_signal(2);
 	cnt->exec->child[i] = fork();
 	if (cnt->exec->child[i] == 0)
 		child_process(cnt, i, builtin);
