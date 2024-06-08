@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_redic.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/08 12:49:57 by dzurita           #+#    #+#             */
+/*   Updated: 2024/06/08 13:04:51 by dzurita          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include  "minishell.h"
 
 static  char    *make_recd_str_utils(t_data *data, char *temp2, int i_token)
@@ -74,6 +86,31 @@ void    parse_redic(t_data *data, t_parse *parse, int i_parse)
         i++;
     }
 }
+void    count_str_cmd(t_data *data, int i)
+{
+    char *temp;
+
+    if (data->lexer_array[i].type == TOKEN_STR 
+        || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN 
+        || data->lexer_array[i].type == TOKEN_S_QUOTE)
+        data->str++;
+    if (data->lexer_array[i].type == TOKEN_DOLAR)
+    {
+        temp = ft_substr(data->lexer_array[i].pos.start, 0, data->lexer_array[i].pos.len);
+        i = -1;
+        while (data->env[++i])
+        {
+            int len = ft_strchr(data->env[i], '=') - data->env[i];
+		    if (ft_strncmp(data->env[i], temp + 1, len) == 0
+			    && len + 1 == (int)ft_strlen(temp))
+		    {
+			    if (ft_strchr(data->env[i], ' '))
+				    data->str += ft_cont_str(data->env[i], ' ');
+	    	}
+        }
+        free(temp);
+    }
+}
 
 void    count_str_redic(t_data *data)
 {
@@ -89,7 +126,8 @@ void    count_str_redic(t_data *data)
             || data->lexer_array[i].type == TOKEN_DQUOTE_OPEN 
             || data->lexer_array[i].type == TOKEN_S_QUOTE 
             || data->lexer_array[i].type == TOKEN_DOLAR)
-            data->str++;
+            count_str_cmd(data, i);
+            //data->str++;
         if (data->lexer_array[i].type == TOKEN_IN_REDIRECT
             || data->lexer_array[i].type == TOKEN_OUT_REDIRECT
             || data->lexer_array[i].type == TOKEN_REDIR_APPEND

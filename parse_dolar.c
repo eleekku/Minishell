@@ -14,10 +14,19 @@ bool   change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
     //check for null
     else
     {   
-        re_size = ft_cont_str(ft_strchr(str, '=') + 1, ' ');
-        parse[data->i_parse].cmd = ft_realloc_char_array(str, parse, data,
-                                                        data->str + re_size);
-        data->i_str += re_size - 1;
+        re_size = ft_cont_str(ft_strchr(str, '=') + 1, ' ') + data->i_str;
+        str = ft_strchr(str, '=') + 1;
+        while (data->i_str < re_size)
+        {
+            while (*str == ' ' && *str)
+                str++;
+		    int end = 0;
+		    while (str[end] != ' ' && str[end])
+			    end++;
+            parse[data->i_parse].cmd[data->i_str] = ft_substr(str, 0, end);
+            str = str + end;
+            data->i_str++;
+        }
         return (true);
     }
     //check for null

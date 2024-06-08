@@ -109,7 +109,6 @@ void    parse_str(t_data *data, t_parse *parse, int i_parse)
         if (data->lexer_array[i].type == TOKEN_DOLAR)
         {
             parse_dolar(data, parse, i, i_parse);
-            data->i_str++;
         }
         i = parse_str_loop(data, parse, i_parse, i);
         if (is_redic(data, i) == true)
