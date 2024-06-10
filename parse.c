@@ -12,8 +12,8 @@ void    add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
     while (i_parse < i_pipex)
     {
         count_str_redic(data);
-        parse[i_parse].cmd = safe_calloc(data->str + 1, sizeof(char *));
-        parse[i_parse].rec_file = safe_calloc(data->irec + 1, sizeof(char *));
+        parse[i_parse].cmd = safe_calloc(data->str + 1, sizeof(char *), data);
+        parse[i_parse].rec_file = safe_calloc(data->irec + 1, sizeof(char *), data);
         parse_str(data, parse, i_parse);
         parse_redic(data, parse, i_parse);
         current_itoken(data);

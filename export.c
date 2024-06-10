@@ -25,24 +25,24 @@ char  *manipulate_variable(t_data *content, int index, char *variable, char *arg
     {
       free(content->env[i]);
       free(variable);
-      content->env[i] = safe_strdup(arg);
-      return(safe_strdup(arg));
+      content->env[i] = safe_strdup(arg, content);
+      return(safe_strdup(arg, content));
     }
-  content->env = export(arg, content->env);
+  content->env = export(arg, content->env, content);
   free(variable);
-  return (safe_strdup(arg));
+  return (safe_strdup(arg, content));
 }
 
-char **export(char *arg, char **table)
+char **export(char *arg, char **table, t_data *content)
 {
   int i;
  
   i = 0;
   while (table[i])
     i++;
-  table = add_space(table, ft_strlen(arg));
+  table = add_space(table, ft_strlen(arg), content);
   free(table[i]);
-  table[i] = safe_strdup(arg);
+  table[i] = safe_strdup(arg, content);
   return (table);
 }
 
@@ -51,12 +51,12 @@ void  initialize_export2(t_data *content, char *arg)
   int i;
 
   if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
-		content->env = export(arg, content->env);
+		content->env = export(arg, content->env, content);
   i = 0;
   while(content->exp[i] && ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
     i++;
   if (!content->exp[i])
-    content->exp = export(arg, content->exp);
+    content->exp = export(arg, content->exp, content);
 }
 
 void  initialize_export(t_data *content, char *arg)
@@ -70,17 +70,14 @@ void  initialize_export(t_data *content, char *arg)
     len = ft_strlen(arg) - ft_strlen(ft_strchr(arg, '='));
     variable = ft_substr(arg, 0, len);
     if (!variable)
-      exit(1);
+      prepare_exit(content, 1);
     i = 0;
     while (content->exp[i] && ft_strncmp(content->exp[i], variable, len) != 0)
       i++;
     if (content->exp[i])
     { 
-      if (ft_strncmp(content->exp[i], arg, ft_strlen(arg)) != 0)
-      {
         content->exp[i] = manipulate_variable(content, i, variable, arg);
         return ;
-      }
     }
     free (variable);
   }
@@ -125,7 +122,7 @@ void	pre_export(t_data *cnt)
 	else
 		while (cnt->parse[0].cmd[++j])
     {
-      if (cnt->parse[0].cmd[j][0] == '=')
+      if (ft_isalpha(cnt->parse[0].cmd[j][0]) == 0)
         ft_printf(2, "minishell$: export: `%s': not a valid intefier\n", cnt->parse[0].cmd[j]);
       else
 			initialize_export(cnt, cnt->parse[0].cmd[j]);

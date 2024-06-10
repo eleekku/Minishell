@@ -12,7 +12,7 @@ void  update_envp(t_data  *content)
       i++;
     num = ft_atoi(content->env[i] + 6);
     tmp = ft_itoa(num + 1);
-    lvl = safe_strjoin("SHLVL=", tmp);
+    lvl = safe_strjoin("SHLVL=", tmp, content);
     free(tmp);
     i = -1;
     while (content->env[++i])
@@ -38,9 +38,7 @@ void  create_envp(char **env, t_data *content)
     i = 0;
     while (i < n)
     {
-      envp[i] = ft_strdup(env[i]);
-      if (envp[i] == NULL)
-          perror("Error al asignar memoria");
+      envp[i] = safe_strdup(env[i], content);
       i++;
     }
     envp[i] = NULL;

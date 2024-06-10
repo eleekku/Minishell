@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 16:29:34 by esalmela          #+#    #+#             */
+/*   Updated: 2024/06/10 16:35:54 by esalmela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*check_flag(char *args, int *flag, int *n)
@@ -5,7 +17,7 @@ char	*check_flag(char *args, int *flag, int *n)
 	int	i;
 
 	i = 0;
-	if (args[i] && (args[i] == '-')) // || args[i] == ' '))
+	if (args[i] && (args[i] == '-'))
 	{
 		i++;
 		if (args[i] == 'n')
@@ -13,8 +25,8 @@ char	*check_flag(char *args, int *flag, int *n)
 			while (args[i] == 'n')
 				i++;
 			if (!args[i] || args[i] == ' ')
-			*flag = 1;
-		}				
+				*flag = 1;
+		}
 	}
 	if (*flag == 0 || args[i + 1])
 		return (args);
@@ -24,8 +36,8 @@ char	*check_flag(char *args, int *flag, int *n)
 
 void	echo(char **args)
 {
-	int i;
-	int flag;
+	int	i;
+	int	flag;
 	int	n;
 
 	i = 0;
@@ -37,7 +49,7 @@ void	echo(char **args)
 		ft_putstr_fd(args[i], 1);
 		if (args[i + 1] && n <= 0)
 			ft_putchar_fd(' ', 1);
-		n--;	
+		n--;
 	}
 	if (flag == 0)
 		write(1, "\n", 1);

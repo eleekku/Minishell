@@ -22,41 +22,41 @@ void	prepare_exit(t_data *content, int status)
 	exit(status);
 }
 
-char	*safe_strjoin(char const *s1, char const *s2)
+char	*safe_strjoin(char const *s1, char const *s2, t_data *content)
 {
 	char	*str;
 
 	str = ft_strjoin(s1, s2);
 	if (!str)
 	{
-		// call some error function
-		exit(1);
+		ft_printf(2, "minishell$: fatal error with malloc\n");
+		prepare_exit(content, 1);
 	}
 	return (str);
 }
 
-void	*safe_calloc(size_t nitems, size_t size)
+void	*safe_calloc(size_t nitems, size_t size, t_data *content)
 {
 	char	*ptr;
 
 	ptr = ft_calloc(nitems, size);
 	if (!ptr)
 	{
-		// call some error function
-		exit (255);
+		ft_printf(2, "minishell$: fatal error with malloc\n");
+		prepare_exit(content, 1);
 	}
 	return (ptr);
 }
 
-char	*safe_strdup(const char *src)
+char	*safe_strdup(const char *src, t_data *content)
 {
 	char *str;
 
 	str = ft_strdup(src);
 	if (!str)
 	{
-		// call some error function
-		exit (255);
+		ft_printf(2, "minishell$: fatal error with malloc\n");
+		prepare_exit(content, 1);
 	}
 	return (str);
 }
