@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 12:49:57 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 14:23:40 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/10 17:30:15 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	count_str_cmd(t_data *data, int i)
 		temp = ft_substr(data->lexer_array[i].pos.start, 0,
 				data->lexer_array[i].pos.len);
 		i = -1;
+		data->str++;
 		while (data->env[++i])
 		{
 			len = ft_strchr(data->env[i], '=') - data->env[i];
