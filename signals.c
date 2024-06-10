@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 11:17:30 by dzurita           #+#    #+#             */
+/*   Updated: 2024/06/10 11:27:15 by dzurita          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static	void	heredoc_handler(int signal)
@@ -12,7 +24,6 @@ static	void	heredoc_handler(int signal)
 
 static void	parent_handler(int signal)
 {
-	
 	if (signal == SIGINT)
 	{
 		rl_replace_line("", 0);
@@ -57,23 +68,4 @@ void	receive_signal(int val)
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
-}
-char	*tcsetreadline(t_data *msh, int n)
-{
-	char	*input;
-
-	tcsetattr(STDIN_FILENO, 0, &msh->new);
-	if (n == 0)
-		input = readline("minishell$ ");
-	else
-		input = readline("> ");
-	tcsetattr(STDIN_FILENO, 0, &msh->old);
-	return (input);
-}
-
-void	load_termios(t_data *msh)
-{
-	tcgetattr(STDIN_FILENO, &msh->old);
-	msh->new = msh->old;
-	msh->new.c_lflag &= ~ECHOCTL;
 }

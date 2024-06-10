@@ -1,4 +1,16 @@
-# include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   iter_token.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 15:35:59 by dzurita           #+#    #+#             */
+/*   Updated: 2024/06/10 15:47:45 by dzurita          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 t_char_iter	char_iter_constructor(char *start, size_t len)
 {
@@ -32,33 +44,3 @@ char	char_iter_next(t_char_iter *self)
 	self->start++;
 	return (next);
 }
-char	*char_find_dq(t_char_iter *self)
-{
-	size_t	len;
-
-	len = 1;
-	while (*(self->end - len) != '"')
-	{
-		len++;
-	}
-	return (self->end - len);
-}
-int	ft_realloc(t_token **token, size_t size)
-{
-	t_token		*new;
-	size_t		i;
-
-	new = ft_calloc(size, sizeof(t_token));
-	if (!new)
-		return (1);
-	i = 0;
-	while (i < size - 1)
-	{
-		new[i] = (*token)[i];
-		i++;
-	}
-	free(*token);
-	*token = new;
-	return (0);
-}
-

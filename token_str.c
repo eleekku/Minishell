@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:59:00 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 17:00:36 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:54:33 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	take_string(t_token *token, t_char_iter *iter)
 			take_error(token, iter);
 	}
 }
+
 void	take_d_quote(t_token *token, t_char_iter *iter)
 {
 	token->pos.start = char_iter_cursor(iter);
