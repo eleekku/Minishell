@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:52:53 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 16:54:33 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/10 15:55:27 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	take_redir_out(t_token *token, t_char_iter *iter)
 	token->pos.len = 1;
 	char_iter_next(iter);
 }
+
 void	take_redir_append(t_char_iter *iter, t_token *token)
 {
 	token->type = TOKEN_REDIR_APPEND;

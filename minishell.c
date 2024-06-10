@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:22:09 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 18:18:53 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/10 17:30:47 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	start_prompt(t_data *content)
 		if (in == 0)
 			creating_parse(content);
 		executor(content);
-    if (content->parse)
-		  free_struct_parse(content);
+		free_struct_parse(content);
 		if (input)
 			free(input);
 	}
@@ -61,7 +60,7 @@ int	main(int ac, char **av, char **envp)
 	t_data	content;
 
 	(void)av;
-	content.exit_status = 127;
+	content.exit_status = 0;
 	content.here_doc_fd = -1;
 	content.stdin_backup = dup(STDIN);
 	content.stdout_backup = dup(STDOUT);

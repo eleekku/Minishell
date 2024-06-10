@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_doble_array.c                                 :+:      :+:    :+:   */
+/*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/24 16:16:16 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 17:18:47 by dzurita          ###   ########.fr       */
+/*   Created: 2024/06/10 11:20:16 by dzurita           #+#    #+#             */
+/*   Updated: 2024/06/10 11:29:53 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_args(char **args)
+char	*tcsetreadline(t_data *msh, int n)
 {
-	char	**temp;
+	char	*input;
 
-	if (!args || !*args)
-		return ;
-	temp = args;
-	if (!temp)
-		return ;
-	while (*temp)
-	{
-		free(*temp);
-		temp++;
-	}
-	free(args);
-	args = NULL;
+	tcsetattr(STDIN_FILENO, 0, &msh->new);
+	if (n == 0)
+		input = readline("minishell$ ");
+	else
+		input = readline("> ");
+	tcsetattr(STDIN_FILENO, 0, &msh->old);
+	return (input);
+}
+
+void	load_termios(t_data *msh)
+{
+	tcgetattr(STDIN_FILENO, &msh->old);
+	msh->new = msh->old;
+	msh->new.c_lflag &= ~ECHOCTL;
 }
