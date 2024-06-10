@@ -16,24 +16,6 @@ void	add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
 {
 	int	i_parse;
 
-<<<<<<< HEAD
-    i = 0;
-    while (content->env[i]  && ft_strncmp(content->env[i], "SHLVL=", 6))
-      i++;
-    num = ft_atoi(content->env[i] + 6);
-    tmp = ft_itoa(num + 1);
-    lvl = safe_strjoin("SHLVL=", tmp, content);
-    free(tmp);
-    i = -1;
-    while (content->env[++i])
-    {
-      if (ft_strncmp(content->env[i], "SHLVL=", 6) == 0)
-      {
-        free (content->env[i]);
-        content->env[i] = lvl;
-      }
-    }
-=======
 	i_parse = 0;
 	data->i_parse = i_parse;
 	data->i_token = 0;
@@ -43,15 +25,14 @@ void	add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
 	{
 		count_str_redic(data);
 		printf("str : %d\n", data->str);
-		parse[i_parse].cmd = safe_calloc(data->str + 1, sizeof(char *));
-		parse[i_parse].rec_file = safe_calloc(data->irec + 1, sizeof(char *));
+		parse[i_parse].cmd = safe_calloc(data->str + 1, sizeof(char *), data);
+		parse[i_parse].rec_file = safe_calloc(data->irec + 1, sizeof(char *), data);
 		parse_str(data, parse, i_parse);
 		parse_redic(data, parse, i_parse);
 		current_itoken(data);
 		i_parse++;
 		data->i_parse = i_parse;
 	}
->>>>>>> master
 }
 
 void	update_envp(t_data *content)
@@ -61,29 +42,12 @@ void	update_envp(t_data *content)
 	int		i;
 	char	*tmp;
 
-<<<<<<< HEAD
-    n = 0;
-    while (env[n])
-      n++;
-    envp = (char **)malloc(sizeof(char *) * (n + 1));
-    i = 0;
-    while (i < n)
-    {
-      envp[i] = safe_strdup(env[i], content);
-      i++;
-    }
-    envp[i] = NULL;
-    content->env = envp;
-    update_envp(content);
-    content->root = getenv("HOME");
-    build_export(content);
-=======
 	i = 0;
 	while (content->env[i] && ft_strncmp(content->env[i], "SHLVL=", 6))
 		i++;
 	num = ft_atoi(content->env[i] + 6);
 	tmp = ft_itoa(num + 1);
-	lvl = safe_strjoin("SHLVL=", tmp);
+	lvl = safe_strjoin("SHLVL=", tmp, content);
 	free(tmp);
 	i = -1;
 	while (content->env[++i])
@@ -94,7 +58,6 @@ void	update_envp(t_data *content)
 			content->env[i] = lvl;
 		}
 	}
->>>>>>> master
 }
 
 void	create_envp(char **env, t_data *content)

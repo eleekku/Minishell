@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 16:48:32 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/10 18:06:45 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,6 @@ char		char_iter_peek(t_char_iter *self);
 char		char_iter_next(t_char_iter *self);
 int			ft_realloc(t_token **token, size_t size);
 //execution
-<<<<<<< HEAD
 void	    free_args(char **args);
 char	    *safe_strjoin(char const *s1, char const *s2, t_data *content);
 void	    *safe_calloc(size_t nitems, size_t size, t_data *content);
@@ -211,16 +210,14 @@ void	    prepare_exit(t_data *content, int status);
 void	    here_doc(char *limiter, t_data *cnt);
 int	        checkpath(char *path);
 
-# endif
-=======
 void		free_args(char **args);
-char		*safe_strjoin(char const *s1, char const *s2);
-void		*safe_calloc(size_t nitems, size_t size);
-char		*safe_strdup(const char *src);
+char		*safe_strjoin(char const *s1, char const *s2, t_data *content);
+void		*safe_calloc(size_t nitems, size_t size, t_data *content);
+char		*safe_strdup(const char *src, t_data *content);
 void		free_array(char **args);
 char		*get_root(void);
 void		create_envp(char **env, t_data *content);
-char		**export(char *arg, char **table);
+char		**export(char *arg, char **table, t_data *content);
 int			unset_variable(t_data *content, char **args);
 void		env(t_data *content);
 void		build_export(t_data *content);
@@ -231,7 +228,7 @@ void		echo(char **args);
 char		*get_pwd(void);
 int			change_directory(char *path, t_data *content);
 void		built_exit(char **args, t_data *cnt);
-char		**add_space(char **table, int linel);
+char		**add_space(char **table, int linel, t_data *content);
 int			unset_variable(t_data *content, char **args);
 void		execution(t_data *cnt, int i, int fd);
 void		executor(t_data *cnt);
@@ -244,5 +241,5 @@ void		run_builtin_child(char **args, t_data *cnt);
 int			redirect(t_data	*cnt, int i);
 void		prepare_exit(t_data *content, int status);
 void		here_doc(char *limiter, t_data *cnt);
+
 #endif
->>>>>>> master
