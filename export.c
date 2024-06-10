@@ -126,7 +126,7 @@ void	pre_export(t_data *cnt)
 		while (cnt->parse[0].cmd[++j])
     {
       if (cnt->parse[0].cmd[j][0] == '=')
-        ft_printf(2, "minishell$: export: `%s': not a valid intefier", cnt->parse[0].cmd[j]);
+        ft_printf(2, "minishell$: export: `%s': not a valid intefier\n", cnt->parse[0].cmd[j]);
       else
 			initialize_export(cnt, cnt->parse[0].cmd[j]);
     }
