@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	free_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free (args);
+}
+
 void	add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
 {
 	int	i_parse;
@@ -73,9 +86,7 @@ void	create_envp(char **env, t_data *content)
 	i = 0;
 	while (i < n)
 	{
-		envp[i] = ft_strdup(env[i]);
-		if (envp[i] == NULL)
-			perror("Error al asignar memoria");
+		envp[i] = safe_strdup(env[i], content);
 		i++;
 	}
 	envp[i] = NULL;

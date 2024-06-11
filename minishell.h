@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 18:06:45 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:16:46 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ char		*char_find_dq(t_char_iter *self);
 char		char_iter_peek(t_char_iter *self);
 char		char_iter_next(t_char_iter *self);
 int			ft_realloc(t_token **token, size_t size);
+
 //execution
 char		**export(char *arg, char **table, t_data *content);
 void		env(t_data *content);
@@ -199,5 +200,17 @@ void		prepare_exit(t_data *content, int status);
 void		here_doc(char *limiter, t_data *cnt);
 void		check_here_doc(t_data *cnt);
 void		print_export(t_data *content);
+void		print_pwd(t_data *cnt);
+void		change_directory(char *path, t_data *content);
+
+//utils
+char		*safe_strjoin(char const *s1, char const *s2, t_data *content);
+char		*safe_strdup(const char *src, t_data *content);
+void		*safe_calloc(size_t nitems, size_t size, t_data *content);
+void		free_array(char **args);
+int			checkpath(char *path);
+void		create_envp(char **env, t_data *content);
+char		*safe_substr(char const *src, unsigned int start, size_t len,
+				t_data *content);
 
 #endif

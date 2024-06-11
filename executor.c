@@ -16,27 +16,27 @@ void	exec(char **cmd, char **env)
 {
 	static char	*path;
 	int			p;
-	int			v;
+	int			error;
 
-	v = 127;
+	error = 127;
 	p = 0;
 	if (ft_strchr(cmd[0], '/') != 0)
 		path = cmd[0];
 	else
 		path = get_path(cmd[0], env, &p);
 	if (path)
-		v = checkpath(path);
-	if (v > 0)
+		error = checkpath(path);
+	if (error > 0)
 	{
 		if (p == -1)
 			free(path);
-		exit (v);
+		exit (error);
 	}
 	if (path)
 		execve(path, cmd, env);
 	if (p == -1)
 		free (path);
-	exit(v);
+	exit(error);
 }
 
 void	parent_process(t_data *cnt)
