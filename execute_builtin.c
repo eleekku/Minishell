@@ -20,7 +20,7 @@ void	run_builtin_child(char **args, t_data *cnt)
 	}
 	else if (ft_strncmp(args[0], "pwd", 3) == 0 && ft_strlen(args[0]) == 3)
 	{
-		printf("%s\n", get_pwd());
+		print_pwd(cnt);
 		exit (0);
 	}
 	else if (ft_strncmp(args[0], "env", 3) == 0 && ft_strlen(args[0]) == 3)
@@ -41,7 +41,7 @@ void	run_builtin2(t_data *cnt)
 		echo(cnt->parse[0].cmd);
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "pwd", 3) == 0
 		&& ft_strlen(cnt->parse[0].cmd[0]) == 3)
-		printf("%s\n", get_pwd());
+		print_pwd(cnt);
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "env", 3) == 0
 		&& ft_strlen(cnt->parse[0].cmd[0]) == 3)
 		env(cnt);
@@ -69,7 +69,6 @@ void	run_builtin(t_data *cnt)
 	if (!cnt->parse[0].cmd[0])
 		return ;
 	run_builtin2(cnt);
-	cnt->exit_status = 0;
 }
 
 t_bool	check_built_in(char **args)

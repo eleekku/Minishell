@@ -6,7 +6,7 @@
 /*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:31:12 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/10 17:16:55 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 08:49:13 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	checkpath(char *path)
 	if (fd != -1 && path[0] == '.')
 	{
 		ft_printf(2, "minishell$ %s: is a directory\n", path);
-		return(126);
+		return (126);
 	}
 	else if (access(path, F_OK) != 0)
 	{
@@ -29,13 +29,13 @@ int	checkpath(char *path)
 		else
 			ft_printf(2, "minishell$ %s: command not found\n", path);
 		close(fd);
-		return(127);
+		return (127);
 	}
 	else if (access(path, X_OK) != 0)
 	{
 		ft_printf(2, "minishell$ %s: Permission denied\n", path);
 		close(fd);
-		return(126);
+		return (126);
 	}
 	return (0);
 }

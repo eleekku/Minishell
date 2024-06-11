@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	unset_variable(t_data *content, char **args)
+void	unset_variable(t_data *content, char **args)
 {
 	int	i;
 
@@ -34,9 +34,7 @@ int	unset_variable(t_data *content, char **args)
 		free(content->exp[i]);
 		content->exp[i] = safe_strdup("", content);
 	}
-	if (!content->exp[i])
-		return (255);
-	return (0);
+	content->exit_status = 0;
 }
 
 t_bool	exit_lvl(t_data *cnt)
@@ -92,7 +90,11 @@ void	built_exit(char **args, t_data *cnt)
 	else
 		i = ft_atoi(args[1]);
 	if (args[1] && args[2] && flag == FALSE)
+	{
 		ft_printf(2, "minishell$: exit: %s too many arguments\n", args[1]);
+		cnt->exit_status = 1;
+		return ;
+	}
 	i = convert_status(i);
 	cnt->exit_status = i;
 	prepare_exit(cnt, i);
@@ -108,4 +110,5 @@ void	env(t_data *content)
 		if (content->env[i] && ft_strlen(content->env[i]) > 0)
 			ft_putendl_fd(content->env[i], 1);
 	}
+	content->exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:59:39 by esalmela          #+#    #+#             */
-/*   Updated: 2024/04/29 14:59:43 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:09:36 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*safe_calloc(size_t nitems, size_t size, t_data *content)
 
 char	*safe_strdup(const char *src, t_data *content)
 {
-	char *str;
+	char	*str;
 
 	str = ft_strdup(src);
 	if (!str)
@@ -60,4 +60,3 @@ char	*safe_strdup(const char *src, t_data *content)
 	}
 	return (str);
 }
-
