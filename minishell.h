@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 13:54:44 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:03:21 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void		take_string(t_token *token, t_char_iter *iter);
 //parse
 void		creating_parse(t_data *data);
 void		add_data_to_parse(t_parse *parse, t_data *data, int i_pipex);
-char		*ft_add_cmd_str(const char *src, int len);
+char		*ft_add_cmd_str(const char *src, int len, t_data *data);
 void		parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
 int			index_after_quate(t_data *data, int i);
 char		*make_str_dquote(t_data *data, int i_token, int i_quate);
@@ -177,6 +177,45 @@ char		char_iter_next(t_char_iter *self);
 int			ft_realloc(t_token **token, size_t size);
 
 //execution
+void	    free_args(char **args);
+char	    *safe_strjoin(char const *s1, char const *s2, t_data *content);
+void	    *safe_calloc(size_t nitems, size_t size, t_data *content);
+char	    *safe_strdup(const char *src, t_data *content);
+void        free_array(char **args);
+void        create_envp(char **env, t_data *content);
+char        **export(char *arg, char **table, t_data *content);
+void        env(t_data *content);
+void	    build_export(t_data *content);
+void	    pre_export(t_data *cnt);
+void	    print_export(t_data *content);
+void        initialize_export(t_data *content, char *arg);
+void        run_builtin(t_data *cnt);
+void        echo(char **args);
+void		change_directory(char *path, t_data *content);
+void        built_exit(char **args, t_data *cnt);
+char        **add_space(char **table, int linel, t_data *content);
+void	    execution(t_data *cnt, int i, int fd);
+void        executor(t_data *cnt);
+void	    exec(char **cmd, char **env);
+t_bool	    check_built_in(char **args);
+void        piping_and_forking(t_data *cnt, int i);
+t_execute	*init_exec_struct(int pipes);
+char	    *get_path(char *cmd, char **envp, int *p);
+void	    run_builtin_child(char **args, t_data *cnt);
+int         redirect(t_data	*cnt, int i);
+void	    prepare_exit(t_data *content, int status);
+void	    here_doc(char *limiter, t_data *cnt);
+int	        checkpath(char *path);
+
+void		free_args(char **args);
+char		*safe_strjoin(char const *s1, char const *s2, t_data *content);
+char		*safe_substr(char const *src, unsigned int start, size_t len, t_data *content);
+void		*safe_calloc(size_t nitems, size_t size, t_data *content);
+char		*safe_strdup(const char *src, t_data *content);
+void		free_array(char **args);
+char		*get_root(void);
+void		print_pwd(t_data *cnt);
+void		create_envp(char **env, t_data *content);
 char		**export(char *arg, char **table, t_data *content);
 void		env(t_data *content);
 void		build_export(t_data *content);

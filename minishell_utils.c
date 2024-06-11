@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:50:46 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 11:17:33 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:46:18 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ void	add_data_to_parse(t_parse *parse, t_data *data, int i_pipex)
 	{
 		count_str_redic(data);
 		parse[i_parse].cmd = safe_calloc(data->str + 1, sizeof(char *), data);
-		if (!parse[i_parse].cmd)
-			return ;
-		parse[i_parse].rec_file = safe_calloc(data->irec + 1, sizeof(char *), data);
-		if (!parse[i_parse].rec_file)
-			return ;
+		parse[i_parse].rec_file = safe_calloc(data->irec + 1,
+				sizeof(char *), data);
 		parse_str(data, parse, i_parse);
 		parse_redic(data, parse, i_parse);
 		current_itoken(data);

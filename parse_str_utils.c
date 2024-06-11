@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:31:16 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 13:38:46 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:10:51 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*check_dquote_str(t_data *data, int i_token)
 	}
 	else
 	{
-		temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
+		temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
 		if (!temp2)
 			return (NULL);
 	}
