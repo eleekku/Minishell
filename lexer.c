@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 11:28:44 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:43:47 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	lexer_tokenizer(t_data *data)
 	if (!token)
 	{
 		printf("minishell$: fatal error with malloc\n");
-		exit(1);	
+		exit(1);
 	}
 	iter = char_iter_constructor(data->str_rl, ft_strlen(data->str_rl));
 	iter.d_flag = 0;

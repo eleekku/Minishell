@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:58:04 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 13:05:21 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:52:14 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
 	len = data->lexer_array[i_token].pos.len;
 	if (ft_strchr(str, ' ') == NULL)
 	{
-		parse[data->i_parse].cmd[data->i_str] =  safe_strdup(str + len, data);
+		parse[data->i_parse].cmd[data->i_str] = safe_strdup(str + len, data);
 		return (true);
 	}
 	else
@@ -74,16 +74,16 @@ char	*str_redc_dolar(t_data *data, int i_token)
 	return (str);
 }
 
-char	*parse_dolar_dquate(t_data *data, int i_token)
+char	*parse_dolar_dquate(t_data *ctn, int i_token)
 {
 	char	*str;
 	char	**envp;
 	int		i;
 	int		len;
 
-	envp = data->env;
-	len = data->lexer_array[i_token].pos.len;
-	str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
+	envp = ctn->env;
+	len = ctn->lexer_array[i_token].pos.len;
+	str = ft_add_cmd_str(ctn->lexer_array[i_token].pos.start, len, ctn);
 	i = -1;
 	while (envp[++i])
 	{
@@ -94,12 +94,12 @@ char	*parse_dolar_dquate(t_data *data, int i_token)
 			&& len + 1 == (int)ft_strlen(str))
 		{
 			free(str);
-			str = safe_strdup(envp[i] + data->lexer_array[i_token].pos.len, data);
+			str = safe_strdup(envp[i] + ctn->lexer_array[i_token].pos.len, ctn);
 			return (str);
 		}
 	}
 	free(str);
-	str = safe_strdup("", data);
+	str = safe_strdup("", ctn);
 	return (str);
 }
 
