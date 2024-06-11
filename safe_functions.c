@@ -12,12 +12,25 @@
 
 #include "minishell.h"
 
+void	free_array(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free (args);
+}
+
 void	prepare_exit(t_data *content, int status)
 {
 	if (content->env)
-		free_args(content->env);
+		free_array(content->env);
 	if (content->exp)
-		free_args(content->exp);
+		free_array(content->exp);
 	free_struct_parse(content);
 	exit(status);
 }

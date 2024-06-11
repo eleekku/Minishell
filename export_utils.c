@@ -28,19 +28,6 @@ char	**copy_to_struct(char **table, char **new, t_data *content)
 	return (table);
 }
 
-void	free_array(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free (args);
-}
-
 void	build_export(t_data *content)
 {
 	int	i;
