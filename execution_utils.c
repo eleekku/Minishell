@@ -17,7 +17,7 @@ int	checkpath(char *path)
 	int	fd;
 
 	fd = open(path, O_DIRECTORY);
-	if (fd != -1 && path[0] == '.')
+	if (fd != -1)
 	{
 		ft_printf(2, "minishell$ %s: is a directory\n", path);
 		return (126);
