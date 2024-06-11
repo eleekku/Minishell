@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:29:34 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/10 16:35:54 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:45:51 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*check_flag(char *args, int *flag, int *n)
 				*flag = 1;
 		}
 	}
-	if (*flag == 0 || args[i + 1])
+	if (*flag == 0) // || args[i + 1])
 		return (args);
 	*n += 1;
 	return (args + i);

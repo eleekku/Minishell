@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 13:43:47 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:30:26 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*check_str_envp_redc(t_data *data, char *str, int i_token)
 				return (str);
 			free (str);
 			len = data->lexer_array[i_token].pos.len;
-			str = ft_strdup(data->env[i] + len);
+			str = safe_strdup(data->env[i] + len, data);
 			return (str);
 		}
 		i++;
@@ -72,7 +72,7 @@ char	*check_str_envp_redc(t_data *data, char *str, int i_token)
 	if (data->is_exp)
 	{
 		free (str);
-		str = ft_strdup("");
+		str = safe_strdup("", data);
 	}
 	return (str);
 }
