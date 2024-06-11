@@ -11,24 +11,31 @@ LIBFT = -LLibft -lft
 LINK_FLAGS = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib -g -fsanitize=address,undefined 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
-# -g -fsanitize=address,undefined
+
+GREEN= \033[1;32m
+RED=\033[0;31m
+END= \033[0m
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		$(MAKE) -C ./Libft
-		$(CC) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
+		@echo "${RED}Compiling Minishell${END}"
+		@$(MAKE) -C ./Libft
+		@$(CC) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
+		@echo "${GREEN}Minishell Compiled Successfully${END}"
+		
 
 %.o: %.c
-		$(CC) $(CFLAGS) -I. -ILibft -c $< -o $@
+		@$(CC) $(CFLAGS) -I. -ILibft -c $< -o $@
 
 clean:
-		$(MAKE) clean -C ./Libft
-		rm -f $(OBJ) $(OBJ_BONUS) $(OBJ_PAR)
+		@$(MAKE) clean -C ./Libft
+		@rm -f $(OBJ) $(OBJ_BONUS) $(OBJ_PAR)
 
 fclean: clean
-		$(MAKE) fclean -C ./Libft
-		rm -f $(NAME)
+		@$(MAKE) fclean -C ./Libft
+		@rm -f $(NAME)
+		@echo "${GREEN}Minishell Cleaned${END}"
 
 re: fclean all
 
