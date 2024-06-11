@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:50:46 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 10:58:31 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 11:07:55 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	update_envp(t_data *content)
 		i++;
 	num = ft_atoi(content->env[i] + 6);
 	tmp = ft_itoa(num + 1);
-	lvl = safe_strjoin("SHLVL=", tmp);
+	lvl = safe_strjoin("SHLVL=", tmp, content);
 	free(tmp);
 	i = -1;
 	while (content->env[++i])

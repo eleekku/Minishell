@@ -12,50 +12,31 @@
 
 #include "minishell.h"
 
-void	checkpath(char *path)
-{
-	int	fd;
-
-	if (!path)
-		exit (0);
-	fd = open(path, O_DIRECTORY);
-	if (fd != -1 && path[0] == '.')
-	{
-		ft_printf(2, "minishell$ %s: is a directory\n", path);
-		exit(126);
-	}
-	else if (access(path, F_OK) != 0)
-	{
-		if (ft_strchr(path, '/') != 0)
-			ft_printf(2, "minishell$ %s: No such file or directory\n", path);
-		else
-			ft_printf(2, "minishell$ %s: command not found\n", path);
-		close(fd);
-		exit(127);
-	}
-	else if (access(path, X_OK) != 0)
-	{
-		ft_printf(2, "minishell$ %s: Permission denied\n", path);
-		close(fd);
-		exit(126);
-	}
-}
-
 void	exec(char **cmd, char **env)
 {
 	static char	*path;
 	int			p;
+	int			v;
 
+	v = 127;
 	p = 0;
 	if (ft_strchr(cmd[0], '/') != 0)
 		path = cmd[0];
 	else
 		path = get_path(cmd[0], env, &p);
-	checkpath(path);
-	//receive_signal(2);
+	if (path)
+	v = checkpath(path);
+		if (v > 0)
+		{
+		if (p == -1)
+			free(path);
+		exit (v);
+		}
 	if (path)
 		execve(path, cmd, env);
-	exit(127);
+	if (p == -1)
+		free (path);
+	exit(v);
 }
 
 void	parent_process(t_data *cnt)
@@ -125,6 +106,13 @@ void	check_here_doc(t_data *cnt)
 		i++;
 	}
 }
+void	backup_stdou(t_data *cnt)
+{
+		dup2(cnt->stdin_backup, STDIN);
+		close(cnt->stdin_backup);
+		cnt->stdin_backup = dup(STDIN);
+		cnt->here_doc_fd = -1;
+}
 
 void	executor(t_data *cnt)
 {
@@ -152,10 +140,5 @@ void	executor(t_data *cnt)
 	parent_process(cnt);
 	}
 	if (cnt->here_doc_fd > 0)
-	{
-		dup2(cnt->stdin_backup, STDIN);
-		close(cnt->stdin_backup);
-		cnt->stdin_backup = dup(STDIN);
-		cnt->here_doc_fd = -1;
-	}
+		backup_stdou(cnt);
 }
