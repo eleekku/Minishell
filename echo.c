@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*check_flag(char *args, int *flag, int *n)
+int	check_flag(char *args, int *flag)
 {
 	int	i;
 
@@ -24,32 +24,34 @@ char	*check_flag(char *args, int *flag, int *n)
 		{
 			while (args[i] == 'n')
 				i++;
-			if (!args[i] || args[i] == ' ')
+			if (!args[i])
+			{
 				*flag = 1;
+				return (1);
+			}
 		}
 	}
-	if (*flag == 0 || args[i + 1])
-		return (args);
-	*n += 1;
-	return (args + i);
+	return (0);
 }
 
 void	echo(char **args)
 {
 	int	i;
 	int	flag;
-	int	n;
+	int	check;
 
 	i = 0;
 	flag = 0;
-	n = 0;
+	check = 0;
 	while (args[++i])
 	{
-		args[i] = check_flag(args[i], &flag, &n);
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1] && n <= 0)
-			ft_putchar_fd(' ', 1);
-		n--;
+		if (check_flag(args[i], &flag) == 0)
+		{
+			if (check != 0)
+				ft_putchar_fd(' ', 1);
+			ft_putstr_fd(args[i], 1);
+			check = 1;
+		}
 	}
 	if (flag == 0)
 		write(1, "\n", 1);
