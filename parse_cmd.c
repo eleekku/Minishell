@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:41:57 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 14:01:32 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:24:44 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ char	*make_str_dquote(t_data *data, int i_token, int i_quate)
 			if (!temp2)
 			{
 				free(rec);
-				return (NULL);
+				safe_strdup(NULL, data);
 			}
 			rec = ft_strjoingnl(rec, temp2);
 			if (!rec)
 			{
 				free(temp2);
-				return (NULL);
+				safe_strdup(NULL, data);
 			}
 			free(temp2);
 		}
@@ -73,7 +73,7 @@ int	parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i)
 	str = data->lexer_array[i].pos.start;
 	if (data->lexer_array[i].type == TOKEN_STR)
 	{
-		parse[i_parse].cmd[data->i_str] = ft_add_cmd_str(str, len);
+		parse[i_parse].cmd[data->i_str] = ft_add_cmd_str(str, len, data);
 		if (data->lexer_array[i + 1].type == TOKEN_DQUOTE_OPEN
 			|| data->lexer_array[i + 1].type == TOKEN_S_QUOTE)
 		{
@@ -81,6 +81,8 @@ int	parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i)
 			temp = make_str_dquote(data, i, index_after_quate(data, i));
 			str = parse[i_parse].cmd[data->i_str];
 			parse[i_parse].cmd[data->i_str] = ft_strjoingnl(str, temp);
+			if (!parse[i_parse].cmd[data->i_str])
+				safe_strdup(NULL, data);
 			free(temp);
 			i = index_after_quate(data, i) - 1;
 		}
@@ -94,21 +96,23 @@ void	parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
 	char	*str;
 	int		len;
 
+	str = NULL;
 	len = data->lexer_array[i_token].pos.len;
 	if (data->lexer_array[i_token].pos.start[0] == '?')
 	{
 		parse->cmd[data->i_str] = ft_itoa(data->exit_status);
-		//check for NULL
-		return ;
+		if (!parse->cmd[data->i_str])
+		{
+			ft_printf(2, "minishell$: fatal error with malloc\n");
+			prepare_exit(data, 1);
+		}
 	}
 	else
-		str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
-	//check for null;
+		str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
 	if (parse_dolar_envp(data, parse, str, i_token) == true)
 		return ;
 	free(str);
-	parse[i_parse].cmd[data->i_str] = ft_strdup("");
-	//check for NULL
+	parse[i_parse].cmd[data->i_str] = safe_strdup("", data);
 }
 
 void	parse_str(t_data *data, t_parse *parse, int i_parse)

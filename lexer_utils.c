@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:03:03 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 17:02:56 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:02:35 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	take_error(t_token *token, t_char_iter *iter)
 	}
 }
 
-char	*ft_add_cmd_str(const char *src, int len)
+char	*ft_add_cmd_str(const char *src, int len, t_data *data)
 {
 	char	*new;
 	size_t	i;
@@ -83,6 +83,8 @@ char	*ft_add_cmd_str(const char *src, int len)
 	new = malloc(sizeof(char) * (len + 1));
 	if (!new)
 	{
+		ft_printf(2, "minishell$: fatal error with malloc\n");
+		prepare_exit(data, 1);
 		return (NULL);
 	}
 	i = 0;

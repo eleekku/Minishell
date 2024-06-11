@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 18:06:45 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:03:21 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void		take_string(t_token *token, t_char_iter *iter);
 //parse
 void		creating_parse(t_data *data);
 void		add_data_to_parse(t_parse *parse, t_data *data, int i_pipex);
-char		*ft_add_cmd_str(const char *src, int len);
+char		*ft_add_cmd_str(const char *src, int len, t_data *data);
 void		parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse);
 int			index_after_quate(t_data *data, int i);
 char		*make_str_dquote(t_data *data, int i_token, int i_quate);
@@ -212,6 +212,7 @@ int	        checkpath(char *path);
 
 void		free_args(char **args);
 char		*safe_strjoin(char const *s1, char const *s2, t_data *content);
+char		*safe_substr(char const *src, unsigned int start, size_t len, t_data *content);
 void		*safe_calloc(size_t nitems, size_t size, t_data *content);
 char		*safe_strdup(const char *src, t_data *content);
 void		free_array(char **args);

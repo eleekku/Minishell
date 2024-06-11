@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 12:49:57 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 17:30:15 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:16:04 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*make_recd_str_utils(t_data *data, char *temp2, int i_token)
 		temp2 = str_redc_dolar(data, i_token);
 	if (data->lexer_array[i_token].type == TOKEN_STR)
 		temp2 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
-				data->lexer_array[i_token].pos.len);
+				data->lexer_array[i_token].pos.len, data);
 	data->i_token = i_token;
 	return (temp2);
 }
@@ -48,14 +48,14 @@ char	*make_recd_str(t_data *data, int i_token)
 	temp2 = NULL;
 	data->is_exp = 0;
 	tem1 = ft_add_cmd_str(data->lexer_array[i_token].pos.start,
-			data->lexer_array[i_token].pos.len);
-	//check for null
+			data->lexer_array[i_token].pos.len, data);
 	i_token++;
 	if (data->lexer_array[i_token].type == TOKEN_SPACE)
 		i_token++;
 	temp2 = make_recd_str_utils(data, temp2, i_token);
-	rec = ft_strjoin(tem1, temp2);
-	//malloc handle
+	if (!temp2)
+		safe_strdup(NULL, data);
+	rec = safe_strjoin(tem1, temp2, data);
 	free(tem1);
 	free(temp2);
 	return (rec);
@@ -95,8 +95,8 @@ void	count_str_cmd(t_data *data, int i)
 		data->str++;
 	if (data->lexer_array[i].type == TOKEN_DOLAR)
 	{
-		temp = ft_substr(data->lexer_array[i].pos.start, 0,
-				data->lexer_array[i].pos.len);
+		temp = safe_substr(data->lexer_array[i].pos.start, 0,
+				data->lexer_array[i].pos.len, data);
 		i = -1;
 		data->str++;
 		while (data->env[++i])

@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:58:04 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 16:23:10 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 13:05:21 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static void	exp_str_dolar(t_data *data, t_parse *parse, int re_size, char *str)
 		end = 0;
 		while (str[end] != ' ' && str[end])
 			end++;
-		parse[data->i_parse].cmd[data->i_str] = ft_substr(str, 0, end);
-		//check NULL
+		parse[data->i_parse].cmd[data->i_str] = safe_substr(str, 0, end, data);
 		str = str + end;
 		data->i_str++;
 	}
@@ -38,10 +37,9 @@ bool	change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
 	len = data->lexer_array[i_token].pos.len;
 	if (ft_strchr(str, ' ') == NULL)
 	{
-		parse[data->i_parse].cmd[data->i_str] = ft_strdup(str + len);
+		parse[data->i_parse].cmd[data->i_str] =  safe_strdup(str + len, data);
 		return (true);
 	}
-	//check for null
 	else
 	{
 		re_size = ft_cont_str(ft_strchr(str, '=') + 1, ' ') + data->i_str;
@@ -49,7 +47,6 @@ bool	change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
 		exp_str_dolar(data, parse, re_size, str);
 		return (true);
 	}
-	//check for null
 	return (false);
 }
 
@@ -60,16 +57,19 @@ char	*str_redc_dolar(t_data *data, int i_token)
 
 	len = data->lexer_array[i_token].pos.len;
 	if (data->lexer_array[i_token].pos.start[0] == '$' && len == 1)
-		return (ft_strdup("$"));
+		return (safe_strdup("$", data));
 	if (data->lexer_array[i_token].pos.start[0] == '?')
 	{
 		str = ft_itoa(data->exit_status);
-		//check for NULL
+		if (!str)
+		{
+			ft_printf(2, "minishell$: fatal error with malloc\n");
+			prepare_exit(data, 1);
+		}
 		return (str);
 	}
 	else
-		str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
-	//check for null;
+		str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
 	str = check_str_envp_redc(data, str, i_token);
 	return (str);
 }
@@ -83,7 +83,7 @@ char	*parse_dolar_dquate(t_data *data, int i_token)
 
 	envp = data->env;
 	len = data->lexer_array[i_token].pos.len;
-	str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len);
+	str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
 	i = -1;
 	while (envp[++i])
 	{
@@ -94,12 +94,12 @@ char	*parse_dolar_dquate(t_data *data, int i_token)
 			&& len + 1 == (int)ft_strlen(str))
 		{
 			free(str);
-			str = ft_strdup(envp[i] + data->lexer_array[i_token].pos.len);
+			str = safe_strdup(envp[i] + data->lexer_array[i_token].pos.len, data);
 			return (str);
 		}
 	}
 	free(str);
-	str = ft_strdup("");
+	str = safe_strdup("", data);
 	return (str);
 }
 
