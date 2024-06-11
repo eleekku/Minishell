@@ -87,12 +87,21 @@ void	single_command(t_data *cnt, char **args)
 	}
 }
 
-void	backup_stdou(t_data *cnt)
+void	backup_stdou(t_data *cnt, int fd)
 {
-	dup2(cnt->stdin_backup, STDIN);
-	close(cnt->stdin_backup);
-	cnt->stdin_backup = dup(STDIN);
-	cnt->here_doc_fd = -1;
+	if (fd == 0)
+	{
+		dup2(cnt->stdin_backup, fd);
+		close(cnt->stdin_backup);
+		cnt->stdin_backup = dup(fd);
+		cnt->here_doc_fd = -1;
+	}
+	else
+	{
+		dup2(cnt->stdout_backup, fd);
+		close(cnt->stdout_backup);
+		cnt->stdout_backup = dup(fd);
+	}
 }
 
 void	executor(t_data *cnt)
@@ -107,7 +116,7 @@ void	executor(t_data *cnt)
 		&& check_built_in(cnt->parse[0].cmd) == TRUE)
 	{
 		run_builtin(cnt);
-		backup_stdou(cnt);
+		backup_stdou(cnt, STDOUT);
 		return ;
 	}
 	if (!cnt->parse[1].cmd)
@@ -120,5 +129,5 @@ void	executor(t_data *cnt)
 		parent_process(cnt);
 	}
 	if (cnt->here_doc_fd > 0)
-		backup_stdou(cnt);
+		backup_stdou(cnt, STDIN);
 }
