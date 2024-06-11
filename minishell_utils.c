@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:50:46 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/10 17:29:00 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 11:13:57 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	free_struct_parse(t_data *data)
 	i = 0;
 	while (i < data->i_pipex)
 	{
-		free_args(data->parse[i].cmd);
-		free_args(data->parse[i].rec_file);
+		free_array(data->parse[i].cmd);
+		free_array(data->parse[i].rec_file);
 		i++;
 	}
 	free(data->parse);
