@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/07 17:19:44 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 10:47:26 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	lexer_tokenizer(t_data *data)
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
+	{
 		printf("Error Malloc token");
+		return ;	
+	}
 	iter = char_iter_constructor(data->str_rl, ft_strlen(data->str_rl));
 	iter.d_flag = 0;
 	i = 0;
@@ -36,7 +39,10 @@ void	lexer_tokenizer(t_data *data)
 		add_token(&token[i], &iter);
 		i++;
 		if (ft_realloc(&token, i + 1))
-			printf("Error Malloc token");
+		{
+			printf("Error Malloc token loop\n");
+			return ;
+		}
 	}
 	take_eol(&iter, &token[i]);
 	data->lexer_array = token;
