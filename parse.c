@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:08:07 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 15:02:41 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/11 15:36:28 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ void	creating_parse(t_data *data)
 
 	data->i_pipex = 1;
 	if (check_error_token(data) != true)
+	{
+		free(data->lexer_array);
 		return ;
+	}
 	parse = safe_calloc(data->i_pipex + 1, sizeof(t_parse), data);
 	i = -1;
 	while (++i < data->i_pipex)
