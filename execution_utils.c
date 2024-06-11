@@ -90,7 +90,7 @@ char	*form_path(char **path_temp, char *cmd, int *p)
 			if (access(path, F_OK) == 0)
 			{
 				*p = -1;
-				free_array(path_temp);
+				free_args(path_temp);
 				return (path);
 			}
 		}
@@ -98,7 +98,7 @@ char	*form_path(char **path_temp, char *cmd, int *p)
 			free(path);
 		i++;
 	}
-	free_array(path_temp);
+	free_args(path_temp);
 	return (NULL);
 }
 
