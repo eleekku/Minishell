@@ -25,7 +25,6 @@ $(NAME): $(OBJ)
 clean:
 		$(MAKE) clean -C ./Libft
 		rm -f $(OBJ) $(OBJ_BONUS) $(OBJ_PAR)
-		@rm -f .bonus
 
 fclean: clean
 		$(MAKE) fclean -C ./Libft
