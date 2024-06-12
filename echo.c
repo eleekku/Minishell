@@ -34,7 +34,7 @@ int	check_flag(char *args, int *flag)
 	return (0);
 }
 
-void	echo(char **args)
+void	echo(char **args, t_data *content)
 {
 	int	i;
 	int	flag;
@@ -55,4 +55,5 @@ void	echo(char **args)
 	}
 	if (flag == 0)
 		write(1, "\n", 1);
+	content->exit_status = 0;
 }
