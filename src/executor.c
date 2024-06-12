@@ -18,7 +18,7 @@ void	exec(char **cmd, char **env)
 	int			p;
 	int			error;
 
-	error = 127;
+	error = 0;
 	p = 0;
 	if (ft_strchr(cmd[0], '/') != 0)
 		path = cmd[0];
