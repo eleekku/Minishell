@@ -19,6 +19,8 @@ void	prepare_exit(t_data *content, int status)
 	if (content->exp)
 		free_array(content->exp);
 	free_struct_parse(content);
+	close(content->stdin_backup);
+	close(content->stdout_backup);
 	exit(status);
 }
 
