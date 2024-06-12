@@ -12,29 +12,33 @@
 
 #include "inc/minishell.h"
 
-void	unset_variable(t_data *content, char **args)
+void	unset_variable(t_data *c, char **a)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (content->env[i] && ft_strncmp(args[1],
-			content->env[i], ft_strlen(args[1])) != 0)
-		i++;
-	if (content->env[i])
+	j = 0;
+	while (a[++j])
 	{
-		free(content->env[i]);
-		content->env[i] = safe_strdup("", content);
+		while (c->env[i] && ft_strncmp(a[j], c->env[i], ft_strlen(a[j])) != 0)
+			i++;
+		if (c->env[i])
+		{
+			free(c->env[i]);
+			c->env[i] = safe_strdup("", c);
+		}
+		i = 0;
+		while (c->exp[i] && ft_strncmp(a[j], c->exp[i], ft_strlen(a[j])) != 0)
+			i++;
+		if (c->exp[i])
+		{
+			free(c->exp[i]);
+			c->exp[i] = safe_strdup("", c);
+		}
+		i = 0;
 	}
-	i = 0;
-	while (content->exp[i] && ft_strncmp(args[1], content->exp[i],
-			ft_strlen(args[1])) != 0)
-		i++;
-	if (content->exp[i])
-	{
-		free(content->exp[i]);
-		content->exp[i] = safe_strdup("", content);
-	}
-	content->exit_status = 0;
+	c->exit_status = 0;
 }
 
 t_bool	exit_lvl(t_data *cnt)
