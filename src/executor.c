@@ -24,7 +24,7 @@ void	exec(char **cmd, char **env)
 		path = cmd[0];
 	else
 		path = get_path(cmd[0], env, &p);
-	if (path)
+	if (path && p == 0)
 		error = checkpath(path);
 	if (error > 0)
 	{
