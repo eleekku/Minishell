@@ -96,12 +96,12 @@ void	backup_stdou(t_data *cnt, int fd)
 		cnt->stdin_backup = dup(fd);
 		cnt->here_doc_fd = -1;
 	}
-	else
+ 	else
 	{
 		dup2(cnt->stdout_backup, fd);
 		close(cnt->stdout_backup);
 		cnt->stdout_backup = dup(fd);
-	}
+	} 
 }
 
 void	executor(t_data *cnt)

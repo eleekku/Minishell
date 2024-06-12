@@ -70,6 +70,8 @@ void	child_process(t_data *cnt, int i, t_bool builtin)
 		if (redirect(cnt, i) < 0)
 			exit (1);
 	}
+	close(cnt->stdin_backup);
+	close(cnt->stdout_backup);
 	if (i == 0)
 		first_command(cnt, i, cnt->env, builtin);
 	else if (i > 0 && i < cnt->i_pipex - 1)

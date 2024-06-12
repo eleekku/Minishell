@@ -113,8 +113,7 @@ char	*get_path(char *cmd, char **envp, int *p)
 		i++;
 	if (!envp[i])
 		return (cmd);
-	envp[i] = envp[i] + 5;
-	temp = ft_split(envp[i], ':');
+	temp = ft_split(envp[i] + 5, ':');
 	if (!temp)
 	{
 		ft_printf(2, "minishell$: fatal error with malloc in child process\n");
