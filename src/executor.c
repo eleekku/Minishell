@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/11 08:31:06 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:14:25 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ void	backup_stdou(t_data *cnt, int fd)
 		cnt->stdin_backup = dup(fd);
 		cnt->here_doc_fd = -1;
 	}
- 	else
+	else
 	{
 		dup2(cnt->stdout_backup, fd);
 		close(cnt->stdout_backup);
 		cnt->stdout_backup = dup(fd);
-	} 
+	}
 }
 
 void	executor(t_data *cnt)
