@@ -34,6 +34,7 @@ void	middle_command(t_data *cnt, int i, char **env, t_bool builtin)
 
 	piperead = cnt->exec->pipesfd[cnt->exec->currentfd - 4];
 	pipewrite = cnt->exec->pipesfd[cnt->exec->currentfd - 1];
+	close(cnt->exec->pipesfd[cnt->exec->currentfd - 2]);
 	dup2(piperead, STDIN);
 	if (cnt->parse[i].outfile == FALSE)
 		dup2(pipewrite, STDOUT);
@@ -93,16 +94,18 @@ void	piping_and_forking(t_data *cnt, int i)
 		cnt->exec->pipesfd[cnt->exec->currentfd++] = pipefd[0];
 		cnt->exec->pipesfd[cnt->exec->currentfd++] = pipefd[1];
 	}
-	if (i == 1)
+	receive_signal(2);
+	cnt->exec->child[i] = fork();
+	if (cnt->exec->child[i] == 0)
+		child_process(cnt, i, builtin);
+	if (i == 0)
 		close (cnt->exec->pipesfd[1]);
-	else if (i > 1)
+	else if (i > 0 && i <= cnt->i_pipex - 2 && i != cnt->i_pipex - 1)
 	{
 		close (cnt->exec->pipesfd[cnt->exec->fdtrack]);
 		close (cnt->exec->pipesfd[(cnt->exec->fdtrack) + 3]);
 		cnt->exec->fdtrack += 2;
 	}
-	receive_signal(2);
-	cnt->exec->child[i] = fork();
-	if (cnt->exec->child[i] == 0)
-		child_process(cnt, i, builtin);
+	else if (i == cnt->i_pipex - 1)
+		close(cnt->exec->pipesfd[cnt->exec->currentfd - 2]);
 }

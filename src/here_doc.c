@@ -23,7 +23,11 @@ void	here_doc_loop(char *limiter, t_data *cnt, int pipefd)
 			break ;
 		if (!line)
 			return ;
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		if (ft_strlen(limiter) == 0 && ft_strlen(line) == 0)
+			break ;
+		if (ft_strlen(limiter) != 0
+			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& ft_strlen(limiter) == ft_strlen(line))
 			break ;
 		ft_putendl_fd(line, pipefd);
 		free(line);
