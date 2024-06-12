@@ -37,7 +37,8 @@ void	run_builtin_child(char **args, t_data *cnt)
 
 void	run_builtin2(t_data *cnt)
 {
-	if (ft_strncmp(cnt->parse[0].cmd[0], "echo", 4) == 0)
+	if (ft_strncmp(cnt->parse[0].cmd[0], "echo", 4) == 0
+		&& ft_strlen(cnt->parse[0].cmd[0]) == 4)
 		echo(cnt->parse[0].cmd, cnt);
 	else if (ft_strncmp(cnt->parse[0].cmd[0], "pwd", 3) == 0
 		&& ft_strlen(cnt->parse[0].cmd[0]) == 3)
@@ -77,7 +78,8 @@ t_bool	check_built_in(char **args)
 		return (FALSE);
 	if (!args[0])
 		return (FALSE);
-	if (ft_strncmp(args[0], "echo", 4) == 0)
+	if (ft_strncmp(args[0], "echo", 4) == 0
+		&& ft_strlen(args[0]) == 4)
 		return (TRUE);
 	else if (ft_strncmp(args[0], "pwd", 3) == 0 && ft_strlen(args[0]) == 3)
 		return (TRUE);
