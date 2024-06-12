@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 14:27:51 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:23:39 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ char		*parse_dolar_dquate(t_data *data, int i_token);
 char		*str_redc_dolar(t_data *data, int i_token);
 char		*check_str_envp_redc(t_data *data, char *str, int i_token);
 void		free_struct_parse(t_data *data);
+int			parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i);
+char		*make_recd_str(t_data *data, int i_token);
 
 //signals
 void		rl_replace_line(const char *text, int clear_undo);

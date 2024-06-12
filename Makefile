@@ -3,7 +3,7 @@ NAME = minishell
 SRC_DIR = src/
 SRC = $(SRC_DIR)directory_builtins.c $(SRC_DIR)execute_builtin.c $(SRC_DIR)execution_utils.c $(SRC_DIR)executor.c $(SRC_DIR)export.c $(SRC_DIR)export_utils.c $(SRC_DIR)echo.c $(SRC_DIR)environmentbuilds.c $(SRC_DIR)free_doble_array.c $(SRC_DIR)here_doc.c $(SRC_DIR)iter_token.c \
 $(SRC_DIR)lexer_utils.c $(SRC_DIR)lexer.c $(SRC_DIR)minishell.c $(SRC_DIR)piping_and_forking.c $(SRC_DIR)redirect.c $(SRC_DIR)safe_functions.c $(SRC_DIR)parse_cmd.c $(SRC_DIR)parse.c $(SRC_DIR)parse_utils.c $(SRC_DIR)parse_str_utils.c $(SRC_DIR)parse_redic.c\
-$(SRC_DIR)parse_dolar.c $(SRC_DIR)signals.c $(SRC_DIR)minishell_utils.c $(SRC_DIR)token_redirec.c $(SRC_DIR)token_dolar.c $(SRC_DIR)token_str.c $(SRC_DIR)termios_signals.c $(SRC_DIR)iter_token_utils.c
+$(SRC_DIR)parse_dolar.c $(SRC_DIR)signals.c $(SRC_DIR)minishell_utils.c $(SRC_DIR)token_redirec.c $(SRC_DIR)token_dolar.c $(SRC_DIR)token_str.c $(SRC_DIR)termios_signals.c $(SRC_DIR)iter_token_utils.c $(SRC_DIR)make_recd_str.c $(SRC_DIR)parse_cmd_utils.c
 
 OBJ = $(SRC:.c=.o)
 

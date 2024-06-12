@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:58:04 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 13:52:14 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/12 13:44:12 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	*str_redc_dolar(t_data *data, int i_token)
 	}
 	else
 		str = ft_add_cmd_str(data->lexer_array[i_token].pos.start, len, data);
+	if (data->lexer_array->type == TOKEN_HEREDOC)
+		return (str);
 	str = check_str_envp_redc(data, str, i_token);
 	return (str);
 }
