@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 14:16:46 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:18:23 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ char		*parse_dolar_dquate(t_data *data, int i_token);
 char		*str_redc_dolar(t_data *data, int i_token);
 char		*check_str_envp_redc(t_data *data, char *str, int i_token);
 void		free_struct_parse(t_data *data);
+int			parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i);
+char		*make_recd_str(t_data *data, int i_token);
 
 //signals
 void		rl_replace_line(const char *text, int clear_undo);
@@ -183,7 +185,7 @@ void		build_export(t_data *content);
 void		pre_export(t_data *cnt);
 void		initialize_export(t_data *content, char *arg);
 void		run_builtin(t_data *cnt);
-void		echo(char **args);
+void		echo(char **args, t_data *content);
 void		built_exit(char **args, t_data *cnt);
 char		**add_space(char **table, int linel, t_data *content);
 void		unset_variable(t_data *content, char **args);

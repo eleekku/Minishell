@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:30:08 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:48 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:13:23 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 void	run_builtin_child(char **args, t_data *cnt)

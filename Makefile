@@ -2,7 +2,7 @@ NAME = minishell
 
 SRC = directory_builtins.c execute_builtin.c execution_utils.c executor.c export.c export_utils.c echo.c environmentbuilds.c free_doble_array.c here_doc.c iter_token.c \
 lexer_utils.c lexer.c minishell.c piping_and_forking.c redirect.c safe_functions.c parse_cmd.c parse.c parse_utils.c parse_str_utils.c parse_redic.c\
-parse_dolar.c signals.c minishell_utils.c token_redirec.c token_dolar.c token_str.c termios_signals.c iter_token_utils.c
+parse_dolar.c signals.c minishell_utils.c token_redirec.c token_dolar.c token_str.c termios_signals.c iter_token_utils.c parse_cmd_utils.c make_recd_str.c
 
 OBJ = $(SRC:.c=.o)
 
