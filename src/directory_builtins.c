@@ -73,9 +73,9 @@ void	change_directory(char *path, t_data *content)
 	else
 	{
 		free (cwd);
-		cd_environment(content, "OLDPWD");
+		cd_environment(content, "OLDPWD=");
 		return_value = chdir(path);
-		cd_environment(content, "PWD");
+		cd_environment(content, "PWD=");
 		content->exit_status = return_value;
 	}
 }
