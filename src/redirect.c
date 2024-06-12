@@ -16,11 +16,12 @@ void	open_in_doc(char *file)
 {
 	int	fd;
 
-	fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
+	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("minishell$ %s: ", file);
+		ft_printf(2, "minishell$ %s: ", file);
 		perror("");
+		return ;
 	}
 	dup2(fd, STDIN);
 	close(fd);
@@ -48,6 +49,9 @@ int	open_out_doc(char *file, int dirtype, t_data *cnt, int i)
 
 int	doc_error(t_data *cnt, int i, int j)
 {
+	if (cnt->parse[i].rec_file[j][0] == '<'
+		&& cnt->parse[i].rec_file[j][1] == '<')
+		return (0);
 	if (!cnt->parse[i].rec_file[j][1])
 	{
 		ft_printf(2, "minishell$ : No such file or directory\n");
