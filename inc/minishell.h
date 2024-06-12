@@ -96,6 +96,7 @@ typedef struct s_parse
 	char	**cmd;
 	char	**rec_file;
 	t_bool	outfile;
+	t_bool	infile;
 }	t_parse;
 
 typedef struct s_data

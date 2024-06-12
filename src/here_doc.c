@@ -68,7 +68,10 @@ void	check_here_doc(t_data *cnt)
 		{
 			if (cnt->parse[i].rec_file[j][0] == '<'
 				&& cnt->parse[i].rec_file[j][1] == '<')
+			{
+				cnt->parse[i].infile = TRUE;
 				here_doc(ft_strchr(cnt->parse[i].rec_file[j], '<') + 2, cnt);
+			}
 			j++;
 		}
 		j = 0;

@@ -20,7 +20,8 @@ void	last_command(t_data *cnt, int i, char **env, t_bool builtin)
 	piperead = cnt->exec->pipesfd[cnt->exec->currentfd - 2];
 	pipewrite = cnt->exec->pipesfd[cnt->exec->currentfd - 1];
 	close(pipewrite);
-	dup2(piperead, STDIN);
+	if (cnt->parse[i].infile == FALSE)
+		dup2(piperead, STDIN);
 	close(piperead);
 	if (builtin == TRUE)
 		run_builtin_child(cnt->parse[i].cmd, cnt);
@@ -35,7 +36,8 @@ void	middle_command(t_data *cnt, int i, char **env, t_bool builtin)
 	piperead = cnt->exec->pipesfd[cnt->exec->currentfd - 4];
 	pipewrite = cnt->exec->pipesfd[cnt->exec->currentfd - 1];
 	close(cnt->exec->pipesfd[cnt->exec->currentfd - 2]);
-	dup2(piperead, STDIN);
+	if (cnt->parse[i].infile == FALSE)
+		dup2(piperead, STDIN);
 	if (cnt->parse[i].outfile == FALSE)
 		dup2(pipewrite, STDOUT);
 	close(pipewrite);

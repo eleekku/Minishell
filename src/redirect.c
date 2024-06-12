@@ -12,7 +12,7 @@
 
 #include "inc/minishell.h"
 
-void	open_in_doc(char *file)
+void	open_in_doc(char *file, t_data *cnt, int i)
 {
 	int	fd;
 
@@ -23,6 +23,7 @@ void	open_in_doc(char *file)
 		perror("");
 		return ;
 	}
+	cnt->parse[i].infile = TRUE;
 	dup2(fd, STDIN);
 	close(fd);
 }
@@ -88,7 +89,8 @@ int	redirect(t_data	*cnt, int i)
 								'>') + 2)), 0, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1]
 		!= '<')
-			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1));
+			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1),
+				cnt, i);
 	}
 	return (0);
 }
