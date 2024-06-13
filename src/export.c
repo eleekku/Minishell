@@ -51,7 +51,7 @@ void	initialize_export2(t_data *content, char *arg)
 {
 	int	i;
 
-	if (ft_strchr(arg, '=') && (*(ft_strchr(arg, '=') + 1)))
+	if (ft_strchr(arg, '='))
 		content->env = export(arg, content->env, content);
 	i = 0;
 	while (content->exp[i] && ft_strncmp(content->exp[i], arg,
