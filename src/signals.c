@@ -12,11 +12,30 @@
 
 #include "inc/minishell.h"
 
+void	check_signal(t_data *content)
+{
+	if (g_num == 4)
+	{
+		content->exit_status = 1;
+		g_num = 0;
+	}
+	if (g_num == SIGINT)
+	{	
+		content->exit_status = 130;
+		g_num = 0;
+	}
+	if (g_num == SIGQUIT)
+	{
+		content->exit_status = 131;
+		g_num = 0;
+	}
+}
+
 static	void	heredoc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		g_num = SIGINT;
+		g_num = 4;
 		close(0);
 		write(1, "\n", 1);
 	}

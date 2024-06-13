@@ -35,11 +35,7 @@ void	start_prompt(t_data *content)
 	{
 		receive_signal(0);
 		input = tcsetreadline(content, 0);
-		if (g_num == SIGINT)
-		{
-			content->exit_status = 1;
-			g_num = 0;
-		}
+		check_signal(content);
 		if (input)
 			add_history(input);
 		content->str_rl = input;

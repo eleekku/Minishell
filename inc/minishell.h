@@ -169,6 +169,7 @@ void		rl_replace_line(const char *text, int clear_undo);
 void		receive_signal(int val);
 char		*tcsetreadline(t_data *msh, int n);
 void		load_termios(t_data *msh);
+void		check_signal(t_data *content);
 
 //iter funtions
 t_char_iter	char_iter_constructor(char *start, size_t	len);
