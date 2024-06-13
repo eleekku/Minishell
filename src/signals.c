@@ -20,7 +20,7 @@ void	check_signal(t_data *content)
 		g_num = 0;
 	}
 	if (g_num == SIGINT)
-	{	
+	{
 		content->exit_status = 130;
 		g_num = 0;
 	}
