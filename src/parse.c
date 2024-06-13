@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:08:07 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/12 14:19:24 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/13 11:26:27 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,19 @@ static bool	is_cmd(t_data *data, int i)
 	return (false);
 }
 
+static int	print_recd_error_utils(t_data *data, int i)
+{
+	if (is_redic(data, i) == true)
+		return (-1);
+	return (i);
+}
+
 bool	print_recd_error(t_data *data, int i)
 {
 	if (data->lexer_array[i].type == TOKEN_SPACE)
 		i++;
-	if (data->lexer_array[i].type == TOKEN_EOL)
+	print_recd_error_utils(data, i);
+	if (data->lexer_array[i].type == TOKEN_EOL || i == -1)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		return (true);
@@ -48,17 +56,6 @@ bool	print_recd_error(t_data *data, int i)
 		return (true);
 	}
 	return (false);
-}
-
-void	pipex_parse_error(t_data *data, int i)
-{
-	if (data->lexer_array[i].type == TOKEN_SPACE)
-		i++;
-	if (data->lexer_array[i].type == TOKEN_EOL)
-	{
-		printf("minishell: syntax error near unexpected token `|'\n");
-		data->i_pipex = -1;
-	}
 }
 
 bool	check_error_token(t_data *data)
@@ -98,6 +95,7 @@ void	creating_parse(t_data *data)
 	if (check_error_token(data) != true)
 	{
 		free(data->lexer_array);
+		data->exit_status = 258;
 		return ;
 	}
 	parse = safe_calloc(data->i_pipex + 1, sizeof(t_parse), data);

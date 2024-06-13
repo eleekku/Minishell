@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:03:08 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/12 14:27:18 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/13 11:26:46 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,21 @@ void	parse_str(t_data *data, t_parse *parse, int i_parse)
 		if (data->lexer_array[i].type == TOKEN_EOL)
 			break ;
 		i++;
+	}
+}
+
+void	pipex_parse_error(t_data *data, int i)
+{
+	if (data->lexer_array[i].type == TOKEN_SPACE)
+		i++;
+	if (data->lexer_array[i].type == TOKEN_PIPE)
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		data->i_pipex = -1;
+	}
+	if (data->lexer_array[i].type == TOKEN_EOL)
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		data->i_pipex = -1;
 	}
 }

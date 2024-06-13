@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:38:37 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/12 14:23:39 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/13 11:24:15 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ char		*check_str_envp_redc(t_data *data, char *str, int i_token);
 void		free_struct_parse(t_data *data);
 int			parse_str_loop(t_data *data, t_parse *parse, int i_parse, int i);
 char		*make_recd_str(t_data *data, int i_token);
+bool		check_error_token(t_data *data);
+void		pipex_parse_error(t_data *data, int i);
 
 //signals
 void		rl_replace_line(const char *text, int clear_undo);
