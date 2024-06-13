@@ -92,7 +92,7 @@ void	pre_export(t_data *cnt)
 	int	j;
 
 	j = 0;
-	if (!cnt->parse[0].cmd[1])
+	if (!cnt->parse[0].cmd[1] || !cnt->parse[0].cmd[1][0])
 		print_export(cnt);
 	else
 	{
