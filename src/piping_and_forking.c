@@ -21,7 +21,10 @@ void	last_command(t_data *cnt, int i, char **env, t_bool builtin)
 	pipewrite = cnt->exec->pipesfd[cnt->exec->currentfd - 1];
 	close(pipewrite);
 	if (cnt->parse[i].infile == FALSE)
+	{
+		ft_printf(2, "im here\n");
 		dup2(piperead, STDIN);
+	}
 	close(piperead);
 	if (builtin == TRUE)
 		run_builtin_child(cnt->parse[i].cmd, cnt);

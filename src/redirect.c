@@ -12,20 +12,21 @@
 
 #include "inc/minishell.h"
 
-void	open_in_doc(char *file, t_data *cnt, int i)
+int	open_in_doc(char *file, t_data *cnt, int i)
 {
 	int	fd;
 
+	cnt->parse[i].infile = TRUE;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_printf(2, "minishell$ %s: ", file);
 		perror("");
-		return ;
+		return (-1);
 	}
-	cnt->parse[i].infile = TRUE;
 	dup2(fd, STDIN);
 	close(fd);
+	return (0);
 }
 
 int	open_out_doc(char *file, int dirtype, t_data *cnt, int i)
@@ -89,8 +90,8 @@ int	redirect(t_data	*cnt, int i)
 								'>') + 2)), 0, cnt, i));
 		if (cnt->parse[i].rec_file[j][0] == '<' && cnt->parse[i].rec_file[j][1]
 		!= '<')
-			open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1),
-				cnt, i);
+			return (open_in_doc((ft_strchr(cnt->parse[i].rec_file[j], '<') + 1),
+					cnt, i));
 	}
 	return (0);
 }
