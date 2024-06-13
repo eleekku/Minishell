@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:53:06 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/11 16:30:26 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/13 11:21:00 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ int	input_check(t_data *content)
 	str = content->str_rl;
 	error = just_pipes(str);
 	if (error)
+	{
+		content->exit_status = 258;
 		return (1);
+	}
 	lexer_tokenizer(content);
 	return (0);
 }

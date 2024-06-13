@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:58:04 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/12 13:44:12 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/13 10:57:09 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ bool	change_str_dolar(t_data *data, t_parse *parse, char *str, int i_token)
 	if (ft_strchr(str, ' ') == NULL)
 	{
 		parse[data->i_parse].cmd[data->i_str] = safe_strdup(str + len, data);
+		data->i_str++;
 		return (true);
 	}
 	else
