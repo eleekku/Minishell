@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:03:08 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/13 11:26:46 by dzurita          ###   ########.fr       */
+/*   Updated: 2024/06/14 15:44:29 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ void	parse_dolar(t_data *data, t_parse *parse, int i_token, int i_parse)
 	len = data->lexer_array[i_token].pos.len;
 	if (data->lexer_array[i_token].pos.start[0] == '?')
 	{
-		parse->cmd[data->i_str] = ft_itoa(data->exit_status);
-		if (!parse->cmd[data->i_str])
+		parse[i_parse].cmd[data->i_str] = ft_itoa(data->exit_status);
+		if (!parse[i_parse].cmd[data->i_str])
 		{
 			ft_printf(2, "minishell$: fatal error with malloc\n");
 			prepare_exit(data, 1);
 		}
+		data->i_str++;
 		return ;
 	}
 	else
