@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   directory_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esalmela <esalmela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:49:04 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/11 13:13:13 by esalmela         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:54:57 by esalmela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "inc/minishell.h"
@@ -75,6 +75,11 @@ void	change_directory(char *path, t_data *content)
 		free (cwd);
 		cd_environment(content, "OLDPWD=");
 		return_value = chdir(path);
+		if (return_value < 0)
+		{
+			ft_printf(2, "minishell$: cd: %s: ", path);
+			perror("");
+		}
 		cd_environment(content, "PWD=");
 		content->exit_status = return_value;
 	}

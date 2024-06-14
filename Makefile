@@ -9,9 +9,9 @@ OBJ = $(SRC:.c=.o)
 
 LIBFT = -LLibft -lft
 
-LINK_FLAGS = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib -g -fsanitize=address,undefined 
+LINK_FLAGS = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
+CFLAGS = -Wall -Wextra -Werror
 
 GREEN= \033[1;32m
 RED=\033[0;31m
