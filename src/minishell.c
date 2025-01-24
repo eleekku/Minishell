@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:22:09 by dzurita           #+#    #+#             */
-/*   Updated: 2024/06/12 14:26:56 by dzurita          ###   ########.fr       */
+/*   Updated: 2025/01/24 11:51:24 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	start_prompt(t_data *content)
 {
 	char	*input;
 	int		in;
-
+	
+	input = NULL;
 	while (1)
 	{
 		receive_signal(0);
@@ -41,11 +42,14 @@ void	start_prompt(t_data *content)
 		content->str_rl = input;
 		if (!input)
 			signals_crlt_d();
-		in = input_check(content);
-		if (in == 0)
-			creating_parse(content);
-		executor(content);
-		free_struct_parse(content);
+		if (input && ft_strlen(input) != 0)
+		{
+			in = input_check(content);
+			if (in == 0)
+				creating_parse(content);
+			executor(content);
+			free_struct_parse(content);
+		}
 		if (input)
 			free(input);
 	}

@@ -6,7 +6,7 @@
 /*   By: dzurita <dzurita@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:18:20 by esalmela          #+#    #+#             */
-/*   Updated: 2024/06/12 18:14:25 by esalmela         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:08:53 by dzurita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	executor(t_data *cnt)
 	i = -1;
 	if (!cnt->parse)
 		return ;
+		
 	check_here_doc(cnt);
 	if (cnt->parse[0].cmd[0] && !cnt->parse[1].cmd
 		&& check_built_in(cnt->parse[0].cmd) == TRUE)
