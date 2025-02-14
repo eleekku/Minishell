@@ -42,7 +42,7 @@ Run the shell:
 
 Check out the project in action:
 
-[Click here to watch the video](assets/minishell.webm)
+![Demo](assets/minishell.gif)
 
 
 
