@@ -70,8 +70,8 @@ $ exit
 
 ## Authors
 
-- **Your Name** - [GitHub](https://github.com/eleekku)
-- **Teammate's Name** - [GitHub](https://github.com/Deivylex)
+- **@eleekku** - [GitHub](https://github.com/eleekku)
+- **@Deivylex** - [GitHub](https://github.com/Deivylex)
 
 ## License
 
