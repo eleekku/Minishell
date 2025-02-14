@@ -42,6 +42,8 @@ Run the shell:
 
 Check out the project in action:
 
+![Example video](assets/minishell.webm)
+
 
 ## Usage
 
